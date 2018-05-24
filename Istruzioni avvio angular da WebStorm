@@ -1,0 +1,6 @@
+right-click your package.json
+Show NPM Scripts
+start
+
+Run –> Edit configurations… –> Add –> JavaScript Debug
+http://localhost:4200/ (URL field)
