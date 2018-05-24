@@ -2,7 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import {MatListModule} from "@angular/material/list";
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+
 
 @NgModule({
   declarations: [
@@ -10,7 +11,7 @@ import {MatListModule} from "@angular/material/list";
   ],
   imports: [
     BrowserModule,
-    MatListModule
+    LeafletModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
