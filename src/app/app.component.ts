@@ -8,15 +8,16 @@ import {circle, latLng, polygon, tileLayer} from "leaflet";
 })
 export class AppComponent {
   options = {
-    zoomControl: true,
+    zoomControl: false,
     layers: [
-      tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18 })
+      tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 22,
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+      })
     ],
-    zoom: 10,
+    zoom: 16,
     center: latLng(45.064950, 7.661550)
   };
 
-  layersControl = {
-
-  }
+  layersControl = {}
 }
