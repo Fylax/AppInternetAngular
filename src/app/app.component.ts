@@ -9,12 +9,11 @@ import {latLng, tileLayer} from "leaflet";
 export class AppComponent {
   customer = true;
 
-  sidebarMode = "over";
   options = {
     zoomControl: false,
     layers: [
       tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 22,
+        maxZoom: 19,
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
       })
     ],
