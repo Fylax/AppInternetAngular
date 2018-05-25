@@ -1,1 +1,28 @@
-<div style="height: 500px;width: 1000px;" leaflet [leafletOptions]="options"></div>
+<mat-toolbar color="primary">
+  <button mat-button mat-raised-button (click)="drawer.close()">
+    <mat-icon>menu</mat-icon>
+  </button>
+</mat-toolbar>
+<mat-drawer-container class="example-container" [hasBackdrop]="true">
+  <mat-drawer #drawer [mode]="sidebarMode">I'm a drawer</mat-drawer>
+  <mat-drawer-content>
+      <mat-label>Sidenav mode</mat-label>
+      <mat-label>Has backdrop</mat-label>
+  </mat-drawer-content>
+</mat-drawer-container>
+
+<mat-card id="map-card">
+  <div style="height: 500px;width: 100%;"
+       leaflet
+       [leafletOptions]="options">
+    <div *ngIf="customer"
+         leafletDraw
+         [leafletDrawOptions]="drawOptions"></div>
+  </div>
+</mat-card>
+
+<mat-form-field>
+  <input matInput [matDatepicker]="picker" placeholder="Choose a date" disabled/>
+  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-datepicker #picker disabled="false"></mat-datepicker>
+</mat-form-field>

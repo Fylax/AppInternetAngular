@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {circle, latLng, polygon, tileLayer} from "leaflet";
+import {latLng, tileLayer} from "leaflet";
 
 @Component({
   selector: 'app-root',
@@ -7,6 +7,9 @@ import {circle, latLng, polygon, tileLayer} from "leaflet";
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
+  customer = true;
+
+  sidebarMode = "over";
   options = {
     zoomControl: false,
     layers: [
@@ -19,5 +22,21 @@ export class AppComponent {
     center: latLng(45.064950, 7.661550)
   };
 
-  layersControl = {}
+  drawOptions = {
+    position: 'topright',
+    draw: {
+      marker: false,
+      circlemarker: false,
+      rectangle: false,
+      polyline: false,
+      circle: false,
+      polygon: {
+        allowIntersection: false, // Restricts shapes to simple polygons
+        drawError: {
+          color: 'red', // Color the shape will turn when intersects
+          message: '<strong>Attenzione<strong> i poligoni non possono autointersecarsi' // Message that will show when intersect
+        },
+      }
+    }
+  };
 }
