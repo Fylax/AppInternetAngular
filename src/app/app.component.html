@@ -8,53 +8,6 @@
         <mat-icon>menu</mat-icon>
       </button>
     </mat-toolbar>
-
-    <mat-card id="map-card">
-      <mat-card-content>
-        <div style="height: 500px;width: 100%;"
-             leaflet
-             [leafletOptions]="options">
-          <mat-card class="map-inner-input"
-                    (click)="$event.stopPropagation();"
-                    (pointerdown)="$event.stopPropagation();"
-                    (mousedown)="$event.stopPropagation();"
-                    (dblclick)="$event.stopPropagation();"
-                    (wheel)="$event.stopPropagation();">
-            <mat-card-content>
-              <form>
-                <mat-form-field>
-                  <input matInput [matDatepicker]="picker" placeholder="Capture start date" disabled/>
-                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                  <mat-datepicker #picker disabled="false"></mat-datepicker>
-                </mat-form-field>
-                <mat-form-field class="time-input hour-input">
-                  <input matInput [formControl]="hour" class="time-input" type="number" min="1" max="23"
-                         placeholder="HH"/>
-                  <mat-error *ngIf="(hour.hasError('min') || hour.hasError('max')) && !hour.hasError('required')">Ora
-                    <strong>invalida</strong>!
-                  </mat-error>
-                  <mat-error *ngIf="hour.hasError('required')">Ora <strong>richiesta</strong>!</mat-error>
-                </mat-form-field>
-                :
-                <mat-form-field class="time-input">
-                  <input matInput [formControl]="minutes" type="number" min="1" max="59" placeholder="mm"/>
-                  <mat-error
-                          *ngIf="(minutes.hasError('min') || minutes.hasError('max')) && !minutes.hasError('required')">
-                    Ora <strong>invalida</strong>!
-                  </mat-error>
-                  <mat-error *ngIf="minutes.hasError('required')">Ora <strong>richiesta</strong>!</mat-error>
-                </mat-form-field>
-              </form>
-            </mat-card-content>
-          </mat-card>
-
-          <div *ngIf="customer"
-               leafletDraw
-               [leafletDrawOptions]="drawOptions"></div>
-        </div>
-      </mat-card-content>
-    </mat-card>
-
-
+    <map [customer]="true"></map>
   </mat-sidenav-content>
 </mat-sidenav-container>
