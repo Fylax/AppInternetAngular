@@ -4,7 +4,8 @@ import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 
 import {LeafletModule} from '@asymmetrik/ngx-leaflet';
-import { LeafletDrawModule } from '@asymmetrik/ngx-leaflet-draw';
+import {LeafletDrawModule} from '@asymmetrik/ngx-leaflet-draw';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatToolbarModule} from '@angular/material/toolbar';
@@ -17,7 +18,6 @@ import {MAT_DATE_LOCALE, MatInputModule} from '@angular/material';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatMomentDateModule} from '@angular/material-moment-adapter';
 
-
 @NgModule({
   declarations: [
     AppComponent
@@ -26,6 +26,8 @@ import {MatMomentDateModule} from '@angular/material-moment-adapter';
     BrowserModule,
     LeafletModule.forRoot(),
     LeafletDrawModule.forRoot(),
+    FormsModule,
+    ReactiveFormsModule,
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,

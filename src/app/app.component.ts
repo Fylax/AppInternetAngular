@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
-import {latLng, tileLayer} from "leaflet";
+import * as L from 'leaflet';
+import {FormControl, FormGroupDirective, NgForm, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -12,13 +13,13 @@ export class AppComponent {
   options = {
     zoomControl: false,
     layers: [
-      tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
       })
     ],
     zoom: 16,
-    center: latLng(45.064950, 7.661550)
+    center: L.latLng(45.064950, 7.661550)
   };
 
   drawOptions = {
@@ -38,4 +39,16 @@ export class AppComponent {
       }
     }
   };
+
+  hour = new FormControl('', [
+    Validators.required,
+    Validators.min(1),
+    Validators.max(23)
+  ]);
+
+  minutes = new FormControl('', [
+    Validators.required,
+    Validators.min(1),
+    Validators.max(59)
+  ]);
 }

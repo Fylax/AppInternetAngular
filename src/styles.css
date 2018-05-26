@@ -7,19 +7,3 @@ html, body {
     width: 100%;
     margin: 0;
 }
-
-#map-card {
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 30px;
-    padding: 0;
-}
-
-#sidebar {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-}
