@@ -1,0 +1,48 @@
+#map-inner-input {
+    z-index: 999;
+    margin-top: 1%;
+    margin-left: auto;
+    margin-right: auto;
+    width: 800px;
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
+    cursor: default;
+}
+
+#map-inner-input > mat-card-content {
+    display: flex;
+    flex-direction: row;
+}
+
+#map-inner-input > mat-card-content > form:last-child {
+    margin-left: auto;
+}
+
+#map-inner-input .mat-input-element:disabled {
+    color: rgba(0, 0, 0, .87);
+}
+
+.time-input {
+    width: 60px;
+}
+
+.time-input > input[type='number'] {
+    -moz-appearance: textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none !important;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+.hour-input {
+    text-align: right;
+    margin-left: 14px;
+}
+
+.vdivider {
+    width: 1px !important;
+    margin-left: auto !important;
+}

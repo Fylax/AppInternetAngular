@@ -1,5 +1,4 @@
 import {Component, Input} from "@angular/core";
-import {FormControl, FormGroupDirective, NgForm, Validators} from '@angular/forms';
 import * as L from "leaflet";
 
 @Component({
@@ -9,6 +8,7 @@ import * as L from "leaflet";
 })
 export class MapComponent {
   @Input() customer: boolean;
+  @Input() buy: boolean;
 
   options = {
     zoomControl: false,
@@ -21,46 +21,4 @@ export class MapComponent {
     zoom: 16,
     center: L.latLng(45.064950, 7.661550)
   };
-
-  drawOptions = {
-    position: 'topright',
-    draw: {
-      marker: false,
-      circlemarker: false,
-      rectangle: false,
-      polyline: false,
-      circle: false,
-      polygon: {
-        allowIntersection: false, // Restricts shapes to simple polygons
-        drawError: {
-          color: 'red', // Color the shape will turn when intersects
-          message: '<strong>Attenzione<strong> i poligoni non possono autointersecarsi' // Message that will show when intersect
-        },
-      }
-    }
-  };
-
-  shour = new FormControl('', [
-    Validators.required,
-    Validators.min(1),
-    Validators.max(23)
-  ]);
-
-  sminutes = new FormControl('', [
-    Validators.required,
-    Validators.min(1),
-    Validators.max(59)
-  ]);
-
-  ehour = new FormControl('', [
-    Validators.required,
-    Validators.min(1),
-    Validators.max(23)
-  ]);
-
-  eminutes = new FormControl('', [
-    Validators.required,
-    Validators.min(1),
-    Validators.max(59)
-  ]);
 }

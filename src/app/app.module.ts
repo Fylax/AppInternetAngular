@@ -4,6 +4,7 @@ import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 
 import {MapComponent} from "./components/map/map.component";
+import {CustomerbuyComponent} from "./components/map/customerbuy/customerbuy.component";
 import {LeafletModule} from '@asymmetrik/ngx-leaflet';
 import {LeafletDrawModule} from '@asymmetrik/ngx-leaflet-draw';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -21,32 +22,33 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatMomentDateModule} from '@angular/material-moment-adapter';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    MapComponent
-  ],
-  imports: [
-    BrowserModule,
-    LeafletModule.forRoot(),
-    LeafletDrawModule.forRoot(),
-    FormsModule,
-    ReactiveFormsModule,
-    MatDividerModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatIconModule,
-    MatSidenavModule,
-    MatCardModule,
-    BrowserAnimationsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatDatepickerModule,
-    MatMomentDateModule
-  ],
-  providers: [
-    {provide: MAT_DATE_LOCALE, useValue: 'it-IT'},
-  ],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        MapComponent,
+        CustomerbuyComponent
+    ],
+    imports: [
+        BrowserModule,
+        LeafletModule.forRoot(),
+        LeafletDrawModule.forRoot(),
+        FormsModule,
+        ReactiveFormsModule,
+        MatDividerModule,
+        MatToolbarModule,
+        MatButtonModule,
+        MatIconModule,
+        MatSidenavModule,
+        MatCardModule,
+        BrowserAnimationsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatDatepickerModule,
+        MatMomentDateModule
+    ],
+    providers: [
+        {provide: MAT_DATE_LOCALE, useValue: 'it-IT'},
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule {
 }
