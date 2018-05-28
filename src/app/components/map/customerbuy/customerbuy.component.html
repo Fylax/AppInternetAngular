@@ -1,9 +1,12 @@
+
 <mat-card id="map-inner-input"
           (click)="$event.stopPropagation();"
           (pointerdown)="$event.stopPropagation();"
           (mousedown)="$event.stopPropagation();"
           (dblclick)="$event.stopPropagation();"
           (wheel)="$event.stopPropagation();">
+    <button id='buy'
+            (click)="buy($event)"></button>
     <mat-card-content>
         <form name="start">
             <mat-form-field>
@@ -106,4 +109,3 @@
 <div leafletDraw
      [leafletDrawOptions]="drawOptions"></div>
 
-<a href='#' id='buy'>Vuoi comprare?</a>

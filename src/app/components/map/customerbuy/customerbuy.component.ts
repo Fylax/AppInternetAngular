@@ -158,13 +158,13 @@ export class CustomerbuyComponent implements OnInit {
 
     filterStartDate = (d: Moment): boolean => {
         return d.toDate() <= this.data.end;
-    };
+    }
 
     filterEndDate = (d: Moment): boolean => {
         const newDate = new Date(this.data.start);
         newDate.setDate(this.data.start.getDate() - 1);
         return d.toDate() >= newDate && d.toDate() <= new Date();
-    };
+    }
 
     getPositions(): void {
         this.positionsService.getPositions()
@@ -173,14 +173,14 @@ export class CustomerbuyComponent implements OnInit {
 
     buy(event: MouseEvent) {
         const data = this.data.area;
-        var filteredPositions = this.positions
+        const filteredPositions = this.positions
             .filter(function (p) {
                 return p.timestamp >= this.data.start &&
                     p.timestamp <= this.data.end;
             });
-        var count = 0;
-        for (let pos of filteredPositions) {
-            if (this.checkPoint(pos.getPoint(), data.coordinates[0][0])) {
+        let count = 0;
+        for (const pos of filteredPositions) {
+            if (this.checkPoint(pos.point, data.coordinates[0][0])) {
                 count++;
             }
             //print count into draw-polygon...
@@ -189,29 +189,29 @@ export class CustomerbuyComponent implements OnInit {
 
     checkPoint(point, poly) {
         // ray-casting algorithm based on
-        var coords = (poly.type == 'Polygon') ? [poly.coordinates] : poly.coordinates;
-        var insideBox = false;
-        for (var i = 0; i < coords.length; i++) {
-            if (this.pointInBoundingBox(point, this.boundingBoxAroundPolyCoords(coords[i]))) insideBox = true;
+        const coords = (poly.type === 'Polygon') ? [poly.coordinates] : poly.coordinates;
+        let insideBox = false;
+        for (let i = 0; i < coords.length; i++) {
+            if (this.pointInBoundingBox(point, this.boundingBoxAroundPolyCoords(coords[i]))) { insideBox = true; }
         }
-        if (!insideBox) return false;
+        if (!insideBox) { return false; }
 
-        var insidePoly = false;
-        for (var i = 0; i < coords.length; i++) {
-            if (this.pnpoly(point.coordinates[1], point.coordinates[0], coords[i])) insidePoly = true;
+        let insidePoly = false;
+        for (let i = 0; i < coords.length; i++) {
+            if (this.pnpoly(point.coordinates[1], point.coordinates[0], coords[i])) { insidePoly = true; }
         }
 
         return insidePoly;
-    };
+    }
 
     pointInBoundingBox = function (point, bounds) {
         return !(point.coordinates[1] < bounds[0][0] || point.coordinates[1] > bounds[1][0] || point.coordinates[0] < bounds[0][1] || point.coordinates[0] > bounds[1][1]);
     };
 
     boundingBoxAroundPolyCoords(coords) {
-        var xAll = [], yAll = [];
+        let xAll = [], yAll = [];
 
-        for (var i = 0; i < coords[0].length; i++) {
+        for (let i = 0; i < coords[0].length; i++) {
             xAll.push(coords[0][i][1]);
             yAll.push(coords[0][i][0]);
         }
@@ -227,10 +227,10 @@ export class CustomerbuyComponent implements OnInit {
     }
 
     pnpoly(x, y, coords) {
-        var vert = [[0, 0]];
+        const vert = [[0, 0]];
 
-        for (var i = 0; i < coords.length; i++) {
-            for (var j = 0; j < coords[i].length; j++) {
+        for (let i = 0; i < coords.length; i++) {
+            for (let j = 0; j < coords[i].length; j++) {
                 vert.push(coords[i][j]);
             }
             vert.push(coords[i][0]);
