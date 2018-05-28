@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import * as L from 'leaflet';
 import {FormControl, Validators} from '@angular/forms';
 import {LeafletDirective, LeafletDirectiveWrapper} from '@asymmetrik/ngx-leaflet';
@@ -10,244 +10,307 @@ import {Position} from '../../../module/Position';
 import {PositionsService} from '../../../services/positions.service';
 
 @Component({
-    selector: 'buy',
-    templateUrl: './customerbuy.component.html',
-    styleUrls: ['./customerbuy.component.css']
+  selector: 'buy',
+  templateUrl: './customerbuy.component.html',
+  styleUrls: ['./customerbuy.component.css']
 })
 export class CustomerbuyComponent implements OnInit {
 
-    positions: Position[];
+  positions: Position[];
 
-    leafletDirective: LeafletDirectiveWrapper;
-    drawOptions = {
-        position: 'topright',
-        draw: {
-            marker: false,
-            circlemarker: false,
-            rectangle: false,
-            polyline: false,
-            circle: false,
-            polygon: {
-                allowIntersection: false, // Restricts shapes to simple polygons
-                drawError: {
-                    color: 'red', // Color the shape will turn when intersects
-                    message: '<strong>Attenzione<strong> i poligoni non possono autointersecarsi' // Message that will show when intersect
-                },
-            }
-        }
-    };
-    shour = new FormControl('', {
-        updateOn: 'blur',
-        validators: [
-            Validators.required,
-            Validators.min(1),
-            Validators.max(23)
-        ]
-    });
-    sminutes = new FormControl('', {
-        updateOn: 'blur',
-        validators: [
-            Validators.required,
-            Validators.min(1),
-            Validators.max(59)
-        ]
-    });
-    ehour = new FormControl('', {
-        updateOn: 'blur',
-        validators: [
-            Validators.required,
-            Validators.min(1),
-            Validators.max(23)
-        ]
-    });
-    eminutes = new FormControl('', {
-        updateOn: 'blur',
-        validators: [
-            Validators.required,
-            Validators.min(1),
-            Validators.max(59)
-        ]
-    });
-
-    data: CustomerRequest;
-
-    constructor(private positionsService: PositionsService, leafletDirective: LeafletDirective) {
-        this.leafletDirective = new LeafletDirectiveWrapper(leafletDirective);
-        this.data = new CustomerRequest();
+  leafletDirective: LeafletDirectiveWrapper;
+  drawOptions = {
+    position: 'topright',
+    draw: {
+      marker: false,
+      circlemarker: false,
+      rectangle: false,
+      polyline: false,
+      circle: false,
+      polygon: {
+        allowIntersection: false, // Restricts shapes to simple polygons
+        drawError: {
+          color: 'red', // Color the shape will turn when intersects
+          message: '<strong>Attenzione<strong> i poligoni non possono autointersecarsi' // Message that will show when intersect
+        },
+      }
     }
+  };
+  shour = new FormControl('', {
+    updateOn: 'blur',
+    validators: [
+      Validators.required,
+      Validators.min(0),
+      Validators.max(23)
+    ]
+  });
+  sminutes = new FormControl('', {
+    updateOn: 'blur',
+    validators: [
+      Validators.required,
+      Validators.min(0),
+      Validators.max(59)
+    ]
+  });
+  ehour = new FormControl('', {
+    updateOn: 'blur',
+    validators: [
+      Validators.required,
+      Validators.min(0),
+      Validators.max(23)
+    ]
+  });
+  eminutes = new FormControl('', {
+    updateOn: 'blur',
+    validators: [
+      Validators.required,
+      Validators.min(0),
+      Validators.max(59)
+    ]
+  });
 
-    ngOnInit() {
-        this.getPositions();
-        this.leafletDirective.init();
-        this.leafletDirective.getMap()
-            .on(L.Draw.Event.CREATED, (e: L.DrawEvents.Created) => {
-                if (e.type !== 'draw:created' && e.layerType !== 'polygon') {
-                    return;
-                }
-                const area = (e.layer as L.Polygon);
-                this.data.area = area.toGeoJSON().geometry as Polygon;
-                this.data.center = area.getBounds().getCenter();
-                const controls = document.getElementsByClassName('leaflet-draw-toolbar');
-                (controls[0] as HTMLDivElement).style.display = 'none';
-                (controls[1] as HTMLDivElement).style.display = 'block';
-            })
-            .on(L.Draw.Event.DELETED, () => {
-                const controls = document.getElementsByClassName('leaflet-draw-toolbar');
-                (controls[0] as HTMLDivElement).style.display = 'block';
-                (controls[1] as HTMLDivElement).style.display = 'none';
-                this.data.center = null;
-                this.data.area = null;
-            })
-            .on(L.Draw.Event.EDITED, (e: L.DrawEvents.Edited) => {
-                const area = (e.layers.getLayers()[0] as L.Polygon);
-                this.data.area = area.toGeoJSON().geometry as Polygon;
-                this.data.center = area.getBounds().getCenter();
-            });
+  data: CustomerRequest;
+
+  constructor(private positionsService: PositionsService, leafletDirective: LeafletDirective) {
+    this.leafletDirective = new LeafletDirectiveWrapper(leafletDirective);
+    this.data = new CustomerRequest();
+  }
+
+  setDate(type: string, event: MatDatepickerInputEvent<Moment>) {
+    let date: Date;
+    switch (type) {
+      case 'start':
+        date = this.data.start;
+        break;
+      case 'end':
+        date = this.data.end;
     }
+    const newDate = event.value;
+    date.setFullYear(newDate.year(), newDate.month(), newDate.date());
+    this.setFormControlValidator(type);
+  }
 
-    ngAfterViewInit() {
-        const controls = document.getElementsByClassName('leaflet-draw-toolbar');
-        (controls[0] as HTMLDivElement).style.display = 'block';
-        (controls[1] as HTMLDivElement).style.display = 'none';
-    }
-
-    setDate(type: string, event: MatDatepickerInputEvent<Moment>) {
-        let date: Date;
-        switch (type) {
-            case 'start':
-                date = this.data.start;
-                break;
-            case 'end':
-                date = this.data.end;
-        }
-        const newDate = event.value;
-        date.setFullYear(newDate.year(), newDate.month(), newDate.date());
-    }
-
-    setHour(type: string, event: FocusEvent) {
-        const value = (event.currentTarget as HTMLInputElement).value;
-        if (value.length === 0) {
+  ngOnInit() {
+    this.getPositions();
+    this.leafletDirective.init();
+    this.leafletDirective.getMap()
+        .on(L.Draw.Event.CREATED, (e: L.DrawEvents.Created) => {
+          if (e.type !== 'draw:created' && e.layerType !== 'polygon') {
             return;
-        }
-        let date: Date;
-        switch (type) {
-            case 'start':
-                date = this.data.start;
-                break;
-            case 'end':
-                date = this.data.end;
-        }
-        date.setUTCHours(parseInt(value, 10));
-    }
-
-    setMinutes(type: string, event: FocusEvent) {
-        const value = (event.currentTarget as HTMLInputElement).value;
-        if (value.length === 0) {
-            return;
-        }
-        let date: Date;
-        switch (type) {
-            case 'start':
-                date = this.data.start;
-                break;
-            case 'end':
-                date = this.data.end;
-        }
-        date.setUTCMinutes(parseInt(value, 10));
-    }
-
-    filterStartDate = (d: Moment): boolean => {
-        return d.toDate() <= this.data.end;
-    };
-
-    filterEndDate = (d: Moment): boolean => {
-        const newDate = new Date(this.data.start);
-        newDate.setDate(this.data.start.getDate() - 1);
-        return d.toDate() >= newDate && d.toDate() <= new Date();
-    };
-
-    getPositions(): void {
-        this.positionsService.getPositions()
-            .subscribe(positions => this.positions = positions);
-    }
-
-    buy(event: MouseEvent) {
-        const data = this.data.area;
-        var filteredPositions = this.positions
-            .filter(function (p) {
-                return p.timestamp >= this.data.start &&
-                    p.timestamp <= this.data.end;
-            });
-        var count = 0;
-        for (let pos of filteredPositions) {
-            if (this.checkPoint(pos.getPoint(), data.coordinates[0][0])) {
-                count++;
-            }
-            //print count into draw-polygon...
-        }
-    }
-
-    checkPoint(point, poly) {
-        // ray-casting algorithm based on
-        var coords = (poly.type == 'Polygon') ? [poly.coordinates] : poly.coordinates;
-        var insideBox = false;
-        for (var i = 0; i < coords.length; i++) {
-            if (this.pointInBoundingBox(point, this.boundingBoxAroundPolyCoords(coords[i]))) insideBox = true;
-        }
-        if (!insideBox) return false;
-
-        var insidePoly = false;
-        for (var i = 0; i < coords.length; i++) {
-            if (this.pnpoly(point.coordinates[1], point.coordinates[0], coords[i])) insidePoly = true;
-        }
-
-        return insidePoly;
-    };
-
-    pointInBoundingBox = function (point, bounds) {
-        return !(point.coordinates[1] < bounds[0][0] || point.coordinates[1] > bounds[1][0] || point.coordinates[0] < bounds[0][1] || point.coordinates[0] > bounds[1][1]);
-    };
-
-    boundingBoxAroundPolyCoords(coords) {
-        var xAll = [], yAll = [];
-
-        for (var i = 0; i < coords[0].length; i++) {
-            xAll.push(coords[0][i][1]);
-            yAll.push(coords[0][i][0]);
-        }
-
-        xAll = xAll.sort(function (a, b) {
-            return a - b;
+          }
+          const area = (e.layer as L.Polygon);
+          this.data.area = area.toGeoJSON().geometry as Polygon;
+          this.data.center = area.getBounds().getCenter();
+          const controls = document.getElementsByClassName('leaflet-draw-toolbar');
+          (controls[0] as HTMLDivElement).style.display = 'none';
+          (controls[1] as HTMLDivElement).style.display = 'block';
+        })
+        .on(L.Draw.Event.DELETED, () => {
+          const controls = document.getElementsByClassName('leaflet-draw-toolbar');
+          (controls[0] as HTMLDivElement).style.display = 'block';
+          (controls[1] as HTMLDivElement).style.display = 'none';
+          this.data.center = null;
+          this.data.area = null;
+        })
+        .on(L.Draw.Event.EDITED, (e: L.DrawEvents.Edited) => {
+          const area = (e.layers.getLayers()[0] as L.Polygon);
+          this.data.area = area.toGeoJSON().geometry as Polygon;
+          this.data.center = area.getBounds().getCenter();
         });
-        yAll = yAll.sort(function (a, b) {
-            return a - b;
+  }
+
+  ngAfterViewInit() {
+    const controls = document.getElementsByClassName('leaflet-draw-toolbar');
+    (controls[0] as HTMLDivElement).style.display = 'block';
+    (controls[1] as HTMLDivElement).style.display = 'none';
+  }
+
+  setHour(type: string, event: FocusEvent) {
+    const val = (event.currentTarget as HTMLInputElement).value;
+    if (val.length === 0) {
+      return;
+    }
+    const value = parseInt(val, 10);
+    if (value >= 0 && value <= 23) {
+      let date: Date;
+      switch (type) {
+        case 'start':
+          date = this.data.start;
+          break;
+        case 'end':
+          date = this.data.end;
+      }
+      date.setHours(value);
+    }
+    this.setFormControlValidator(type);
+  }
+
+  setMinutes(type: string, event: FocusEvent) {
+    const val = (event.currentTarget as HTMLInputElement).value;
+    if (val.length === 0) {
+      return;
+    }
+    const value = parseInt(val, 10);
+    if (value >= 0 && value <= 59) {
+      let date: Date;
+      switch (type) {
+        case 'start':
+          date = this.data.start;
+          break;
+        case 'end':
+          date = this.data.end;
+      }
+      date.setMinutes(value);
+    }
+    this.setFormControlValidator(type);
+  }
+
+  setFormControlValidator(type: string): void {
+    if (this.data.start.getDate() === this.data.end.getDate() && this.shour.value >= this.ehour.value) {
+      this.shour.setValidators([Validators.required, Validators.max(this.ehour.value), Validators.min(0)]);
+      this.ehour.setValidators([Validators.required, Validators.min(this.shour.value), Validators.max(23)]);
+      if (this.shour.value === this.ehour.value && this.sminutes.value >= this.eminutes.value) {
+        this.sminutes.setValidators([Validators.required, Validators.max(this.eminutes.value), Validators.min(0)]);
+        this.eminutes.setValidators([Validators.required, Validators.min(this.sminutes.value), Validators.max(59)]);
+      } else {
+        this.resetControlMinutesValidator();
+      }
+      if (type === 'start') {
+        this.shour.updateValueAndValidity();
+        this.sminutes.updateValueAndValidity();
+      } else {
+        this.ehour.updateValueAndValidity();
+        this.eminutes.updateValueAndValidity();
+      }
+    } else {
+      this.resetControlValidator();
+    }
+  }
+
+  resetControlValidator(): void {
+    this.shour.setValidators([
+      Validators.required,
+      Validators.min(0),
+      Validators.max(23)
+    ]);
+    this.ehour.setValidators([
+      Validators.required,
+      Validators.min(0),
+      Validators.max(23)
+    ]);
+    this.resetControlMinutesValidator();
+    this.shour.updateValueAndValidity();
+    this.ehour.updateValueAndValidity();
+  }
+
+  resetControlMinutesValidator(): void {
+    this.sminutes.setValidators([
+      Validators.required,
+      Validators.min(0),
+      Validators.max(59)
+    ]);
+    this.eminutes.setValidators([
+      Validators.required,
+      Validators.min(0),
+      Validators.max(59)
+    ]);
+    this.sminutes.updateValueAndValidity();
+    this.eminutes.updateValueAndValidity();
+  }
+
+  filterStartDate = (d: Moment): boolean => {
+    return d.toDate() <= this.data.end;
+  }
+
+  filterEndDate = (d: Moment): boolean => {
+    const newDate = new Date(this.data.start);
+    newDate.setDate(this.data.start.getDate() - 1);
+    return d.toDate() >= newDate && d.toDate() <= new Date();
+  }
+
+  getPositions(): void {
+    this.positionsService.getPositions()
+        .subscribe(positions => this.positions = positions);
+  }
+
+  buy(event: MouseEvent) {
+    const data = this.data.area;
+    const filteredPositions = this.positions
+        .filter(function (p) {
+          return p.timestamp >= this.data.start &&
+              p.timestamp <= this.data.end;
         });
+    let count = 0;
+    for (const pos of filteredPositions) {
+      if (this.checkPoint(pos.getPoint(), data.coordinates[0][0])) {
+        count++;
+      }
+      // print count into draw-polygon...
+    }
+  }
 
-        return [[xAll[0], yAll[0]], [xAll[xAll.length - 1], yAll[yAll.length - 1]]];
+  checkPoint(point, poly) {
+    // ray-casting algorithm based on
+    const coords = (poly.type === 'Polygon') ? [poly.coordinates] : poly.coordinates;
+    let insideBox = false;
+    for (let i = 0; i < coords.length; i++) {
+      if (this.pointInBoundingBox(point, this.boundingBoxAroundPolyCoords(coords[i]))) { insideBox = true; }
+    }
+    if (!insideBox) { return false; }
+
+    let insidePoly = false;
+    for (let i = 0; i < coords.length; i++) {
+      if (this.pnpoly(point.coordinates[1], point.coordinates[0], coords[i])) { insidePoly = true; }
     }
 
-    pnpoly(x, y, coords) {
-        var vert = [[0, 0]];
+    return insidePoly;
+  }
 
-        for (var i = 0; i < coords.length; i++) {
-            for (var j = 0; j < coords[i].length; j++) {
-                vert.push(coords[i][j]);
-            }
-            vert.push(coords[i][0]);
-            vert.push([0, 0]);
-        }
-        /*
-        putMarker(point: Point){
-                L.marker([45.06599, 7.661570], {
-                  icon: icon({
-                      iconSize: [45, 51],
-                      iconAnchor: [33, 61],
-                      iconUrl: 'assets/meMedesimoCorrado.png'
-                      //shadowUrl: 'assets/meMedesimoCorrado.png'
-                  })
-              }).addTo(this.leafletDirective.getMap());
-              }
-        */
+  pointInBoundingBox = function (point, bounds) {
+    return !(point.coordinates[1] < bounds[0][0]
+        || point.coordinates[1] > bounds[1][0]
+        || point.coordinates[0] < bounds[0][1]
+        || point.coordinates[0] > bounds[1][1]);
+  };
 
+  boundingBoxAroundPolyCoords(coords) {
+    let xAll = [], yAll = [];
+
+    for (let i = 0; i < coords[0].length; i++) {
+      xAll.push(coords[0][i][1]);
+      yAll.push(coords[0][i][0]);
     }
-}
+
+    xAll = xAll.sort(function (a, b) {
+      return a - b;
+    });
+    yAll = yAll.sort(function (a, b) {
+      return a - b;
+    });
+
+    return [[xAll[0], yAll[0]], [xAll[xAll.length - 1], yAll[yAll.length - 1]]];
+  }
+
+  pnpoly(x, y, coords) {
+    const vert = [[0, 0]];
+
+    for (let i = 0; i < coords.length; i++) {
+      for (let j = 0; j < coords[i].length; j++) {
+        vert.push(coords[i][j]);
+      }
+      vert.push(coords[i][0]);
+      vert.push([0, 0]);
+    }
+
+/*
+putMarker(point: Point){
+        L.marker([45.06599, 7.661570], {
+          icon: icon({
+              iconSize: [45, 51],
+              iconAnchor: [33, 61],
+              iconUrl: 'assets/meMedesimoCorrado.png'
+              //shadowUrl: 'assets/meMedesimoCorrado.png'
+          })
+      }).addTo(this.leafletDirective.getMap());
+      }
+*/

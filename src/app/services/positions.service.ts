@@ -8,7 +8,8 @@ import {Position} from '../module/Position';
 })
 export class PositionsService {
 
-    private positionsUrl = '/positions';  // URL to web api
+    // credo che vada messo api perchè inMemoryWebApi intercetta tutte le url api/
+    private positionsUrl = 'api/positions';  // URL to web api
 
     constructor(private http: HttpClient) {
     }
