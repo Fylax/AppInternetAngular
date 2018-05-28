@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import * as L from 'leaflet';
 import {FormControl, Validators} from '@angular/forms';
 import {LeafletDirective, LeafletDirectiveWrapper} from '@asymmetrik/ngx-leaflet';
@@ -12,7 +12,8 @@ import {Moment} from 'moment';
   templateUrl: './customerbuy.component.html',
   styleUrls: ['./customerbuy.component.css']
 })
-export class CustomerbuyComponent implements OnInit {
+export class CustomerbuyComponent implements OnInit, AfterViewInit {
+
   leafletDirective: LeafletDirectiveWrapper;
   drawOptions = {
     position: 'topright',
@@ -135,16 +136,35 @@ export class CustomerbuyComponent implements OnInit {
 
   ngOnInit() {
     this.leafletDirective.init();
-    this.leafletDirective.getMap().on(L.Draw.Event.CREATED, (e: L.DrawEvents.Created) => {
-      if (e.type !== 'draw:created' && e.layerType !== 'polygon') {
-        return;
-      } else if (this.data.area) { // already defined
-        // disabilitare bottone per disegno nuovo poligono?
-        return;
-      }
-      const area = (e.layer as L.Polygon);
-      this.data.area = area.toGeoJSON().geometry as Polygon;
-      this.data.center = area.getBounds().getCenter();
-    });
+    this.leafletDirective.getMap()
+        .on(L.Draw.Event.CREATED, (e: L.DrawEvents.Created) => {
+          if (e.type !== 'draw:created' && e.layerType !== 'polygon') {
+            return;
+          }
+          const area = (e.layer as L.Polygon);
+          this.data.area = area.toGeoJSON().geometry as Polygon;
+          this.data.center = area.getBounds().getCenter();
+          const controls = document.getElementsByClassName('leaflet-draw-toolbar');
+          (controls[0] as HTMLDivElement).style.display = 'none';
+          (controls[1] as HTMLDivElement).style.display = 'block';
+        })
+        .on(L.Draw.Event.DELETED, () => {
+          const controls = document.getElementsByClassName('leaflet-draw-toolbar');
+          (controls[0] as HTMLDivElement).style.display = 'block';
+          (controls[1] as HTMLDivElement).style.display = 'none';
+          this.data.center = null;
+          this.data.area = null;
+        })
+        .on(L.Draw.Event.EDITED, (e: L.DrawEvents.Edited) => {
+          const area = (e.layers.getLayers()[0] as L.Polygon);
+          this.data.area = area.toGeoJSON().geometry as Polygon;
+          this.data.center = area.getBounds().getCenter();
+        });
+  }
+
+  ngAfterViewInit() {
+    const controls = document.getElementsByClassName('leaflet-draw-toolbar');
+    (controls[0] as HTMLDivElement).style.display = 'block';
+    (controls[1] as HTMLDivElement).style.display = 'none';
   }
 }
