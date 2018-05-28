@@ -142,7 +142,9 @@ export class CustomerbuyComponent implements OnInit {
         // disabilitare bottone per disegno nuovo poligono?
         return;
       }
-      this.data.area = (e.layer as L.Polygon).toGeoJSON().geometry as Polygon;
+      const area = (e.layer as L.Polygon);
+      this.data.area = area.toGeoJSON().geometry as Polygon;
+      this.data.center = area.getBounds().getCenter();
     });
   }
 }
