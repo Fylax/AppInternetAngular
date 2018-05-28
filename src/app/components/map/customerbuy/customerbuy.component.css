@@ -26,14 +26,10 @@
     width: 60px;
 }
 
-.time-input > input[type='number'] {
-    -moz-appearance: textfield;
-}
-
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-    /* display: none; <- Crashes Chrome on hover */
+.no-spin:not(:focus) {
+/* display: none; <- Crashes Chrome on hover */
     -webkit-appearance: none !important;
+    -moz-appearance: textfield!important;
     margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }
 

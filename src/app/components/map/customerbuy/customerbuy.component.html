@@ -25,8 +25,9 @@
                         (blur)="setHour('start', $event)"
                         class="time-input"
                         type="number"
-                        min="1" max="23"
-                        placeholder="HH"/>
+                        min="0" max="23"
+                        placeholder="HH"
+                        class="no-spin" />
                 <mat-error
                         *ngIf="(shour.hasError('min') || shour.hasError('max')) && !shour.hasError('required')">
                     Ora
@@ -41,8 +42,9 @@
                         [formControl]="sminutes"
                         (blur)="setMinutes('start', $event)"
                         type="number"
-                        min="1" max="59"
-                        placeholder="mm"/>
+                        min="0" max="59"
+                        placeholder="mm"
+                        class="no-spin" />
                 <mat-error
                         *ngIf="(sminutes.hasError('min') || sminutes.hasError('max')) && !sminutes.hasError('required')">
                     Ora <strong>invalida</strong>!
@@ -71,8 +73,9 @@
                         (blur)="setHour('end', $event)"
                         class="time-input"
                         type="number"
-                        min="1" max="23"
-                        placeholder="HH"/>
+                        min="0" max="23"
+                        placeholder="HH"
+                        class="no-spin" />
                 <mat-error
                         *ngIf="(ehour.hasError('min') || ehour.hasError('max')) && !ehour.hasError('required')">
                     Ora
@@ -87,8 +90,9 @@
                         [formControl]="eminutes"
                         (blur)="setMinutes('end', $event)"
                         type="number"
-                        min="1" max="59"
-                        placeholder="mm"/>
+                        min="0" max="59"
+                        placeholder="mm"
+                        class="no-spin" />
                 <mat-error
                         *ngIf="(eminutes.hasError('min') || eminutes.hasError('max')) && !eminutes.hasError('required')">
                     Ora <strong>invalida</strong>!
