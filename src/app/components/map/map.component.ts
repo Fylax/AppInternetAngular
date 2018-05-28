@@ -1,5 +1,5 @@
-import {Component, Input} from "@angular/core";
-import * as L from "leaflet";
+import {Component, Input} from '@angular/core';
+import * as L from 'leaflet';
 
 @Component({
   selector: 'map',

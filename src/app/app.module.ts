@@ -21,6 +21,10 @@ import {MAT_DATE_LOCALE, MatInputModule} from '@angular/material';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatMomentDateModule} from '@angular/material-moment-adapter';
 
+import {HttpClientModule} from '@angular/common/http';
+import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { PositionsDataService }  from './services/in-memory/positions-data.service';
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -43,7 +47,10 @@ import {MatMomentDateModule} from '@angular/material-moment-adapter';
         MatFormFieldModule,
         MatInputModule,
         MatDatepickerModule,
-        MatMomentDateModule
+        MatMomentDateModule,
+        HttpClientModule,
+        HttpClientInMemoryWebApiModule.forRoot(PositionsDataService, { dataEncapsulation: false }),
+        PositionsDataService
     ],
     providers: [
         {provide: MAT_DATE_LOCALE, useValue: 'it-IT'},
