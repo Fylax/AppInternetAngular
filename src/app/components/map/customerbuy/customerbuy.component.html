@@ -10,6 +10,7 @@
                 <input
                         matInput
                         [matDatepicker]="startpicker"
+                        [matDatepickerFilter]="filterStartDate"
                         (dateChange)="setDate('start', $event)"
                         placeholder="Capture start date" disabled/>
                 <mat-datepicker-toggle matSuffix [for]="startpicker"></mat-datepicker-toggle>
@@ -55,6 +56,7 @@
                 <input
                         matInput
                         [matDatepicker]="endpicker"
+                        [matDatepickerFilter]="filterEndDate"
                         (dateChange)="setDate('end', $event)"
                         placeholder="Capture start date" disabled/>
                 <mat-datepicker-toggle matSuffix [for]="endpicker"></mat-datepicker-toggle>

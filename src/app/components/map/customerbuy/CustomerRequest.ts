@@ -1,12 +1,12 @@
-import {Polygon} from "geojson";
+import {Polygon} from 'geojson';
 
 export class CustomerRequest {
-    area: Polygon;
-    start: Date;
-    end: Date;
+  area: Polygon;
+  start: Date;
+  end: Date;
 
-    constructor() {
-        this.start = new Date();
-        this.end = new Date();
-    }
+  constructor() {
+    this.start = new Date(0);
+    this.end = new Date();
+  }
 }
