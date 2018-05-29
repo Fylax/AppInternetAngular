@@ -1,14 +1,15 @@
-import {Point} from './Point';
+import {Point} from 'geojson';
 
-export class Position {
-    timestamp: Date;
+export class Position{
+    timestamp: number;
     point: Point;
 
-
-    constructor(timestamp: Date, latitude: number, longitude: number) {
+    constructor (timestamp: number, point: Point) {
         this.timestamp = timestamp;
-        this.point = new Point(latitude, longitude);
+        this.point = point;
     }
 
-
+    getPoint(){
+        return this.point;
+    }
 }

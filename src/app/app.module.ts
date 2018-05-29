@@ -17,7 +17,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatCardModule} from '@angular/material/card';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {MAT_DATE_LOCALE, MatInputModule} from '@angular/material';
+import {MAT_DATE_LOCALE, MatExpansionModule, MatInputModule, MatTreeModule} from '@angular/material';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatMomentDateModule} from '@angular/material-moment-adapter';
 
@@ -43,6 +43,7 @@ import { PositionsDataService } from './services/in-memory/positions-data.servic
         MatIconModule,
         MatSidenavModule,
         MatCardModule,
+        MatExpansionModule,
         BrowserAnimationsModule,
         MatFormFieldModule,
         MatInputModule,
