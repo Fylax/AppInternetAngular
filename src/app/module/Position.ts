@@ -1,10 +1,10 @@
 import {Point} from 'geojson';
 
 export class Position{
-    timestamp: Date;
+    timestamp: number;
     point: Point;
 
-    constructor (timestamp: Date, point: Point) {
+    constructor (timestamp: number, point: Point) {
         this.timestamp = timestamp;
         this.point = point;
     }

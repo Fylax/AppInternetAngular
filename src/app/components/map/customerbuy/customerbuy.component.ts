@@ -17,6 +17,9 @@ import {PositionsService} from '../../../services/positions.service';
 export class CustomerbuyComponent implements OnInit {
 
   positions: Position[];
+  startDateSet = false;
+  endDateSet = false;
+  polygonCreated = false;
 
   leafletDirective: LeafletDirectiveWrapper;
   drawOptions = {
@@ -81,13 +84,16 @@ export class CustomerbuyComponent implements OnInit {
     switch (type) {
       case 'start':
         date = this.data.start;
+        this.startDateSet = true;
         break;
       case 'end':
         date = this.data.end;
+        this.endDateSet = true;
     }
     const newDate = event.value;
     date.setFullYear(newDate.year(), newDate.month(), newDate.date());
     this.setFormControlValidator(type);
+    this.checkConfirmationReady();
   }
 
   ngOnInit() {
@@ -104,6 +110,8 @@ export class CustomerbuyComponent implements OnInit {
           const controls = document.getElementsByClassName('leaflet-draw-toolbar');
           (controls[0] as HTMLDivElement).style.display = 'none';
           (controls[1] as HTMLDivElement).style.display = 'block';
+          this.polygonCreated = true;
+          this.checkConfirmationReady();
         })
         .on(L.Draw.Event.DELETED, () => {
           const controls = document.getElementsByClassName('leaflet-draw-toolbar');
@@ -111,11 +119,14 @@ export class CustomerbuyComponent implements OnInit {
           (controls[1] as HTMLDivElement).style.display = 'none';
           this.data.center = null;
           this.data.area = null;
+          this.polygonCreated = false;
+          this.checkConfirmationReady();
         })
         .on(L.Draw.Event.EDITED, (e: L.DrawEvents.Edited) => {
           const area = (e.layers.getLayers()[0] as L.Polygon);
           this.data.area = area.toGeoJSON().geometry as Polygon;
           this.data.center = area.getBounds().getCenter();
+          this.checkConfirmationReady();
         });
   }
 
@@ -143,6 +154,7 @@ export class CustomerbuyComponent implements OnInit {
       date.setHours(value);
     }
     this.setFormControlValidator(type);
+    this.checkConfirmationReady();
   }
 
   setMinutes(type: string, event: FocusEvent) {
@@ -163,6 +175,7 @@ export class CustomerbuyComponent implements OnInit {
       date.setMinutes(value);
     }
     this.setFormControlValidator(type);
+    this.checkConfirmationReady();
   }
 
   setFormControlValidator(type: string): void {
@@ -233,16 +246,17 @@ export class CustomerbuyComponent implements OnInit {
         .subscribe(positions => this.positions = positions);
   }
 
-  buy(event: MouseEvent) {
-    const data = this.data.area;
+  confirmationClick() {
+    const polygon = this.data.area;
+    const self = this; // it is necessary to access this context in the callback
     const filteredPositions = this.positions
         .filter(function (p) {
-          return p.timestamp >= this.data.start &&
-              p.timestamp <= this.data.end;
+          return p.timestamp >= self.data.start.getTime() / 1000 &&
+              p.timestamp <= self.data.end.getTime() / 1000;
         });
     let count = 0;
     for (const pos of filteredPositions) {
-      if (this.checkPoint(pos.getPoint(), data.coordinates[0][0])) {
+      if (this.checkPoint(pos.getPoint(), polygon.coordinates[0][0])) {
         count++;
       }
       // print count into draw-polygon...
@@ -254,13 +268,19 @@ export class CustomerbuyComponent implements OnInit {
     const coords = (poly.type === 'Polygon') ? [poly.coordinates] : poly.coordinates;
     let insideBox = false;
     for (let i = 0; i < coords.length; i++) {
-      if (this.pointInBoundingBox(point, this.boundingBoxAroundPolyCoords(coords[i]))) { insideBox = true; }
+      if (this.pointInBoundingBox(point, this.boundingBoxAroundPolyCoords(coords[i]))) {
+        insideBox = true;
+      }
     }
-    if (!insideBox) { return false; }
+    if (!insideBox) {
+      return false;
+    }
 
     let insidePoly = false;
     for (let i = 0; i < coords.length; i++) {
-      if (this.pnpoly(point.coordinates[1], point.coordinates[0], coords[i])) { insidePoly = true; }
+      if (this.pnpoly(point.coordinates[1], point.coordinates[0], coords[i])) {
+        insidePoly = true;
+      }
     }
 
     return insidePoly;
@@ -301,7 +321,22 @@ export class CustomerbuyComponent implements OnInit {
       vert.push(coords[i][0]);
       vert.push([0, 0]);
     }
+  }
 
+  checkConfirmationReady(): void {
+    if (this.shour.valid &&
+        this.sminutes.valid &&
+        this.ehour.valid &&
+        this.eminutes.valid &&
+        this.startDateSet &&
+        this.endDateSet &&
+        this.polygonCreated) {
+      document.getElementById("confirmation-button").style.display = 'block';
+    } else {
+      document.getElementById("confirmation-button").style.display = 'none';
+    }
+  }
+}
 /*
 putMarker(point: Point){
         L.marker([45.06599, 7.661570], {
@@ -314,3 +349,4 @@ putMarker(point: Point){
       }).addTo(this.leafletDirective.getMap());
       }
 */
+
