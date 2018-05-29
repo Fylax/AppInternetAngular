@@ -6,7 +6,7 @@
           (dblclick)="$event.stopPropagation();"
           (wheel)="$event.stopPropagation();">
     <button id='buy'
-            (click)="buy($event)"></button>
+            (click)="confirmationClick($event)">{{count}}</button>
     <mat-card-content>
         <form name="start">
             <mat-form-field >
