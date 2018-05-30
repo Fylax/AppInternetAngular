@@ -17,45 +17,46 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatCardModule} from '@angular/material/card';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {MAT_DATE_LOCALE, MatExpansionModule, MatInputModule, MatTreeModule} from '@angular/material';
+import {MAT_DATE_LOCALE, MatExpansionModule, MatInputModule} from '@angular/material';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatMomentDateModule} from '@angular/material-moment-adapter';
 
 import {HttpClientModule} from '@angular/common/http';
-import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
-import { PositionsDataService } from './services/in-memory/positions-data.service';
+import {HttpClientInMemoryWebApiModule} from 'angular-in-memory-web-api';
+import {PositionsDataService} from './services/in-memory/positions-data.service';
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        MapComponent,
-        CustomerbuyComponent
-    ],
-    imports: [
-        BrowserModule,
-        LeafletModule.forRoot(),
-        LeafletDrawModule.forRoot(),
-        FormsModule,
-        ReactiveFormsModule,
-        MatDividerModule,
-        MatToolbarModule,
-        MatButtonModule,
-        MatIconModule,
-        MatSidenavModule,
-        MatCardModule,
-        MatExpansionModule,
-        BrowserAnimationsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatDatepickerModule,
-        MatMomentDateModule,
-        HttpClientModule,
-        HttpClientInMemoryWebApiModule.forRoot(PositionsDataService, { dataEncapsulation: false })
-    ],
-    providers: [
-        {provide: MAT_DATE_LOCALE, useValue: 'it-IT'},
-    ],
-    bootstrap: [AppComponent]
+  declarations: [
+    AppComponent,
+    MapComponent,
+    CustomerbuyComponent
+  ],
+  imports: [
+    BrowserModule,
+    LeafletModule.forRoot(),
+    LeafletDrawModule.forRoot(),
+    FormsModule,
+    ReactiveFormsModule,
+    MatDividerModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
+    MatSidenavModule,
+    MatCardModule,
+    MatExpansionModule,
+    BrowserAnimationsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatMomentDateModule,
+    HttpClientModule,
+    HttpClientInMemoryWebApiModule.forRoot(PositionsDataService, {dataEncapsulation: false})
+  ],
+  providers: [
+    {provide: MAT_DATE_LOCALE, useValue: 'it-IT'},
+    //{provide: HTTP_INTERCEPTORS, useClass: RequestInterceptor, multi: true}, PositionsService
+  ],
+  bootstrap: [AppComponent]
 })
 export class AppModule {
 }

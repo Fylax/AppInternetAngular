@@ -1,15 +1,12 @@
-
 <mat-card id="map-inner-input"
           (click)="$event.stopPropagation();"
           (pointerdown)="$event.stopPropagation();"
           (mousedown)="$event.stopPropagation();"
           (dblclick)="$event.stopPropagation();"
           (wheel)="$event.stopPropagation();">
-    <button id='buy'
-            (click)="confirmationClick($event)">{{count}}</button>
     <mat-card-content>
         <form name="start">
-            <mat-form-field >
+            <mat-form-field>
                 <input
                         matInput
                         [matDatepicker]="startpicker"
@@ -105,7 +102,16 @@
         </form>
     </mat-card-content>
 </mat-card>
-<button mat-button id="confirmation-button" (click)="confirmationClick()">CONFERMA</button>
+
+<button
+        mat-raised-button
+        (click)="countClick();$event.stopPropagation();"
+        (pointerdown)="$event.stopPropagation();"
+        (mousedown)="$event.stopPropagation();"
+        (dblclick)="$event.stopPropagation();"
+        (wheel)="$event.stopPropagation();"
+        color="primary"
+        id="confirmation-button" >CONFERMA</button>
 
 <div leafletDraw
      [leafletDrawOptions]="drawOptions"></div>

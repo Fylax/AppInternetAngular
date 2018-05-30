@@ -15,8 +15,8 @@ export class CustomerRequest {
   toJSON() {
     return {
       area: JSON.stringify(this.area),
-      start: Math.trunc(this.start.getUTCMilliseconds() / 1000),
-      end: Math.trunc(this.end.getUTCMilliseconds() / 1000)
+      start: Math.trunc(this.start.getTime() / 1000),
+      end: Math.trunc(this.end.getTime() / 1000)
     };
   }
 }
