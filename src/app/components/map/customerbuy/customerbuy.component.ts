@@ -245,7 +245,11 @@ export class CustomerbuyComponent implements OnInit, AfterViewInit {
   getPositions(): void {
     this.positionsService.getPositions(this.data)
         .subscribe(count => {
-          // TODO creare marker/circle su this.data.center con count come testo
+            L.circle(this.data.center, 130, {
+                color: '#3F51B5',
+                fillOpacity: 45,
+                opacity: 0.4
+            }).addTo(this.leafletDirective.getMap());
         });
   }
 
