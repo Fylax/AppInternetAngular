@@ -1,9 +1,9 @@
 import {Polygon} from 'geojson';
-import {LatLng} from "leaflet";
+import {Polygon as polygonLeaflet} from 'leaflet';
 
 export class CustomerRequest {
   area: Polygon;
-  center: LatLng;
+  polygon: polygonLeaflet;
   start: Date;
   end: Date;
 

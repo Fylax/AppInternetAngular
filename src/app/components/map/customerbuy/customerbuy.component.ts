@@ -107,7 +107,7 @@ export class CustomerbuyComponent implements OnInit, AfterViewInit {
           }
           const area = (e.layer as L.Polygon);
           this.data.area = area.toGeoJSON().geometry as Polygon;
-          this.data.center = area.getBounds().getCenter();
+          this.data.polygon = area;
           const controls = document.getElementsByClassName('leaflet-draw-toolbar');
           (controls[0] as HTMLDivElement).style.display = 'none';
           (controls[1] as HTMLDivElement).style.display = 'block';
@@ -118,7 +118,8 @@ export class CustomerbuyComponent implements OnInit, AfterViewInit {
           const controls = document.getElementsByClassName('leaflet-draw-toolbar');
           (controls[0] as HTMLDivElement).style.display = 'block';
           (controls[1] as HTMLDivElement).style.display = 'none';
-          this.data.center = null;
+          this.data.polygon.closeTooltip();
+          this.data.polygon = null;
           this.data.area = null;
           this.polygonCreated = false;
           this.checkConfirmationReady();
@@ -126,7 +127,7 @@ export class CustomerbuyComponent implements OnInit, AfterViewInit {
         .on(L.Draw.Event.EDITED, (e: L.DrawEvents.Edited) => {
           const area = (e.layers.getLayers()[0] as L.Polygon);
           this.data.area = area.toGeoJSON().geometry as Polygon;
-          this.data.center = area.getBounds().getCenter();
+          this.data.polygon = area;
           this.checkConfirmationReady();
         });
   }
@@ -245,11 +246,12 @@ export class CustomerbuyComponent implements OnInit, AfterViewInit {
   getPositions(): void {
     this.positionsService.getPositions(this.data)
         .subscribe(count => {
-            L.circle(this.data.center, 130, {
-                color: '#3F51B5',
-                fillOpacity: 45,
-                opacity: 0.4
-            }).addTo(this.leafletDirective.getMap());
+            this.data.polygon.bindTooltip(count.toString(), {
+              className: 'count-tooltip',
+              permanent: true,
+              direction: 'center',
+              interactive: false
+            }).openTooltip().addTo(this.leafletDirective.getMap());
         });
   }
 
