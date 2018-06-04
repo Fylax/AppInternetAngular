@@ -11,8 +11,9 @@ import {ShareMapInfoService} from '../../services/share-map-info.service';
   styleUrls: ['./map.component.css']
 })
 export class MapComponent {
-  @Input() customer: boolean;
-  @Input() buy: boolean;
+  // @Input() customer: boolean;
+  // @Input() buy: boolean;
+  // must be replaced with a router-gard
 
   startDateSet = false;
   endDateSet = false;

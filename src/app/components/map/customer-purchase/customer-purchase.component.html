@@ -1,0 +1,16 @@
+<button
+        mat-raised-button
+        (pointerdown)="$event.stopPropagation();"
+        (mousedown)="$event.stopPropagation();"
+        (dblclick)="$event.stopPropagation();"
+        (wheel)="$event.stopPropagation();"
+        color="primary"
+        id="buy-button">ACQUISTA</button>
+<button
+        mat-raised-button
+        (click)="cancel(); $event.stopPropagation();"
+        (pointerdown)="$event.stopPropagation();"
+        (mousedown)="$event.stopPropagation();"
+        (dblclick)="$event.stopPropagation();"
+        (wheel)="$event.stopPropagation();"
+        id="cancel-button">ANNULLA</button>

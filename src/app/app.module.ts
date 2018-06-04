@@ -24,12 +24,15 @@ import {MatMomentDateModule} from '@angular/material-moment-adapter';
 import {HttpClientModule} from '@angular/common/http';
 import {HttpClientInMemoryWebApiModule} from 'angular-in-memory-web-api';
 import {PositionsDataService} from './services/in-memory/positions-data.service';
+import { AppRoutingModule } from './app-routing/app-routing.module';
+import { CustomerPurchaseComponent } from './components/map/customer-purchase/customer-purchase.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MapComponent,
-    CustomerbuyComponent
+    CustomerbuyComponent,
+    CustomerPurchaseComponent
   ],
   imports: [
     BrowserModule,
@@ -50,7 +53,8 @@ import {PositionsDataService} from './services/in-memory/positions-data.service'
     MatDatepickerModule,
     MatMomentDateModule,
     HttpClientModule,
-    HttpClientInMemoryWebApiModule.forRoot(PositionsDataService, {dataEncapsulation: false})
+    HttpClientInMemoryWebApiModule.forRoot(PositionsDataService, {dataEncapsulation: false}),
+    AppRoutingModule
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'it-IT'},

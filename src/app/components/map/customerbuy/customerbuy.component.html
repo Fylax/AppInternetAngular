@@ -1,11 +1,11 @@
 <button
         mat-raised-button
-        (click)="countClick();$event.stopPropagation();"
         (pointerdown)="$event.stopPropagation();"
         (mousedown)="$event.stopPropagation();"
         (dblclick)="$event.stopPropagation();"
         (wheel)="$event.stopPropagation();"
         color="primary"
+        routerLink="confirmation"
         id="confirmation-button">CONFERMA</button>
 
 <div leafletDraw

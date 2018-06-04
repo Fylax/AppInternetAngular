@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import {Polygon} from 'leaflet';
-import {Polygon as GeoJsonPolygon} from 'geojson';
 import {Subject} from 'rxjs';
+import {CustomerRequest} from '../components/map/customerbuy/CustomerRequest';
+
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +10,7 @@ export class ShareMapInfoService {
 
   startDate: Date;
   endDate: Date;
-  polygon: Polygon;
-  area: GeoJsonPolygon;
+  customerRequest: CustomerRequest;
   private dateReadySource = new Subject<boolean>();
   dateReady$ = this.dateReadySource.asObservable();
 
@@ -23,14 +22,18 @@ export class ShareMapInfoService {
   }
 
   setStartDate(date: Date): void {
-    this.startDate.setDate(date.getDate());
+    this.startDate.setTime(date.getTime());
   }
 
   setEndDate(date: Date): void {
-    this.endDate.setDate(date.getDate());
+    this.endDate.setTime(date.getTime());
   }
 
   setDateReady(flag: boolean): void {
     this.dateReadySource.next(flag);
+  }
+
+  setCustomerRequest(cr: CustomerRequest): void {
+    this.customerRequest = cr;
   }
 }

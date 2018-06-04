@@ -9,7 +9,7 @@ import {Moment} from 'moment';
 import {Position} from '../../../module/Position';
 import {PositionsService} from '../../../services/positions.service';
 import {of, Subscription} from 'rxjs';
-import {DomUtil} from "leaflet";
+import {DomUtil, FeatureGroup} from 'leaflet';
 import getPosition = DomUtil.getPosition;
 import {ShareMapInfoService} from '../../../services/share-map-info.service';
 
@@ -22,9 +22,13 @@ export class CustomerbuyComponent implements OnInit, AfterViewInit, OnDestroy {
   polygonCreated = false;
   dateReady = false;
   subscription: Subscription;
+  editableLayers = new L.FeatureGroup();
 
   leafletDirective: LeafletDirectiveWrapper;
   drawOptions = {
+    edit: {
+      featureGroup: this.editableLayers
+    },
     position: 'topright',
     draw: {
       marker: false,
@@ -38,7 +42,7 @@ export class CustomerbuyComponent implements OnInit, AfterViewInit, OnDestroy {
           color: 'red', // Color the shape will turn when intersects
           message: '<strong>Attenzione<strong> i poligoni non possono autointersecarsi' // Message that will show when intersect
         },
-      }
+      },
     }
   };
 
@@ -47,8 +51,15 @@ export class CustomerbuyComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(private shareInfoService: ShareMapInfoService,
               private positionsService: PositionsService,
               leafletDirective: LeafletDirective) {
+    if (this.shareInfoService.customerRequest != null) {
+      this.dateReady = true;
+      this.data = this.shareInfoService.customerRequest;
+      this.polygonCreated = true;
+      this.editableLayers.addLayer(this.shareInfoService.customerRequest.polygon);
+    } else {
+      this.data = new CustomerRequest();
+    }
     this.leafletDirective = new LeafletDirectiveWrapper(leafletDirective);
-    this.data = new CustomerRequest();
     this.subscription = this.shareInfoService.dateReady$.subscribe(
         flag => {
           this.dateReady = flag;
@@ -59,6 +70,7 @@ export class CustomerbuyComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     this.leafletDirective.init();
+    this.leafletDirective.getMap().addLayer(this.editableLayers);
     this.leafletDirective.getMap()
         .on(L.Draw.Event.CREATED, (e: L.DrawEvents.Created) => {
           if (e.type !== 'draw:created' && e.layerType !== 'polygon') {
@@ -77,7 +89,6 @@ export class CustomerbuyComponent implements OnInit, AfterViewInit, OnDestroy {
           const controls = document.getElementsByClassName('leaflet-draw-toolbar');
           (controls[0] as HTMLDivElement).style.display = 'block';
           (controls[1] as HTMLDivElement).style.display = 'none';
-          this.data.polygon.closeTooltip();
           this.data.polygon = null;
           this.data.area = null;
           this.polygonCreated = false;
@@ -85,47 +96,38 @@ export class CustomerbuyComponent implements OnInit, AfterViewInit, OnDestroy {
         })
         .on(L.Draw.Event.EDITED, (e: L.DrawEvents.Edited) => {
           const area = (e.layers.getLayers()[0] as L.Polygon);
-          this.data.area = area.toGeoJSON().geometry as Polygon;
-          this.data.polygon = area;
+          if (area !== undefined) {
+            this.data.area = area.toGeoJSON().geometry as Polygon;
+            this.data.polygon = area;
+          }
           this.checkConfirmationReady();
         });
   }
 
   ngAfterViewInit() {
     const controls = document.getElementsByClassName('leaflet-draw-toolbar');
-    (controls[0] as HTMLDivElement).style.display = 'block';
-    (controls[1] as HTMLDivElement).style.display = 'none';
+    if (this.polygonCreated) {
+      (controls[0] as HTMLDivElement).style.display = 'none';
+      (controls[1] as HTMLDivElement).style.display = 'block';
+      document.getElementById('confirmation-button').style.display = 'block';
+    } else {
+      (controls[0] as HTMLDivElement).style.display = 'block';
+      (controls[1] as HTMLDivElement).style.display = 'none';
+    }
   }
-
-
-
-  getPositions(): void {
-    this.positionsService.getPositions(this.data)
-        .subscribe(count => {
-            this.data.polygon.bindTooltip(count.toString(), {
-              className: 'count-tooltip',
-              permanent: true,
-              direction: 'center',
-              interactive: false
-            }).openTooltip().addTo(this.leafletDirective.getMap());
-        });
-  }
-
-  countClick() {
-    this.getPositions();
-  }
-
-
 
   checkConfirmationReady(): void {
     if (this.dateReady && this.polygonCreated) {
+      this.data.start = this.shareInfoService.startDate;
+      this.data.end = this.shareInfoService.endDate;
+      this.shareInfoService.setCustomerRequest(this.data);
       document.getElementById('confirmation-button').style.display = 'block';
     } else {
       document.getElementById('confirmation-button').style.display = 'none';
     }
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.subscription.unsubscribe();
   }
 }
