@@ -22,7 +22,7 @@ export class CustomerPurchaseComponent implements OnInit, OnDestroy {
   }
 
   cancel(): void {
-    this.shareInfoService.customerRequest.polygon.closeTooltip();
+    this.shareInfoService.customerRequest.area.closeTooltip();
     this.location.back();
   }
 
@@ -30,7 +30,7 @@ export class CustomerPurchaseComponent implements OnInit, OnDestroy {
     this.positionsService.getPositionCount(this.shareInfoService.customerRequest)
         .subscribe(count => {
           this.count = count;
-          this.shareInfoService.customerRequest.polygon.bindTooltip(count.toString(), {
+          this.shareInfoService.customerRequest.area.bindTooltip(count.toString(), {
             className: 'count-tooltip',
             permanent: true,
             direction: 'center',
@@ -41,7 +41,7 @@ export class CustomerPurchaseComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     // this.leafletDirective.getMap().removeLayer(this.shareInfoService.customerRequest.polygon);
-    this.shareInfoService.customerRequest.polygon.closeTooltip();
+    this.shareInfoService.customerRequest.area.closeTooltip();
   }
 }
 

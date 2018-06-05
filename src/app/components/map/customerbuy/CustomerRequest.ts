@@ -1,9 +1,7 @@
-import {Polygon} from 'geojson';
-import {Polygon as polygonLeaflet} from 'leaflet';
+import {Polygon} from 'leaflet';
 
 export class CustomerRequest {
   area: Polygon;
-  polygon: polygonLeaflet;
   start: Date;
   end: Date;
 
@@ -14,7 +12,7 @@ export class CustomerRequest {
 
   toJSON() {
     return {
-      area: JSON.stringify(this.area),
+      area: JSON.stringify(this.area.toGeoJSON().geometry),
       start: Math.trunc(this.start.getTime() / 1000),
       end: Math.trunc(this.end.getTime() / 1000)
     };

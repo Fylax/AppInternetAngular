@@ -19,10 +19,10 @@ export class PositionsDataService implements InMemoryDbService {
 
   get(reqInfo: RequestInfo): Observable<Response> {
     return reqInfo.utils.createResponse$(() => {
-          const cr: CustomerRequest = JSON.parse(atob(reqInfo.query.get('request')[0]));
+          const cr = JSON.parse(atob(reqInfo.query.get('request')[0]));
           cr.start = new Date(cr.start);
           cr.end = new Date(cr.end);
-          cr.area = JSON.parse(<any>cr.area);
+          cr.area = JSON.parse(cr.area);
 
           const body = [];
 

@@ -1,16 +1,10 @@
 import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import * as L from 'leaflet';
-import {FormControl, Validators} from '@angular/forms';
 import {LeafletDirective, LeafletDirectiveWrapper} from '@asymmetrik/ngx-leaflet';
-import {Polygon} from 'geojson';
+import {Polygon} from 'leaflet';
 import {CustomerRequest} from './CustomerRequest';
-import {MatDatepickerInputEvent} from '@angular/material';
-import {Moment} from 'moment';
-import {Position} from '../../../module/Position';
 import {PositionsService} from '../../../services/positions.service';
-import {of, Subscription} from 'rxjs';
-import {DomUtil, FeatureGroup} from 'leaflet';
-import getPosition = DomUtil.getPosition;
+import {Subscription} from 'rxjs';
 import {ShareMapInfoService} from '../../../services/share-map-info.service';
 
 @Component({
@@ -19,7 +13,6 @@ import {ShareMapInfoService} from '../../../services/share-map-info.service';
   styleUrls: ['./customerbuy.component.css']
 })
 export class CustomerbuyComponent implements OnInit, AfterViewInit, OnDestroy {
-  polygonCreated = false;
   dateReady = false;
   subscription: Subscription;
   editableLayers = new L.FeatureGroup();
@@ -54,8 +47,7 @@ export class CustomerbuyComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.shareInfoService.customerRequest != null) {
       this.dateReady = true;
       this.data = this.shareInfoService.customerRequest;
-      this.polygonCreated = true;
-      this.editableLayers.addLayer(this.shareInfoService.customerRequest.polygon);
+      this.editableLayers.addLayer(this.shareInfoService.customerRequest.area);
     } else {
       this.data = new CustomerRequest();
     }
@@ -76,40 +68,31 @@ export class CustomerbuyComponent implements OnInit, AfterViewInit, OnDestroy {
           if (e.type !== 'draw:created' && e.layerType !== 'polygon') {
             return;
           }
-          const area = (e.layer as L.Polygon);
-          this.data.area = area.toGeoJSON().geometry as Polygon;
-          this.data.polygon = area;
+          this.data.area = (e.layer as L.Polygon);
           const controls = document.getElementsByClassName('leaflet-draw-toolbar');
           (controls[0] as HTMLDivElement).style.display = 'none';
           (controls[1] as HTMLDivElement).style.display = 'block';
-          this.polygonCreated = true;
           this.checkConfirmationReady();
         })
         .on(L.Draw.Event.DELETED, () => {
           const controls = document.getElementsByClassName('leaflet-draw-toolbar');
           (controls[0] as HTMLDivElement).style.display = 'block';
           (controls[1] as HTMLDivElement).style.display = 'none';
-          this.data.polygon = null;
-          this.data.area = null;
-          this.polygonCreated = false;
+          delete this.data.area;
           this.checkConfirmationReady();
         })
         .on(L.Draw.Event.EDITSTART, () => {
           document.getElementById('confirmation-button').style.display = 'none';
         })
         .on(L.Draw.Event.EDITED, (e: L.DrawEvents.Edited) => {
-          const area = (e.layers.getLayers()[0] as L.Polygon);
-          if (area !== undefined) {
-            this.data.area = area.toGeoJSON().geometry as Polygon;
-            this.data.polygon = area;
-          }
+          this.data.area = (e.layers.getLayers()[0] as L.Polygon);
           this.checkConfirmationReady();
         });
   }
 
   ngAfterViewInit() {
     const controls = document.getElementsByClassName('leaflet-draw-toolbar');
-    if (this.polygonCreated) {
+    if (this.data.area !== undefined) {
       (controls[0] as HTMLDivElement).style.display = 'none';
       (controls[1] as HTMLDivElement).style.display = 'block';
       document.getElementById('confirmation-button').style.display = 'block';
@@ -120,7 +103,7 @@ export class CustomerbuyComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   checkConfirmationReady(): void {
-    if (this.dateReady && this.polygonCreated) {
+    if (this.dateReady && this.data.area !== undefined) {
       this.data.start = this.shareInfoService.startDate;
       this.data.end = this.shareInfoService.endDate;
       this.shareInfoService.setCustomerRequest(this.data);
