@@ -94,6 +94,9 @@ export class CustomerbuyComponent implements OnInit, AfterViewInit, OnDestroy {
           this.polygonCreated = false;
           this.checkConfirmationReady();
         })
+        .on(L.Draw.Event.EDITSTART, () => {
+          document.getElementById('confirmation-button').style.display = 'none';
+        })
         .on(L.Draw.Event.EDITED, (e: L.DrawEvents.Edited) => {
           const area = (e.layers.getLayers()[0] as L.Polygon);
           if (area !== undefined) {
@@ -131,17 +134,3 @@ export class CustomerbuyComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 }
-
-/*
-putMarker(point: Point){
-        L.marker([45.06599, 7.661570], {
-          icon: icon({
-              iconSize: [45, 51],
-              iconAnchor: [33, 61],
-              iconUrl: 'assets/meMedesimoCorrado.png'
-              //shadowUrl: 'assets/meMedesimoCorrado.png'
-          })
-      }).addTo(this.leafletDirective.getMap());
-      }
-*/
-

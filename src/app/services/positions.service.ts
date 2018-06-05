@@ -24,9 +24,9 @@ export class PositionsService {
    **/
 
   // in assenza di comunicazione col server, faccio un fittizia get su tutte le positions e filtro dopo...
-  getPositions(cr: CustomerRequest): Observable<Position[]> {
+  getPositionCount(cr: CustomerRequest): Observable<number> {
 
-    return this.http.get<Position[]>(this.positionsUrl, {
+    return this.http.get<number>(this.positionsUrl, {
       headers: new HttpHeaders({'Accept': 'application/json'}),
       params: new HttpParams().set('request', btoa(JSON.stringify(cr)))
     });

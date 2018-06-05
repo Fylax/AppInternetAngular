@@ -11,7 +11,7 @@ const routes: Routes = [
     {path: 'confirmation', component: CustomerPurchaseComponent}
   ]},
   {path: '', redirectTo: 'positions', pathMatch: 'full'}
-]
+];
 
 
 @NgModule({

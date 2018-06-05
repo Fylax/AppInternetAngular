@@ -12,6 +12,7 @@ import {LeafletDirective, LeafletDirectiveWrapper} from '@asymmetrik/ngx-leaflet
 export class CustomerPurchaseComponent implements OnInit, OnDestroy {
 
   leafletDirective: LeafletDirectiveWrapper;
+  count: number;
 
   constructor(private shareInfoService: ShareMapInfoService,
               private positionsService: PositionsService,
@@ -26,8 +27,9 @@ export class CustomerPurchaseComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.positionsService.getPositions(this.shareInfoService.customerRequest)
+    this.positionsService.getPositionCount(this.shareInfoService.customerRequest)
         .subscribe(count => {
+          this.count = count;
           this.shareInfoService.customerRequest.polygon.bindTooltip(count.toString(), {
             className: 'count-tooltip',
             permanent: true,

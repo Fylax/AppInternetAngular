@@ -24,8 +24,9 @@ import {MatMomentDateModule} from '@angular/material-moment-adapter';
 import {HttpClientModule} from '@angular/common/http';
 import {HttpClientInMemoryWebApiModule} from 'angular-in-memory-web-api';
 import {PositionsDataService} from './services/in-memory/positions-data.service';
-import { AppRoutingModule } from './app-routing/app-routing.module';
-import { CustomerPurchaseComponent } from './components/map/customer-purchase/customer-purchase.component';
+import {AppRoutingModule} from './app-routing/app-routing.module';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {CustomerPurchaseComponent} from './components/map/customer-purchase/customer-purchase.component';
 
 @NgModule({
   declarations: [
@@ -54,11 +55,11 @@ import { CustomerPurchaseComponent } from './components/map/customer-purchase/cu
     MatMomentDateModule,
     HttpClientModule,
     HttpClientInMemoryWebApiModule.forRoot(PositionsDataService, {dataEncapsulation: false}),
-    AppRoutingModule
+    AppRoutingModule,
+    MatProgressSpinnerModule
   ],
   providers: [
-    {provide: MAT_DATE_LOCALE, useValue: 'it-IT'},
-    //{provide: HTTP_INTERCEPTORS, useClass: RequestInterceptor, multi: true}, PositionsService
+    {provide: MAT_DATE_LOCALE, useValue: 'it-IT'}
   ],
   bootstrap: [AppComponent]
 })

@@ -1,4 +1,14 @@
+<div *ngIf="count===undefined"
+        class="fullscreen-spinner-container"
+        (click)="cancel(); $event.stopPropagation();"
+        (pointerdown)="$event.stopPropagation();"
+        (mousedown)="$event.stopPropagation();"
+        (dblclick)="$event.stopPropagation();"
+        (wheel)="$event.stopPropagation();">
+    <mat-spinner class="fullscreen-spinner"></mat-spinner>
+</div>
 <button
+        *ngIf="count!==0"
         mat-raised-button
         (pointerdown)="$event.stopPropagation();"
         (mousedown)="$event.stopPropagation();"
@@ -8,9 +18,11 @@
         id="buy-button">ACQUISTA</button>
 <button
         mat-raised-button
+        [ngClass]="{'full-cancel': count===0}"
         (click)="cancel(); $event.stopPropagation();"
         (pointerdown)="$event.stopPropagation();"
         (mousedown)="$event.stopPropagation();"
         (dblclick)="$event.stopPropagation();"
         (wheel)="$event.stopPropagation();"
+        color="warn"
         id="cancel-button">ANNULLA</button>
