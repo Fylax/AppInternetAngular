@@ -13,7 +13,7 @@ import {DatesService} from "../../../services/dates.service";
   styleUrls: ['./customerbuy.component.css']
 })
 export class CustomerbuyComponent implements OnInit, AfterViewInit, OnDestroy {
-  dateReady = false;
+
   subscription: Subscription;
   editableLayers = new L.FeatureGroup();
 
@@ -39,27 +39,15 @@ export class CustomerbuyComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   };
 
-  data: CustomerRequest;
-
   constructor(private shareInfoService: ShareMapInfoService,
               private positionsService: PositionsService,
               datesService: DatesService,
               leafletDirective: LeafletDirective) {
     datesService.enableDates();
-    if (this.shareInfoService.customerRequest != null) {
-      this.dateReady = true;
-      this.data = this.shareInfoService.customerRequest;
-      this.editableLayers.addLayer(this.shareInfoService.customerRequest.area);
-    } else {
-      this.data = new CustomerRequest();
-    }
     this.leafletDirective = new LeafletDirectiveWrapper(leafletDirective);
-    this.subscription = this.shareInfoService.dateReady$.subscribe(
-        flag => {
-          this.dateReady = flag;
-          this.checkConfirmationReady();
-        }
-    );
+    if (this.shareInfoService.polygon !== undefined) {
+      this.editableLayers.addLayer(this.shareInfoService.polygon);
+    }
   }
 
   ngOnInit() {
@@ -70,48 +58,42 @@ export class CustomerbuyComponent implements OnInit, AfterViewInit, OnDestroy {
           if (e.type !== 'draw:created' && e.layerType !== 'polygon') {
             return;
           }
-          this.data.area = (e.layer as L.Polygon);
+          this.shareInfoService.polygon = (e.layer as L.Polygon);
           const controls = document.getElementsByClassName('leaflet-draw-toolbar');
           (controls[0] as HTMLDivElement).style.display = 'none';
           (controls[1] as HTMLDivElement).style.display = 'block';
-          this.checkConfirmationReady();
         })
-        .on(L.Draw.Event.DELETED, () => {
-          const controls = document.getElementsByClassName('leaflet-draw-toolbar');
-          (controls[0] as HTMLDivElement).style.display = 'block';
-          (controls[1] as HTMLDivElement).style.display = 'none';
-          delete this.data.area;
-          this.checkConfirmationReady();
-        })
-        .on(L.Draw.Event.EDITSTART, () => {
-          document.getElementById('confirmation-button').style.display = 'none';
+        .on(L.Draw.Event.DELETED, (e: L.DrawEvents.Deleted) => {
+          if (e.layers.getLayers().length !== 0) {
+            const controls = document.getElementsByClassName('leaflet-draw-toolbar');
+            (controls[0] as HTMLDivElement).style.display = 'block';
+            (controls[1] as HTMLDivElement).style.display = 'none';
+            this.shareInfoService.polygon = null;
+          }
         })
         .on(L.Draw.Event.EDITED, (e: L.DrawEvents.Edited) => {
-          this.data.area = (e.layers.getLayers()[0] as L.Polygon);
-          this.checkConfirmationReady();
+          const poly = (e.layers.getLayers()[0] as L.Polygon);
+          if (poly !== undefined) {
+            this.shareInfoService.polygon = poly;
+          }
         });
   }
 
   ngAfterViewInit() {
     const controls = document.getElementsByClassName('leaflet-draw-toolbar');
-    if (this.data.area !== undefined) {
+    this.subscription = this.shareInfoService.dateReady.subscribe(ready => {
+      if (ready) {
+        document.getElementById('confirmation-button').style.display = 'block';
+      } else {
+        document.getElementById('confirmation-button').style.display = 'none';
+      }
+    });
+    if (this.shareInfoService.polygon !== undefined) {
       (controls[0] as HTMLDivElement).style.display = 'none';
       (controls[1] as HTMLDivElement).style.display = 'block';
-      document.getElementById('confirmation-button').style.display = 'block';
     } else {
       (controls[0] as HTMLDivElement).style.display = 'block';
       (controls[1] as HTMLDivElement).style.display = 'none';
-    }
-  }
-
-  checkConfirmationReady(): void {
-    if (this.dateReady && this.data.area !== undefined) {
-      this.data.start = this.shareInfoService.startDate;
-      this.data.end = this.shareInfoService.endDate;
-      this.shareInfoService.setCustomerRequest(this.data);
-      document.getElementById('confirmation-button').style.display = 'block';
-    } else {
-      document.getElementById('confirmation-button').style.display = 'none';
     }
   }
 

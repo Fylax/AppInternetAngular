@@ -14,12 +14,6 @@ export class DatesComponent {
 
   disabled = false;
 
-  startDateSet = false;
-  endDateSet = false;
-
-  startDate: Date;
-  endDate: Date;
-
   shour = new FormControl('', {
     updateOn: 'blur',
     validators: [
@@ -54,8 +48,6 @@ export class DatesComponent {
   });
 
   constructor(private shareInfoService: ShareMapInfoService, datesService: DatesService) {
-    this.startDate = new Date(0);
-    this.endDate = new Date();
     datesService.datesStatus.subscribe(event => {
       this.disabled = event;
       if (this.disabled) {
@@ -73,66 +65,50 @@ export class DatesComponent {
   }
 
   setDate(type: string, event: MatDatepickerInputEvent<Moment>) {
-    let date: Date;
+    const newDate = event.value;
     switch (type) {
       case 'start':
-        date = this.startDate;
-        this.startDateSet = true;
+        this.shareInfoService.startDate = newDate;
         break;
       case 'end':
-        date = this.endDate;
-        this.endDateSet = true;
+        this.shareInfoService.endDate = newDate;
     }
-    const newDate = event.value;
-    date.setFullYear(newDate.year(), newDate.month(), newDate.date());
     this.setFormControlValidator(type);
-    this.checkDateReady();
   }
 
   setHour(type: string, event: FocusEvent) {
     const val = (event.currentTarget as HTMLInputElement).value;
-    if (val.length === 0) {
-      return;
-    }
     const value = parseInt(val, 10);
-    if (value >= 0 && value <= 23) {
-      let date: Date;
+    if (isNaN(value) || (value >= 0 && value <= 23)) {
       switch (type) {
         case 'start':
-          date = this.startDate;
+          this.shareInfoService.startHours = value;
           break;
         case 'end':
-          date = this.endDate;
+          this.shareInfoService.endHours = value;
       }
-      date.setHours(value);
     }
     this.setFormControlValidator(type);
-    this.checkDateReady();
   }
 
   setMinutes(type: string, event: FocusEvent) {
     const val = (event.currentTarget as HTMLInputElement).value;
-    if (val.length === 0) {
-      return;
-    }
     const value = parseInt(val, 10);
-    if (value >= 0 && value <= 59) {
-      let date: Date;
+    if (isNaN(value) || (value >= 0 && value <= 59)) {
       switch (type) {
         case 'start':
-          date = this.startDate;
+          this.shareInfoService.startMinutes = value;
           break;
         case 'end':
-          date = this.endDate;
+          this.shareInfoService.endMinutes = value;
       }
-      date.setMinutes(value);
     }
     this.setFormControlValidator(type);
-    this.checkDateReady();
   }
 
   setFormControlValidator(type: string): void {
-    if (this.startDate.getDate() === this.endDate.getDate() && this.shour.value >= this.ehour.value) {
+    if (this.shareInfoService.customerRequest.start.getDate() ===
+        this.shareInfoService.customerRequest.end.getDate() && this.shour.value >= this.ehour.value) {
       this.shour.setValidators([Validators.required, Validators.max(this.ehour.value), Validators.min(0)]);
       this.ehour.setValidators([Validators.required, Validators.min(this.shour.value), Validators.max(23)]);
       if (this.shour.value === this.ehour.value && this.sminutes.value >= this.eminutes.value) {
@@ -185,27 +161,12 @@ export class DatesComponent {
   }
 
   filterStartDate = (d: Moment): boolean => {
-    return d.toDate() <= this.endDate;
+    return d.toDate() <= this.shareInfoService.customerRequest.end;
   }
 
   filterEndDate = (d: Moment): boolean => {
-    const newDate = new Date(this.startDate);
-    newDate.setDate(this.startDate.getDate() - 1);
+    const newDate = new Date(this.shareInfoService.customerRequest.start);
+    newDate.setDate(this.shareInfoService.customerRequest.start.getDate() - 1);
     return d.toDate() >= newDate && d.toDate() <= new Date();
-  }
-
-  checkDateReady(): void {
-    if (this.shour.valid &&
-        this.sminutes.valid &&
-        this.ehour.valid &&
-        this.eminutes.valid &&
-        this.startDateSet &&
-        this.endDateSet) {
-      this.shareInfoService.setStartDate(this.startDate);
-      this.shareInfoService.setEndDate(this.endDate);
-      this.shareInfoService.setDateReady(true);
-    } else {
-      this.shareInfoService.setDateReady(false);
-    }
   }
 }
