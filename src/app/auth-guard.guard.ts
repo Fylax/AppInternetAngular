@@ -12,7 +12,7 @@ export class AuthGuardGuard implements CanActivate {
   canActivate(
       next: ActivatedRouteSnapshot,
       state: RouterStateSnapshot): boolean {
-    if (this.customer.customerRequest === null || this.customer.customerRequest.area === undefined) {
+    if (this.customer.customerRequest === null || this.customer.customerRequest === undefined) {
       this.router.navigate(['/positions']);
     }
     return true;
