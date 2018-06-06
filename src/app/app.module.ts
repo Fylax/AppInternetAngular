@@ -2,9 +2,12 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 
 import {AppComponent} from './app.component';
-
+import {SpinnerComponent} from "./components/spinner/spinner.component";
 import {MapComponent} from "./components/map/map.component";
+import {DatesComponent} from "./components/map/dates/dates.component";
 import {CustomerbuyComponent} from "./components/map/customerbuy/customerbuy.component";
+import {CustomerPurchaseComponent} from './components/map/customer-purchase/customer-purchase.component';
+
 import {LeafletModule} from '@asymmetrik/ngx-leaflet';
 import {LeafletDrawModule} from '@asymmetrik/ngx-leaflet-draw';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -26,14 +29,15 @@ import {HttpClientInMemoryWebApiModule} from 'angular-in-memory-web-api';
 import {PositionsDataService} from './services/in-memory/positions-data.service';
 import {AppRoutingModule} from './app-routing/app-routing.module';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {CustomerPurchaseComponent} from './components/map/customer-purchase/customer-purchase.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MapComponent,
+    DatesComponent,
     CustomerbuyComponent,
-    CustomerPurchaseComponent
+    CustomerPurchaseComponent,
+    SpinnerComponent
   ],
   imports: [
     BrowserModule,

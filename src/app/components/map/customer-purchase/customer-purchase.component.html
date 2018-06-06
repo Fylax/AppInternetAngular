@@ -1,12 +1,3 @@
-<div *ngIf="count===undefined"
-        class="fullscreen-spinner-container"
-        (click)="cancel(); $event.stopPropagation();"
-        (pointerdown)="$event.stopPropagation();"
-        (mousedown)="$event.stopPropagation();"
-        (dblclick)="$event.stopPropagation();"
-        (wheel)="$event.stopPropagation();">
-    <mat-spinner class="fullscreen-spinner"></mat-spinner>
-</div>
 <button
         *ngIf="count!==0"
         mat-raised-button

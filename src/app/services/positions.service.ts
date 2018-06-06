@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {Position} from '../module/Position';
 import {CustomerRequest} from "../components/map/customerbuy/CustomerRequest";
 
 @Injectable({

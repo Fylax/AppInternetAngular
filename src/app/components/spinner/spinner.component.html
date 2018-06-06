@@ -1,0 +1,9 @@
+<div *ngIf="visible"
+     class="fullscreen-spinner-container"
+     (click)="cancel(); $event.stopPropagation();"
+     (pointerdown)="$event.stopPropagation();"
+     (mousedown)="$event.stopPropagation();"
+     (dblclick)="$event.stopPropagation();"
+     (wheel)="$event.stopPropagation();">
+    <mat-spinner class="fullscreen-spinner"></mat-spinner>
+</div>

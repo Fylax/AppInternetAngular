@@ -1,0 +1,37 @@
+#dates-container {
+    display: flex;
+    flex-direction: row;
+}
+
+form:last-child {
+    margin-left: auto;
+}
+
+.enabled {
+    color: rgba(0, 0, 0, .87);
+}
+
+.disabled {
+    color: rgba(0,0,0,.38);
+}
+
+.time-input {
+    width: 60px;
+}
+
+.no-spin:not(:focus) {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none !important;
+    -moz-appearance: textfield!important;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+.hour-input {
+    text-align: right;
+    margin-left: 14px;
+}
+
+.vdivider {
+    width: 1px !important;
+    margin-left: auto !important;
+}

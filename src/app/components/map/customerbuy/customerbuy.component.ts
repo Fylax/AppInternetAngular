@@ -1,11 +1,11 @@
-import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import * as L from 'leaflet';
 import {LeafletDirective, LeafletDirectiveWrapper} from '@asymmetrik/ngx-leaflet';
-import {Polygon} from 'leaflet';
 import {CustomerRequest} from './CustomerRequest';
 import {PositionsService} from '../../../services/positions.service';
 import {Subscription} from 'rxjs';
 import {ShareMapInfoService} from '../../../services/share-map-info.service';
+import {DatesService} from "../../../services/dates.service";
 
 @Component({
   selector: 'buy',
@@ -43,7 +43,9 @@ export class CustomerbuyComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(private shareInfoService: ShareMapInfoService,
               private positionsService: PositionsService,
+              datesService: DatesService,
               leafletDirective: LeafletDirective) {
+    datesService.enableDates();
     if (this.shareInfoService.customerRequest != null) {
       this.dateReady = true;
       this.data = this.shareInfoService.customerRequest;

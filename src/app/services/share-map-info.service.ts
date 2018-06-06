@@ -1,7 +1,6 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 import {CustomerRequest} from '../components/map/customerbuy/CustomerRequest';
-
 
 @Injectable({
   providedIn: 'root'
