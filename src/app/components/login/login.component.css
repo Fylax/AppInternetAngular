@@ -15,3 +15,13 @@ div {
 .full-width {
     width: 100%;
 }
+
+.button {
+    margin-top: 12px;
+}
+
+p {
+    color: red;
+    font-size: medium;
+    text-align: center;
+}

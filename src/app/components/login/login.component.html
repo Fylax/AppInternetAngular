@@ -1,16 +1,29 @@
 <div>
     <mat-card class="card">
         <mat-card-content>
+            <p *ngIf="!valid">Credenziali inserite non valide</p>
             <form class="full-form">
                 <mat-form-field class="full-width">
-                    <input matInput placeholder="Username"/>
+                    <input matInput [formControl]="username" placeholder="Username" autocomplete="username"/>
+                    <mat-error
+                            *ngIf="username.hasError('required')">
+                        Username <strong>obbligatorio</strong>!
+                    </mat-error>
+                    <mat-error
+                            *ngIf="!username.hasError('required') && username.hasError('email')">
+                        Email <strong>invalida</strong>!
+                    </mat-error>
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                    <input matInput placeholder="Password" type="password"/>
+                    <input matInput [formControl]="password" placeholder="Password" type="password" autocomplete="current-password"/>
+                    <mat-error
+                            *ngIf="password.hasError('required')">
+                        Password <strong>obbligatoria</strong>!
+                    </mat-error>
                 </mat-form-field>
             </form>
-            <button mat-raised-button class="full-width" color="primary">Accedi</button>
+            <button mat-raised-button class="button full-width" color="primary">Accedi</button>
         </mat-card-content>
     </mat-card>
 </div>

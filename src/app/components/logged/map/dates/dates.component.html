@@ -18,11 +18,10 @@
                     matInput
                     [formControl]="shour"
                     (blur)="setHour('start', $event)"
-                    class="time-input"
+                    class="time-input no-spin"
                     type="number"
                     min="0" max="23"
-                    placeholder="HH"
-                    class="no-spin"/>
+                    placeholder="HH"/>
             <mat-error
                     *ngIf="(shour.hasError('min') || shour.hasError('max')) && !shour.hasError('required')">
                 Ora
@@ -68,11 +67,10 @@
                     matInput
                     [formControl]="ehour"
                     (blur)="setHour('end', $event)"
-                    class="time-input"
+                    class="time-input no-spin"
                     type="number"
                     min="0" max="23"
-                    placeholder="HH"
-                    class="no-spin"/>
+                    placeholder="HH" />
             <mat-error
                     *ngIf="(ehour.hasError('min') || ehour.hasError('max')) && !ehour.hasError('required')">
                 Ora
