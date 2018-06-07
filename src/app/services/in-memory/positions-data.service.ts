@@ -1,6 +1,6 @@
 import {InMemoryDbService, STATUS, getStatusText} from 'angular-in-memory-web-api';
 import {Point} from 'geojson';
-import {Position} from "../../module/Position";
+import {Position} from "../../model/Position";
 import {Observable} from "rxjs";
 import {ParsedRequestUrl, RequestInfo, RequestInfoUtilities, ResponseOptions} from 'angular-in-memory-web-api';
 import {CustomerRequest} from "../../components/logged/map/customerbuy/CustomerRequest";
