@@ -2,10 +2,10 @@ import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import * as L from 'leaflet';
 import {LeafletDirective, LeafletDirectiveWrapper} from '@asymmetrik/ngx-leaflet';
 import {CustomerRequest} from './CustomerRequest';
-import {PositionsService} from '../../../services/positions.service';
+import {PositionsService} from '../../../../services/positions.service';
 import {Subscription} from 'rxjs';
-import {ShareMapInfoService} from '../../../services/share-map-info.service';
-import {DatesService} from "../../../services/dates.service";
+import {ShareMapInfoService} from '../../../../services/share-map-info.service';
+import {DatesService} from "../../../../services/dates.service";
 
 @Component({
   selector: 'buy',

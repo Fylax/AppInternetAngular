@@ -3,10 +3,10 @@ import {NgModule} from '@angular/core';
 
 import {AppComponent} from './app.component';
 import {SpinnerComponent} from "./components/spinner/spinner.component";
-import {MapComponent} from "./components/map/map.component";
-import {DatesComponent} from "./components/map/dates/dates.component";
-import {CustomerbuyComponent} from "./components/map/customerbuy/customerbuy.component";
-import {CustomerPurchaseComponent} from './components/map/customer-purchase/customer-purchase.component';
+import {MapComponent} from "./components/logged/map/map.component";
+import {DatesComponent} from "./components/logged/map/dates/dates.component";
+import {CustomerbuyComponent} from "./components/logged/map/customerbuy/customerbuy.component";
+import {CustomerPurchaseComponent} from './components/logged/map/customer-purchase/customer-purchase.component';
 
 import {LeafletModule} from '@asymmetrik/ngx-leaflet';
 import {LeafletDrawModule} from '@asymmetrik/ngx-leaflet-draw';
@@ -29,10 +29,14 @@ import {HttpClientInMemoryWebApiModule} from 'angular-in-memory-web-api';
 import {PositionsDataService} from './services/in-memory/positions-data.service';
 import {AppRoutingModule} from './app-routing/app-routing.module';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {LoginComponent} from "./components/login/login.component";
+import {LoggedComponent} from "./components/logged/logged.component";
 
 @NgModule({
   declarations: [
     AppComponent,
+    LoginComponent,
+    LoggedComponent,
     MapComponent,
     DatesComponent,
     CustomerbuyComponent,

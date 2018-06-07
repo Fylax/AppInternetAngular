@@ -1,15 +1,4 @@
 <spinner></spinner>
-<mat-sidenav-container id="sidebar">
-    <mat-sidenav #sidenav mode="over">
-        Sidenav content goes here!
-    </mat-sidenav>
-    <mat-sidenav-content>
-        <mat-toolbar color="primary">
-            <button mat-button (click)="sidenav.toggle()">
-                <mat-icon>menu</mat-icon>
-            </button>
-        </mat-toolbar>
-        <router-outlet></router-outlet>
-    </mat-sidenav-content>
-</mat-sidenav-container>
+<login *ngIf="!logged"></login>
+<logged *ngIf="logged"></logged>
 

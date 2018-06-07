@@ -3,7 +3,7 @@ import {Point} from 'geojson';
 import {Position} from "../../module/Position";
 import {Observable} from "rxjs";
 import {ParsedRequestUrl, RequestInfo, RequestInfoUtilities, ResponseOptions} from 'angular-in-memory-web-api';
-import {CustomerRequest} from "../../components/map/customerbuy/CustomerRequest";
+import {CustomerRequest} from "../../components/logged/map/customerbuy/CustomerRequest";
 
 export class PositionsDataService implements InMemoryDbService {
 

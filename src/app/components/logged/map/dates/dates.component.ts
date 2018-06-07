@@ -1,7 +1,7 @@
 import {Component} from "@angular/core";
 import {MatDatepickerInputEvent} from "@angular/material";
-import {DatesService} from "../../../services/dates.service";
-import {ShareMapInfoService} from "../../../services/share-map-info.service";
+import {DatesService} from "../../../../services/dates.service";
+import {ShareMapInfoService} from "../../../../services/share-map-info.service";
 import {FormControl, Validators} from '@angular/forms';
 import {Moment} from 'moment';
 

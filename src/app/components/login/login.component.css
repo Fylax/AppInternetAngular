@@ -1,0 +1,17 @@
+div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+}
+
+.card {
+    width: 450px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.full-width {
+    width: 100%;
+}
