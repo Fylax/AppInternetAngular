@@ -29,6 +29,7 @@ import {AppRoutingModule} from './app-routing/app-routing.module';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {LoginComponent} from "./components/login/login.component";
 import {LoggedComponent} from "./components/logged/logged.component";
+import {NotFoundComponent} from "./components/notfound/not-found.component";
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import {LoggedComponent} from "./components/logged/logged.component";
     DatesComponent,
     CustomerbuyComponent,
     CustomerPurchaseComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,

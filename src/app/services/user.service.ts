@@ -1,7 +1,4 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject} from "rxjs/internal/BehaviorSubject";
-import {Observable} from "rxjs/internal/Observable";
-import {of} from "rxjs/internal/observable/of";
 
 export enum Role {
   ADMIN,
@@ -13,7 +10,7 @@ export class UserService {
 
   private username_: string;
   private readonly roles_: Role[] = [];
-  private events = new BehaviorSubject<boolean>(false);
+  private exp_ = 0;
 
   constructor() {
     this.checkLogin(localStorage.getItem('access'));
@@ -26,7 +23,7 @@ export class UserService {
         const body = parts[1];
         const parsed: { exp: number, user_name: string, authorities: string[] } = JSON.parse(atob(body));
 
-        this.events.next(parsed.exp > (new Date().getTime() / 1000));
+        this.exp_ = parsed.exp;
         this.username_ = parsed.user_name;
         for (const role of parsed.authorities) {
           switch (role) {
@@ -52,8 +49,8 @@ export class UserService {
     return this.roles_;
   }
 
-  public get isLogged(): Observable<boolean> {
-    return this.events.asObservable();
+  public get isLogged(): boolean {
+    return this.exp_ > (new Date().getTime() / 1000);
   }
 
 }

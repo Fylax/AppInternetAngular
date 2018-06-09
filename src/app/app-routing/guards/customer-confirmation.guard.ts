@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
 import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router} from '@angular/router';
-import {ShareMapInfoService} from './services/share-map-info.service';
+import {ShareMapInfoService} from '../../services/share-map-info.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuardGuard implements CanActivate {
+export class CustomerConfirmationGuard implements CanActivate {
   constructor(private customer: ShareMapInfoService, private router: Router) {
   }
 
@@ -13,7 +13,8 @@ export class AuthGuardGuard implements CanActivate {
       next: ActivatedRouteSnapshot,
       state: RouterStateSnapshot): boolean {
     if (this.customer.customerRequest === undefined || this.customer.customerRequest.area === undefined) {
-      this.router.navigate(['/positions']);
+      this.router.navigate(['map', 'positions']);
+      return false;
     }
     return true;
   }

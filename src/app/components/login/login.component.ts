@@ -1,10 +1,10 @@
-import {AfterViewInit, Component} from '@angular/core';
+import {AfterViewInit, Component, Injector} from '@angular/core';
 import {FormControl, Validators} from "@angular/forms";
 import {UserTokenService} from "../../services/user.service";
 import {LoginService} from "../../services/login.service";
 import {SpinnerService} from "../../services/spinner.service";
 import {HttpErrorResponse} from "@angular/common/http";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router, RouterStateSnapshot} from "@angular/router";
 
 @Component({
   selector: 'login',
@@ -32,15 +32,21 @@ export class LoginComponent implements AfterViewInit {
   constructor(private loginservice: LoginService,
               private user: UserTokenService,
               private spinner: SpinnerService,
-              private router: Router) { }
+              private route: ActivatedRoute,
+              private router: Router,
+              private injector: Injector) {
+  }
 
   login() {
     this.spinner.showSpinner();
     this.loginservice.login(this.username.value, this.password.value)
         .subscribe((data) => {
           this.user.setTokens(data.access_token, data.refresh_token);
-          // TODO switch sui ruoli
-          this.router.navigate(['positions']);
+          const curr_route = this.route.root.children['0'];
+          const AuthGuard = curr_route.snapshot.routeConfig.canActivate['0'];
+          const authGuard = this.injector.get(AuthGuard);
+          const routerStateSnapshot: RouterStateSnapshot = Object.assign({}, curr_route.snapshot, {url: this.router.url});
+          authGuard.canActivate(curr_route.snapshot, routerStateSnapshot);
         }, (error: HttpErrorResponse) => {
           if (error.status === 400) {
             this.valid = false;
