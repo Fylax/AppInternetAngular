@@ -8,7 +8,7 @@ import {environment} from "../../environments/environment";
 })
 export class LoginService {
 
-  private url = environment.baseUrl + 'oauth/token/';
+  private url = environment.baseUrl + 'oauth/token';
 
   constructor(private http: HttpClient) {
   }

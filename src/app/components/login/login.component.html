@@ -9,10 +9,6 @@
                             *ngIf="username.hasError('required')">
                         Username <strong>obbligatorio</strong>!
                     </mat-error>
-                    <mat-error
-                            *ngIf="!username.hasError('required') && username.hasError('email')">
-                        Email <strong>invalida</strong>!
-                    </mat-error>
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
@@ -27,7 +23,7 @@
                         mat-raised-button
                         class="button full-width"
                         color="primary"
-                        [disabled]="username.hasError('required') || username.hasError('email') || password.hasError('required')"
+                        [disabled]="username.hasError('required') || password.hasError('required')"
                         (click)="login()">Accedi
                 </button>
             </form>

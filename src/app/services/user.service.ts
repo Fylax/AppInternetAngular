@@ -1,4 +1,7 @@
 import {Injectable} from '@angular/core';
+import {BehaviorSubject} from "rxjs/internal/BehaviorSubject";
+import {Observable} from "rxjs/internal/Observable";
+import {of} from "rxjs/internal/observable/of";
 
 export enum Role {
   ADMIN,
@@ -10,7 +13,7 @@ export class UserService {
 
   private username_: string;
   private readonly roles_: Role[] = [];
-  private logged_: boolean;
+  private events = new BehaviorSubject<boolean>(false);
 
   constructor() {
     this.checkLogin(localStorage.getItem('access'));
@@ -18,15 +21,14 @@ export class UserService {
 
   checkLogin(token: string) {
     if (token !== null) {
-      this.logged_ = true;
       const parts = token.split('.');
       if (parts.length === 3) {
-        const body = parts[0];
-
+        const body = parts[1];
         const parsed: { exp: number, user_name: string, authorities: string[] } = JSON.parse(atob(body));
-        this.logged_ = parsed.exp > (new Date().getTime() / 1000);
+
+        this.events.next(parsed.exp > (new Date().getTime() / 1000));
         this.username_ = parsed.user_name;
-        parsed.authorities.forEach((role) => {
+        for (const role of parsed.authorities) {
           switch (role) {
             case "ROLE_ADMIN":
               this.roles_.push(Role.ADMIN);
@@ -37,10 +39,8 @@ export class UserService {
             case "ROLE_CUSTOMER":
               this.roles_.push(Role.CUSTOMER);
           }
-        });
+        }
       }
-    } else {
-      this.logged_ = false;
     }
   }
 
@@ -50,6 +50,10 @@ export class UserService {
 
   public get roles(): Role[] {
     return this.roles_;
+  }
+
+  public get isLogged(): Observable<boolean> {
+    return this.events.asObservable();
   }
 
 }

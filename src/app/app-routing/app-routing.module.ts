@@ -6,6 +6,7 @@ import {CustomerPurchaseComponent} from '../components/logged/map/customer-purch
 import {AuthGuardGuard} from '../auth-guard.guard';
 import {ShareMapInfoService} from '../services/share-map-info.service';
 import {LoginComponent} from "../components/login/login.component";
+import {LoggedComponent} from "../components/logged/logged.component";
 
 const routes: Routes = [
   {
@@ -13,19 +14,23 @@ const routes: Routes = [
     component: LoginComponent
   },
   {
-    path: 'positions',
-    component: MapComponent,
-    children: [
-      {
-        path: '',
-        component: CustomerbuyComponent
-      },
-      {
-        path: 'confirmation',
-        canActivate: [AuthGuardGuard],
-        component: CustomerPurchaseComponent
-      }
-    ]
+    path: 'map',
+    component: LoggedComponent,
+    children: [{
+      path: 'positions',
+      component: MapComponent,
+      children: [
+        {
+          path: '',
+          component: CustomerbuyComponent
+        },
+        {
+          path: 'confirmation',
+          canActivate: [AuthGuardGuard],
+          component: CustomerPurchaseComponent
+        }
+      ]
+    }]
   },
   {path: '', redirectTo: 'login', pathMatch: 'full'}
 ];

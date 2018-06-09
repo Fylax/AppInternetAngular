@@ -3,6 +3,8 @@ import {FormControl, Validators} from "@angular/forms";
 import {UserTokenService} from "../../services/user.service";
 import {LoginService} from "../../services/login.service";
 import {SpinnerService} from "../../services/spinner.service";
+import {HttpErrorResponse} from "@angular/common/http";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'login',
@@ -16,8 +18,7 @@ export class LoginComponent implements AfterViewInit {
   username = new FormControl('', {
     updateOn: 'blur',
     validators: [
-      Validators.required,
-      Validators.email
+      Validators.required
     ]
   });
 
@@ -30,15 +31,21 @@ export class LoginComponent implements AfterViewInit {
 
   constructor(private loginservice: LoginService,
               private user: UserTokenService,
-              private spinner: SpinnerService) { }
+              private spinner: SpinnerService,
+              private router: Router) { }
 
   login() {
     this.spinner.showSpinner();
     this.loginservice.login(this.username.value, this.password.value)
         .subscribe((data) => {
-          let x = 0;
-        }, (error) => {
-          let y = 0;
+          this.user.setTokens(data.access_token, data.refresh_token);
+          // TODO switch sui ruoli
+          this.router.navigate(['positions']);
+        }, (error: HttpErrorResponse) => {
+          if (error.status === 400) {
+            this.valid = false;
+            this.spinner.hideSpinner();
+          }
         });
   }
 
