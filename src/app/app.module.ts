@@ -25,8 +25,6 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatMomentDateModule} from '@angular/material-moment-adapter';
 
 import {HttpClientModule} from '@angular/common/http';
-import {HttpClientInMemoryWebApiModule} from 'angular-in-memory-web-api';
-import {PositionsDataService} from './services/in-memory/positions-data.service';
 import {AppRoutingModule} from './app-routing/app-routing.module';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {LoginComponent} from "./components/login/login.component";
@@ -62,7 +60,6 @@ import {LoggedComponent} from "./components/logged/logged.component";
     MatDatepickerModule,
     MatMomentDateModule,
     HttpClientModule,
-    HttpClientInMemoryWebApiModule.forRoot(PositionsDataService, {dataEncapsulation: false}),
     AppRoutingModule,
     MatProgressSpinnerModule
   ],

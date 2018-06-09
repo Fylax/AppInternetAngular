@@ -16,14 +16,21 @@
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                    <input matInput [formControl]="password" placeholder="Password" type="password" autocomplete="current-password"/>
+                    <input matInput [formControl]="password" placeholder="Password" type="password"
+                           autocomplete="current-password"/>
                     <mat-error
                             *ngIf="password.hasError('required')">
                         Password <strong>obbligatoria</strong>!
                     </mat-error>
                 </mat-form-field>
+                <button
+                        mat-raised-button
+                        class="button full-width"
+                        color="primary"
+                        [disabled]="username.hasError('required') || username.hasError('email') || password.hasError('required')"
+                        (click)="login()">Accedi
+                </button>
             </form>
-            <button mat-raised-button class="button full-width" color="primary">Accedi</button>
         </mat-card-content>
     </mat-card>
 </div>

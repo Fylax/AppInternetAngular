@@ -1,4 +1,4 @@
-import {InMemoryDbService, STATUS, getStatusText} from 'angular-in-memory-web-api';
+/*import {InMemoryDbService, STATUS, getStatusText} from 'angular-in-memory-web-api';
 import {Point} from 'geojson';
 import {Position} from "../../module/Position";
 import {Observable} from "rxjs";
@@ -65,3 +65,4 @@ export class PositionsDataService implements InMemoryDbService {
     return inside;
   }
 }
+*/

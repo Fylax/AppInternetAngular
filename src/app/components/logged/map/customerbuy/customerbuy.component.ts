@@ -6,6 +6,7 @@ import {PositionsService} from '../../../../services/positions.service';
 import {Subscription} from 'rxjs';
 import {ShareMapInfoService} from '../../../../services/share-map-info.service';
 import {DatesService} from "../../../../services/dates.service";
+import {SpinnerService} from "../../../../services/spinner.service";
 
 @Component({
   selector: 'buy',
@@ -41,8 +42,10 @@ export class CustomerbuyComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(private shareInfoService: ShareMapInfoService,
               private positionsService: PositionsService,
+              spinner: SpinnerService,
               datesService: DatesService,
               leafletDirective: LeafletDirective) {
+    spinner.hideSpinner();
     datesService.enableDates();
     this.leafletDirective = new LeafletDirectiveWrapper(leafletDirective);
     if (this.shareInfoService.polygon !== undefined) {
