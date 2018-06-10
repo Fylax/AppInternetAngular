@@ -24,12 +24,13 @@ import {MAT_DATE_LOCALE, MatExpansionModule, MatInputModule} from '@angular/mate
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatMomentDateModule} from '@angular/material-moment-adapter';
 
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {AppRoutingModule} from './app-routing/app-routing.module';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {LoginComponent} from "./components/login/login.component";
 import {LoggedComponent} from "./components/logged/logged.component";
 import {NotFoundComponent} from "./components/notfound/not-found.component";
+import {TokenInterceptor} from "./interceptors/token.interceptor";
 
 @NgModule({
   declarations: [
@@ -66,7 +67,15 @@ import {NotFoundComponent} from "./components/notfound/not-found.component";
     MatProgressSpinnerModule
   ],
   providers: [
-    {provide: MAT_DATE_LOCALE, useValue: 'it-IT'}
+    {
+      provide: MAT_DATE_LOCALE,
+      useValue: 'it-IT'
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })

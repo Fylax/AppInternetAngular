@@ -10,7 +10,7 @@ export class UserService {
 
   private username_: string;
   private readonly roles_: Role[] = [];
-  private exp_ = 0;
+  protected exp_ = 0;
 
   constructor() {
     this.checkLogin(localStorage.getItem('access'));
@@ -50,7 +50,7 @@ export class UserService {
   }
 
   public get isLogged(): boolean {
-    return this.exp_ > (new Date().getTime() / 1000);
+    return this.username_ !== undefined && this.exp_ > (new Date().getTime() / 1000);
   }
 
 }
@@ -64,6 +64,7 @@ export class UserTokenService extends UserService {
 
   constructor() {
     super();
+    this.accessToken_ = localStorage.getItem('access');
   }
 
   public setTokens(accessToken: string, refreshToken: string) {
@@ -73,8 +74,16 @@ export class UserTokenService extends UserService {
     super.checkLogin(this.accessToken_);
   }
 
-  public get accessToken() {
+  public get isTokenExpired(): boolean {
+    return this.exp_ < (new Date().getTime() / 1000);
+  }
+
+  public get accessToken(): string {
     return this.accessToken_;
+  }
+
+  public get refreshToken(): string {
+    return localStorage.getItem('refresh');
   }
 
 }

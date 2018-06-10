@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 import {UserService, UserTokenService} from "./services/user.service";
-import {Router} from "@angular/router";
 
 
 @Component({
