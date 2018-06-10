@@ -5,8 +5,8 @@ import {AppComponent} from './app.component';
 import {SpinnerComponent} from "./components/spinner/spinner.component";
 import {MapComponent} from "./components/logged/map/map.component";
 import {DatesComponent} from "./components/logged/map/dates/dates.component";
-import {CustomerbuyComponent} from "./components/logged/map/customerbuy/customerbuy.component";
-import {CustomerPurchaseComponent} from './components/logged/map/customer-purchase/customer-purchase.component';
+import {CustomerComponent} from "./components/logged/map/customer/customer.component";
+import {CustomerConfirmationComponent} from './components/logged/map/customer-confirmation/customer-confirmation.component';
 
 import {LeafletModule} from '@asymmetrik/ngx-leaflet';
 import {LeafletDrawModule} from '@asymmetrik/ngx-leaflet-draw';
@@ -39,8 +39,8 @@ import {TokenInterceptor} from "./interceptors/token.interceptor";
     LoggedComponent,
     MapComponent,
     DatesComponent,
-    CustomerbuyComponent,
-    CustomerPurchaseComponent,
+    CustomerComponent,
+    CustomerConfirmationComponent,
     SpinnerComponent,
     NotFoundComponent
   ],

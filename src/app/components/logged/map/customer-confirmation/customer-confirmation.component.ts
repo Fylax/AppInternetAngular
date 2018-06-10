@@ -9,10 +9,10 @@ import {Subscription} from "rxjs/index";
 
 @Component({
   selector: 'app-customer-purchase',
-  templateUrl: './customer-purchase.component.html',
-  styleUrls: ['./customer-purchase.component.css']
+  templateUrl: './customer-confirmation.component.html',
+  styleUrls: ['./customer-confirmation.component.css']
 })
-export class CustomerPurchaseComponent implements OnInit, OnDestroy {
+export class CustomerConfirmationComponent implements OnInit, OnDestroy {
 
   subscription: Subscription;
   leafletDirective: LeafletDirectiveWrapper;

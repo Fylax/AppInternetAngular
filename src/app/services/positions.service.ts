@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {CustomerRequest} from "../components/logged/map/customerbuy/CustomerRequest";
+import {CustomerRequest} from "../components/logged/map/customer/CustomerRequest";
 
 @Injectable({
   providedIn: 'root'

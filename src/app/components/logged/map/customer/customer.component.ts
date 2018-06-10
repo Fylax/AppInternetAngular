@@ -1,7 +1,6 @@
 import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import * as L from 'leaflet';
 import {LeafletDirective, LeafletDirectiveWrapper} from '@asymmetrik/ngx-leaflet';
-import {CustomerRequest} from './CustomerRequest';
 import {PositionsService} from '../../../../services/positions.service';
 import {Subscription} from 'rxjs';
 import {ShareMapInfoService} from '../../../../services/share-map-info.service';
@@ -10,10 +9,10 @@ import {SpinnerService} from "../../../../services/spinner.service";
 
 @Component({
   selector: 'buy',
-  templateUrl: './customerbuy.component.html',
-  styleUrls: ['./customerbuy.component.css']
+  templateUrl: './customer.component.html',
+  styleUrls: ['./customer.component.css']
 })
-export class CustomerbuyComponent implements OnInit, AfterViewInit, OnDestroy {
+export class CustomerComponent implements OnInit, AfterViewInit, OnDestroy {
 
   subscription: Subscription;
   editableLayers = new L.FeatureGroup();

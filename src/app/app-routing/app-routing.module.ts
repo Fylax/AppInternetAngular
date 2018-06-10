@@ -1,8 +1,8 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {MapComponent} from '../components/logged/map/map.component';
-import {CustomerbuyComponent} from '../components/logged/map/customerbuy/customerbuy.component';
-import {CustomerPurchaseComponent} from '../components/logged/map/customer-purchase/customer-purchase.component';
+import {CustomerComponent} from '../components/logged/map/customer/customer.component';
+import {CustomerConfirmationComponent} from '../components/logged/map/customer-confirmation/customer-confirmation.component';
 import {CustomerConfirmationGuard} from './guards/customer-confirmation.guard';
 import {LoginComponent} from "../components/login/login.component";
 import {LoggedComponent} from "../components/logged/logged.component";
@@ -26,12 +26,12 @@ const routes: Routes = [
         children: [
           {
             path: '',
-            component: CustomerbuyComponent
+            component: CustomerComponent
           },
           {
             path: 'confirmation',
             canActivate: [CustomerConfirmationGuard],
-            component: CustomerPurchaseComponent
+            component: CustomerConfirmationComponent
           }
         ]
       }]
