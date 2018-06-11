@@ -1,0 +1,63 @@
+<div class="purchases-container mat-elevation-z8">
+  <div class="purchases-loading-shade"
+       *ngIf="dataSource.loading$ | async">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <div class="purchases-table-container">
+
+    <table mat-table [dataSource]="dataSource" class="purchases-table">
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef>Data acquisto</th>
+        <td mat-cell *matCellDef="let row">{{ row.timestamp | date:'medium' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>Stato</th>
+        <td mat-cell *matCellDef="let row">{{ row.status }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef>Importo</th>
+        <td mat-cell *matCellDef="let row">{{ row.amount }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="count">
+        <th mat-header-cell *matHeaderCellDef>
+          # Posizioni
+        </th>
+        <td mat-cell *matCellDef="let row">{{ row.countPosition }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="start">
+        <th mat-header-cell *matHeaderCellDef>
+          Data inizio
+        </th>
+        <td mat-cell *matCellDef="let row">{{ row.start | date:'medium' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="end">
+        <th mat-header-cell *matHeaderCellDef>
+          Data fine
+        </th>
+        <td mat-cell *matCellDef="let row">{{ row.end | date:'medium' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="details">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let row">
+          <a mat-button
+                  (click)="showDetails(row)"
+                  color="primary" style="font-weight: bold;">
+            DETTAGLIO
+          </a>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+
+  <mat-paginator [length]="resultsLength" [pageSize]="30"></mat-paginator>
+</div>

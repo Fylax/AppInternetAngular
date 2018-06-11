@@ -16,9 +16,12 @@ import {MatDividerModule} from '@angular/material/divider';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatButtonModule} from '@angular/material/button';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatSortModule} from '@angular/material/sort';
 import {MatIconModule} from '@angular/material/icon';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatCardModule} from '@angular/material/card';
+import {MatTableModule} from '@angular/material/table';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MAT_DATE_LOCALE, MatExpansionModule, MatInputModule} from '@angular/material';
 import {MatDatepickerModule} from '@angular/material/datepicker';
@@ -29,8 +32,9 @@ import {AppRoutingModule} from './app-routing/app-routing.module';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {LoginComponent} from "./components/login/login.component";
 import {LoggedComponent} from "./components/logged/logged.component";
-import {ErrorComponent} from "./components/error/error.component";
 import {TokenInterceptor} from "./interceptors/token.interceptor";
+import { CustomerPurchaseComponent } from './components/logged/map/customer-purchase/customer-purchase.component';
+import {ErrorComponent} from './components/error/error.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +46,8 @@ import {TokenInterceptor} from "./interceptors/token.interceptor";
     CustomerComponent,
     CustomerConfirmationComponent,
     SpinnerComponent,
-    ErrorComponent
+    ErrorComponent,
+    CustomerPurchaseComponent
   ],
   imports: [
     BrowserModule,
@@ -64,7 +69,10 @@ import {TokenInterceptor} from "./interceptors/token.interceptor";
     MatMomentDateModule,
     HttpClientModule,
     AppRoutingModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule
   ],
   providers: [
     {

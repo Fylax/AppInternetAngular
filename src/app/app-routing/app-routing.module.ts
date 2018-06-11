@@ -7,7 +7,8 @@ import {CustomerConfirmationGuard} from './guards/customer-confirmation.guard';
 import {LoginComponent} from "../components/login/login.component";
 import {LoggedComponent} from "../components/logged/logged.component";
 import {AuthenticationGuard, LoginGuard} from "./guards/authentication.guard";
-import {ErrorComponent} from "../components/error/error.component";
+import {CustomerPurchaseComponent} from '../components/logged/map/customer-purchase/customer-purchase.component';
+import {ErrorComponent} from '../components/error/error.component';
 
 const routes: Routes = [
   {
@@ -35,6 +36,14 @@ const routes: Routes = [
           }
         ]
       }]
+  },
+  {
+    path: 'purchases',
+    component: LoggedComponent,
+    children: [{
+      path: '',
+      component: CustomerPurchaseComponent
+    }]
   },
   {path: '', redirectTo: 'login', pathMatch: 'full'},
   {path: 'error/:id', component: ErrorComponent},
