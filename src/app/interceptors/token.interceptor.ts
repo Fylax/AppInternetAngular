@@ -19,12 +19,11 @@ export class TokenInterceptor implements HttpInterceptor {
       return next.handle(req);
     }
 
-    const headers = new HttpHeaders({
-      'Authorization': 'Bearer ' + this.user.accessToken,
+    let headers = new HttpHeaders({
       'Accept': 'application/json'
     });
     if (req.method.toUpperCase() === 'POST') {
-      headers.append('Content-Type', 'application/json');
+      headers = headers.set('Content-Type', 'application/json');
     }
 
     if (this.user.isTokenExpired) {
@@ -33,6 +32,7 @@ export class TokenInterceptor implements HttpInterceptor {
               mergeMap((resp) => {
                 this.user.setTokens(resp.access_token, resp.refresh_token);
 
+                headers = headers.set('Authorization', `Bearer ${this.user.accessToken}`);
                 const request = req.clone({
                   headers: headers
                 });
@@ -41,6 +41,7 @@ export class TokenInterceptor implements HttpInterceptor {
               first()
           );
     } else {
+      headers = headers.set('Authorization', `Bearer ${this.user.accessToken}`);
       const request = req.clone({
         headers: headers
       });

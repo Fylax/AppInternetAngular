@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, OnInit} from "@angular/core";
 import {ActivatedRoute, ParamMap} from "@angular/router";
-import {tap} from "rxjs/operators";
+import {first, tap} from "rxjs/operators";
 
 @Component({
   selector: 'error',
@@ -17,11 +17,10 @@ export class ErrorComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.route.paramMap.pipe(
-        tap((params: ParamMap) => {
+    this.route.paramMap.pipe(first())
+        .subscribe((params: ParamMap) => {
           this.error = parseInt(params.get('id'), 10);
-        })
-    );
+        });
   }
 
   ngAfterViewInit(): void {

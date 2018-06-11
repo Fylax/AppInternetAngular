@@ -16,6 +16,18 @@ export class UserService {
     this.checkLogin(localStorage.getItem('access'));
   }
 
+  public get isLogged(): boolean {
+    return this.username_ !== undefined && this.exp_ > new Date().getTime();
+  }
+
+  public get username(): string {
+    return this.username_;
+  }
+
+  public get roles(): Role[] {
+    return this.roles_;
+  }
+
   checkLogin(token: string) {
     if (token !== null) {
       const parts = token.split('.');
@@ -23,7 +35,7 @@ export class UserService {
         const body = parts[1];
         const parsed: { exp: number, user_name: string, authorities: string[] } = JSON.parse(atob(body));
 
-        this.exp_ = parsed.exp;
+        this.exp_ = parsed.exp * 1000;
         this.username_ = parsed.user_name;
         for (const role of parsed.authorities) {
           switch (role) {
@@ -39,18 +51,6 @@ export class UserService {
         }
       }
     }
-  }
-
-  public get username(): string {
-    return this.username_;
-  }
-
-  public get roles(): Role[] {
-    return this.roles_;
-  }
-
-  public get isLogged(): boolean {
-    return this.username_ !== undefined && this.exp_ > (new Date().getTime() / 1000);
   }
 
 }
@@ -75,7 +75,7 @@ export class UserTokenService extends UserService {
   }
 
   public get isTokenExpired(): boolean {
-    return this.exp_ < (new Date().getTime() / 1000);
+    return this.exp_ < (new Date().getTime());
   }
 
   public get accessToken(): string {
