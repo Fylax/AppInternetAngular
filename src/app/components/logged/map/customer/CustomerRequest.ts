@@ -12,7 +12,7 @@ export class CustomerRequest {
 
   toJSON() {
     return {
-      area: JSON.stringify(this.area.toGeoJSON().geometry),
+      area: this.area.toGeoJSON().geometry,
       start: Math.trunc(this.start.getTime() / 1000),
       end: Math.trunc(this.end.getTime() / 1000)
     };

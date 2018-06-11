@@ -7,7 +7,7 @@ import {CustomerConfirmationGuard} from './guards/customer-confirmation.guard';
 import {LoginComponent} from "../components/login/login.component";
 import {LoggedComponent} from "../components/logged/logged.component";
 import {AuthenticationGuard, LoginGuard} from "./guards/authentication.guard";
-import {NotFoundComponent} from "../components/notfound/not-found.component";
+import {ErrorComponent} from "../components/error/error.component";
 
 const routes: Routes = [
   {
@@ -37,7 +37,8 @@ const routes: Routes = [
       }]
   },
   {path: '', redirectTo: 'login', pathMatch: 'full'},
-  {path: '**', component: NotFoundComponent }
+  {path: 'error/:id', component: ErrorComponent},
+  {path: '**', redirectTo: '/error/404' }
 ];
 
 

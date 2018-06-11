@@ -29,7 +29,7 @@ import {AppRoutingModule} from './app-routing/app-routing.module';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {LoginComponent} from "./components/login/login.component";
 import {LoggedComponent} from "./components/logged/logged.component";
-import {NotFoundComponent} from "./components/notfound/not-found.component";
+import {ErrorComponent} from "./components/error/error.component";
 import {TokenInterceptor} from "./interceptors/token.interceptor";
 
 @NgModule({
@@ -42,7 +42,7 @@ import {TokenInterceptor} from "./interceptors/token.interceptor";
     CustomerComponent,
     CustomerConfirmationComponent,
     SpinnerComponent,
-    NotFoundComponent
+    ErrorComponent
   ],
   imports: [
     BrowserModule,

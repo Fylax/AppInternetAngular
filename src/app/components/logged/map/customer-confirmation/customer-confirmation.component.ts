@@ -5,7 +5,7 @@ import {PositionsService} from '../../../../services/positions.service';
 import {LeafletDirective, LeafletDirectiveWrapper} from '@asymmetrik/ngx-leaflet';
 import {SpinnerService} from "../../../../services/spinner.service";
 import {DatesService} from "../../../../services/dates.service";
-import {Subscription} from "rxjs/index";
+import {first, map, tap} from "rxjs/operators";
 
 @Component({
   selector: 'app-customer-purchase',
@@ -14,7 +14,6 @@ import {Subscription} from "rxjs/index";
 })
 export class CustomerConfirmationComponent implements OnInit, OnDestroy {
 
-  subscription: Subscription;
   leafletDirective: LeafletDirectiveWrapper;
   count: number;
 
@@ -35,18 +34,17 @@ export class CustomerConfirmationComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subscription = this.positionsService.getPositionCount(this.shareInfoService.customerRequest)
-        .subscribe(count => {
-          this.count = count;
-          this.shareInfoService.polygon.bindTooltip(count.toString(), {
-            className: 'count-tooltip',
-            permanent: true,
-            direction: 'center',
-            interactive: false
-          }).openTooltip().addTo(this.leafletDirective.getMap());
-          this.spinnerService.hideSpinner();
-          this.subscription.unsubscribe();
-        });
+    this.positionsService.getPositionCount(this.shareInfoService.customerRequest)
+        .pipe(first()).subscribe(count => {
+      this.count = count;
+      this.shareInfoService.polygon.bindTooltip(count.toString(), {
+        className: 'count-tooltip',
+        permanent: true,
+        direction: 'center',
+        interactive: false
+      }).openTooltip().addTo(this.leafletDirective.getMap());
+      this.spinnerService.hideSpinner();
+    });
   }
 
   ngOnDestroy() {

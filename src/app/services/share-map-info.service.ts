@@ -109,8 +109,8 @@ export class ShareMapInfoService {
     }
   }
 
-  get dateReady(): Observable<boolean> {
-    return this.allSet_.asObservable();
+  get dateReady(): BehaviorSubject<boolean> {
+    return this.allSet_;
   }
 
   set customerRequest(cr: CustomerRequest) {

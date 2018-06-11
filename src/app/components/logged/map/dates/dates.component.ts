@@ -1,16 +1,19 @@
-import {Component} from "@angular/core";
+import {Component, OnDestroy} from "@angular/core";
 import {MatDatepickerInputEvent} from "@angular/material";
 import {DatesService} from "../../../../services/dates.service";
 import {ShareMapInfoService} from "../../../../services/share-map-info.service";
 import {FormControl, Validators} from '@angular/forms';
 import {Moment} from 'moment';
+import {Subscription} from "rxjs/Subscription";
 
 @Component({
   selector: 'dates',
   templateUrl: './dates.component.html',
   styleUrls: ['./dates.component.css']
 })
-export class DatesComponent {
+export class DatesComponent implements OnDestroy {
+
+  private subscription_: Subscription;
 
   disabled = false;
 
@@ -48,7 +51,7 @@ export class DatesComponent {
   });
 
   constructor(private shareInfoService: ShareMapInfoService, datesService: DatesService) {
-    datesService.datesStatus.subscribe(event => {
+    this.subscription_ = datesService.datesStatus.subscribe(event => {
       this.disabled = event;
       if (this.disabled) {
         this.shour.disable();
@@ -168,5 +171,9 @@ export class DatesComponent {
     const newDate = new Date(this.shareInfoService.customerRequest.start);
     newDate.setDate(this.shareInfoService.customerRequest.start.getDate() - 1);
     return d.toDate() >= newDate && d.toDate() <= new Date();
+  }
+
+  ngOnDestroy(): void {
+    this.subscription_.unsubscribe();
   }
 }

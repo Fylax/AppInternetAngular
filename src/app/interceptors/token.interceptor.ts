@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
 import {HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import 'rxjs/add/operator/mergeMap';
 import {UserTokenService} from "../services/user.service";
 import {environment} from "../../environments/environment";
 import {LoginService} from "../services/login.service";
+import {first, map, mergeMap, tap} from "rxjs/operators";
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -29,14 +29,17 @@ export class TokenInterceptor implements HttpInterceptor {
 
     if (this.user.isTokenExpired) {
       return this.login.refresh(this.user.refreshToken)
-          .mergeMap((resp) => {
-            this.user.setTokens(resp.access_token, resp.refresh_token);
+          .pipe(
+              mergeMap((resp) => {
+                this.user.setTokens(resp.access_token, resp.refresh_token);
 
-            const request = req.clone({
-              headers: headers
-            });
-            return next.handle(request);
-          });
+                const request = req.clone({
+                  headers: headers
+                });
+                return next.handle(request);
+              }),
+              first()
+          );
     } else {
       const request = req.clone({
         headers: headers

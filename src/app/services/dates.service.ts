@@ -1,6 +1,5 @@
 import {Injectable} from "@angular/core";
 import {BehaviorSubject} from "rxjs/internal/BehaviorSubject";
-import {Observable} from "rxjs/internal/Observable";
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +18,7 @@ export class DatesService {
     this.events.next(false);
   }
 
-  get datesStatus(): Observable<boolean> {
-    return this.events.asObservable();
+  get datesStatus(): BehaviorSubject<boolean> {
+    return this.events;
   }
 }
