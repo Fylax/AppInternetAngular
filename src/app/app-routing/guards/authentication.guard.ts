@@ -17,7 +17,9 @@ export class AuthenticationGuard implements CanActivate {
               private router: Router) {
   }
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+  canActivate(
+      route: ActivatedRouteSnapshot,
+      state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     return (new Observable<boolean>(observer => {
       if (!this.user.isLogged) {
         const token = this.user.refreshToken;
@@ -36,12 +38,10 @@ export class AuthenticationGuard implements CanActivate {
       observer.complete();
     })).pipe(
         map((logged) => {
-          if (logged) {
-            return true;
+          if (!logged) {
+            this.router.navigate(['login']);
           }
-          // TODO switch
-          this.router.navigate(['login']);
-          return false;
+          return logged;
         }),
         first()
     );
@@ -82,9 +82,8 @@ export class LoginGuard implements CanActivate {
           if (logged) {
             // TODO switch
             this.router.navigate(['map', 'positions']);
-            return true;
           }
-          return false;
+          return !logged;
         }),
         first()
     );

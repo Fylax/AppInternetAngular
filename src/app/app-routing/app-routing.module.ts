@@ -11,6 +11,7 @@ import {CustomerPurchaseComponent} from '../components/logged/map/customer-purch
 import {ErrorComponent} from '../components/error/error.component';
 
 const routes: Routes = [
+  {path: '', redirectTo: 'login', pathMatch: 'full'},
   {
     path: 'login',
     component: LoginComponent,
@@ -46,9 +47,8 @@ const routes: Routes = [
       component: CustomerPurchaseComponent
     }]
   },
-  {path: '', redirectTo: 'login', pathMatch: 'full'},
   {path: 'error/:id', component: ErrorComponent},
-  {path: '**', redirectTo: '/error/404' }
+  {path: '**', redirectTo: '/error/404'}
 ];
 
 
