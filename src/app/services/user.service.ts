@@ -82,7 +82,7 @@ export class UserTokenService extends UserService {
     return this.accessToken_;
   }
 
-  public get refreshToken(): string {
+  public get refreshToken(): string | null {
     return localStorage.getItem('refresh');
   }
 

@@ -5,7 +5,7 @@ import {PositionsService} from '../../../../services/positions.service';
 import {LeafletDirective, LeafletDirectiveWrapper} from '@asymmetrik/ngx-leaflet';
 import {SpinnerService} from "../../../../services/spinner.service";
 import {DatesService} from "../../../../services/dates.service";
-import {first, map, tap} from "rxjs/operators";
+import {first} from "rxjs/operators";
 
 @Component({
   selector: 'app-customer-purchase',
