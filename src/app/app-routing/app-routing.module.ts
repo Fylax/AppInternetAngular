@@ -40,6 +40,7 @@ const routes: Routes = [
   {
     path: 'purchases',
     component: LoggedComponent,
+    canActivate: [AuthenticationGuard],
     children: [{
       path: '',
       component: CustomerPurchaseComponent
@@ -55,7 +56,6 @@ const routes: Routes = [
   imports: [
     RouterModule.forRoot(routes)
   ],
-  // providers: [CustomerConfirmationGuard, ShareMapInfoService],
   exports: [RouterModule]
 })
 export class AppRoutingModule {
