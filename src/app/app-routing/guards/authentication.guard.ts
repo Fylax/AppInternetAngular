@@ -3,48 +3,53 @@ import {Injectable} from "@angular/core";
 import {Observable} from "rxjs/internal/Observable";
 import {Role, UserTokenService} from '../../services/user.service';
 import {LoginService} from "../../services/login.service";
-import {first, map, mergeMap} from "rxjs/operators";
+import {catchError, first, map, mergeMap} from "rxjs/operators";
 import {e} from "@angular/core/src/render3";
 import {forkJoin} from "rxjs/internal/observable/forkJoin";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationGuard implements CanActivate {
 
+  private event_ = new BehaviorSubject<boolean>(this.user.isLogged);
+
   constructor(private user: UserTokenService,
               private login: LoginService,
               private router: Router) {
+    this.event_.subscribe((logged) => {
+      if (!logged) {
+        this.router.navigate(['login']);
+      }
+    });
   }
 
   canActivate(
       route: ActivatedRouteSnapshot,
       state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    return (new Observable<boolean>(observer => {
-      if (!this.user.isLogged) {
-        const token = this.user.refreshToken;
-        if (token !== null) {
-          this.login.refresh(token).pipe(first())
-              .subscribe((resp) => {
-                this.user.setTokens(resp.access_token, resp.refresh_token);
-              });
-        } else {
-          observer.next(false);
-          observer.complete();
-          return;
-        }
+    if (!this.user.isLogged) {
+      const token = this.user.refreshToken;
+      if (token !== null) {
+        return this.login.refresh(token).pipe(
+            map((resp) => {
+              this.user.setTokens(resp.access_token, resp.refresh_token);
+              this.event_.next(true);
+              return true;
+            }),
+            catchError(() => {
+              this.event_.next(false);
+              return new BehaviorSubject<boolean>(false).asObservable();
+            }),
+            first());
+      } else {
+        this.event_.next(false);
+        return false;
       }
-      observer.next(true);
-      observer.complete();
-    })).pipe(
-        map((logged) => {
-          if (!logged) {
-            this.router.navigate(['login']);
-          }
-            return logged;
-        }),
-        first()
-    );
+    }
+    this.event_.next(true);
+    return true;
   }
 }
 
@@ -53,68 +58,47 @@ export class AuthenticationGuard implements CanActivate {
 })
 export class LoginGuard implements CanActivate {
 
+  private event_ = new BehaviorSubject<boolean>(this.user.isLogged);
+
   constructor(private user: UserTokenService,
               private login: LoginService,
-              private router: Router) {
+              router: Router) {
+    this.event_.subscribe((logged) => {
+      if (logged) {
+        if (this.user.roles.includes(Role.ADMIN)) {
+          router.navigate(['map', 'positions', 'user']); // TODO change with '.../admin'
+        } else if (this.user.roles.includes(Role.CUSTOMER)) {
+          router.navigate(['map', 'positions', 'customer']);
+        } else if (this.user.roles.includes(Role.USER)) {
+          router.navigate(['map', 'positions', 'user']);
+        }
+      }
+    });
   }
 
   canActivate(
       route: ActivatedRouteSnapshot,
       state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    return (new Observable<boolean>(observer => {
-      if (!this.user.isLogged) {
-        const token = this.user.refreshToken;
-        if (token !== null) {
-          this.login.refresh(token).pipe(first())
-              .subscribe((resp) => {
-                this.user.setTokens(resp.access_token, resp.refresh_token);
-              });
-        } else {
-          observer.next(false);
-          observer.complete();
-          return;
-        }
+    if (!this.user.isLogged) {
+      const token = this.user.refreshToken;
+      if (token !== null) {
+        return this.login.refresh(token).pipe(
+            map((resp) => {
+              this.user.setTokens(resp.access_token, resp.refresh_token);
+              this.event_.next(true);
+              return false;
+            }),
+            catchError(() => {
+              this.event_.next(false);
+              return new BehaviorSubject<boolean>(true).asObservable();
+            }),
+            first());
+      } else {
+        this.event_.next(false);
+        return true;
       }
-      observer.next(true);
-      observer.complete();
-    })).pipe(
-        map((logged) => {
-          if (logged) {
-            // TODO switch
-            // this.router.navigate(['map', 'positions']);
-              if (this.user.roles.includes(Role.ADMIN)) {
-                  this.router.navigate(['map', 'positions', 'user']); // TODO change with '.../admin'
-                  return true;
-              } else if (this.user.roles.includes(Role.CUSTOMER)) {
-                  this.router.navigate(['map', 'positions', 'customer']);
-                  return true;
-              } else if (this.user.roles.includes(Role.USER)) {
-                  this.router.navigate(['map', 'positions', 'user']);
-                  return true;
-              }
-          }
-          return !logged;
-        }),
-        first()
-    );
+    }
+    this.event_.next(true);
+    return false;
   }
 }
-/*
-@Injectable({
-    providedIn: 'root'
-})
-export class ProfileGuard implements CanActivate {
-
-    constructor(private user: UserTokenService,
-                private login: LoginService,
-                private router: Router) {
-    }
-
-    canActivate(
-        next: ActivatedRouteSnapshot,
-        state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-
-        return false;
-    }
-}
-*/
