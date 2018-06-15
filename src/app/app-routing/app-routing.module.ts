@@ -9,6 +9,7 @@ import {LoggedComponent} from "../components/logged/logged.component";
 import {AuthenticationGuard, LoginGuard} from "./guards/authentication.guard";
 import {CustomerPurchaseComponent} from '../components/logged/map/customer-purchase/customer-purchase.component';
 import {ErrorComponent} from '../components/error/error.component';
+import {UserComponent} from '../components/logged/map/user/user.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
@@ -27,17 +28,31 @@ const routes: Routes = [
         component: MapComponent,
         children: [
           {
-            path: '',
-            component: CustomerComponent
+            path: 'customer',
+            component: CustomerComponent,
+              children: [
+                  {
+                      path: 'confirmation',
+                      canActivate: [CustomerConfirmationGuard],
+                      component: CustomerConfirmationComponent
+                  }
+              ]
           },
-          {
-            path: 'confirmation',
-            canActivate: [CustomerConfirmationGuard],
-            component: CustomerConfirmationComponent
-          }
+            {
+                path: 'user',
+                component: UserComponent
+                /*children: [
+                    {
+                        path: 'send',
+                        canActivate: [UserConfirmationGuard],
+                        component: UserConfirmationComponent
+                    }
+                ]*/
+            }
         ]
       }]
-  },
+  }
+  ,
   {
     path: 'purchases',
     component: LoggedComponent,

@@ -5,7 +5,9 @@ import {ShareMapInfoService} from '../../services/share-map-info.service';
 @Injectable({
   providedIn: 'root'
 })
-export class CustomerConfirmationGuard implements CanActivate {
+export class
+
+CustomerConfirmationGuard implements CanActivate {
   constructor(private customer: ShareMapInfoService, private router: Router) {
   }
 

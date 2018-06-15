@@ -1,7 +1,7 @@
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from "@angular/router";
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs/internal/Observable";
-import {UserTokenService} from "../../services/user.service";
+import {Role, UserTokenService} from '../../services/user.service';
 import {LoginService} from "../../services/login.service";
 import {first, map, mergeMap} from "rxjs/operators";
 import {e} from "@angular/core/src/render3";
@@ -41,7 +41,7 @@ export class AuthenticationGuard implements CanActivate {
           if (!logged) {
             this.router.navigate(['login']);
           }
-          return logged;
+            return logged;
         }),
         first()
     );
@@ -81,7 +81,17 @@ export class LoginGuard implements CanActivate {
         map((logged) => {
           if (logged) {
             // TODO switch
-            this.router.navigate(['map', 'positions']);
+            // this.router.navigate(['map', 'positions']);
+              if (this.user.roles.includes(Role.ADMIN)) {
+                  this.router.navigate(['map', 'positions', 'user']); // TODO change with '.../admin'
+                  return true;
+              } else if (this.user.roles.includes(Role.CUSTOMER)) {
+                  this.router.navigate(['map', 'positions', 'customer']);
+                  return true;
+              } else if (this.user.roles.includes(Role.USER)) {
+                  this.router.navigate(['map', 'positions', 'user']);
+                  return true;
+              }
           }
           return !logged;
         }),
@@ -89,4 +99,22 @@ export class LoginGuard implements CanActivate {
     );
   }
 }
+/*
+@Injectable({
+    providedIn: 'root'
+})
+export class ProfileGuard implements CanActivate {
 
+    constructor(private user: UserTokenService,
+                private login: LoginService,
+                private router: Router) {
+    }
+
+    canActivate(
+        next: ActivatedRouteSnapshot,
+        state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+
+        return false;
+    }
+}
+*/

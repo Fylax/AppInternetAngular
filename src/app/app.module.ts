@@ -35,6 +35,7 @@ import {LoggedComponent} from "./components/logged/logged.component";
 import {TokenInterceptor} from "./interceptors/token.interceptor";
 import { CustomerPurchaseComponent } from './components/logged/map/customer-purchase/customer-purchase.component';
 import {ErrorComponent} from './components/error/error.component';
+import { UserComponent } from './components/logged/map/user/user.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import {ErrorComponent} from './components/error/error.component';
     CustomerConfirmationComponent,
     SpinnerComponent,
     ErrorComponent,
-    CustomerPurchaseComponent
+    CustomerPurchaseComponent,
+    UserComponent
   ],
   imports: [
     BrowserModule,
