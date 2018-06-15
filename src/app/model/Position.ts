@@ -5,10 +5,10 @@ export class Position {
     latitude: number;
     longitude: number;
 
-    constructor(timestamp: number, latitude: number, longitude: number) {
+    constructor(timestamp: number, point: Point) {
         this.timestamp = timestamp;
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.latitude = point.coordinates[0];
+        this.longitude = point.coordinates[1];
     }
 
 }
