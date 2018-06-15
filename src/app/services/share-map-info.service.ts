@@ -3,7 +3,7 @@ import {CustomerRequest} from '../components/logged/map/customer/CustomerRequest
 import {Observable} from "rxjs/internal/Observable";
 import {BehaviorSubject} from "rxjs/internal/BehaviorSubject";
 import {Moment} from "moment";
-import {Polygon} from "leaflet";
+import {Marker, Polygon} from 'leaflet';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +15,7 @@ export class ShareMapInfoService {
   private allSet_ = new BehaviorSubject<boolean>(false);
 
   private polygon_ = new BehaviorSubject<boolean>(false);
+    private marker_ = new BehaviorSubject<boolean>(false);
 
   private startDate_ = new BehaviorSubject<boolean>(false);
   private startHour_ = new BehaviorSubject<boolean>(false);
@@ -54,6 +55,14 @@ export class ShareMapInfoService {
       this.polygon_.next(true);
     }
   }
+    set marker(point: Marker | null) {
+        if (point === null) {
+            this.marker_.next(false);
+        } else {
+            //TODO add point into list markersUser???
+            this.marker_.next(true);
+        }
+    }
 
   get customerRequest() {
     return this.customerRequest_;

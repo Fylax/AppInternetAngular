@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   baseUrl: 'http://localhost:8080/',
+    baseIcons: '../../../../../assets/',
   clientId: 'client',
   clientSecret: 'secret'
 };

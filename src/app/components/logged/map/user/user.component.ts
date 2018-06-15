@@ -41,31 +41,27 @@ export class UserComponent implements OnInit {
     }
 
     ngOnInit() {
-        let myIcon = L.icon({
-            iconUrl: environment.baseUrl + 'src/assets/my-icon.png',
-            // iconUrl: 'http://joshuafrazier.info/images/firefox.svg',
-            iconSize: [38, 95], // size of the icon
+        const myIcon = L.icon({
+            iconUrl: `${environment.baseIcons}my-icon.png`,
+            iconSize: [52, 65] // size of the icon
         });
         this.leafletDirective.init();
         this.leafletDirective.getMap().addLayer(this.editableLayers);
         this.leafletDirective.getMap()
             .on(L.Draw.Event.CREATED, (e: L.DrawEvents.Created) => {
                 if (e.type === 'draw:created' && e.layerType === 'marker') {
-                        L.marker((e.layer as Marker).getLatLng(), {
+                        L.marker((e.layer as L.Marker).getLatLng(), {
                             icon: myIcon
                         }).addTo(this.leafletDirective.getMap());
                 } else {
                     return;
                 }
             })
-            .on('draw:edited', function (e) {
-                this.editableLayers.eachLayer(function (layer) {
-                    if (layer instanceof L.Marker) {
-                        L.marker(layer.getLatLng(), {
-                            icon: myIcon
-                        }).addTo(this.leafletDirective.getMap());
-                    }
-                });
+            .on(L.Draw.Event.EDITED, (e: L.DrawEvents.Edited) => {
+                const marker = (e.layers.getLayers()[0] as L.Marker);       // TODO l'ultimo marker? qualisasi..?
+                if (marker !== undefined) {
+                    this.shareInfoService.marker = marker;
+                }
             });
     }
 
