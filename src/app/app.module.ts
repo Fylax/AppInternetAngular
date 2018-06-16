@@ -36,6 +36,7 @@ import {TokenInterceptor} from "./interceptors/token.interceptor";
 import { CustomerPurchaseComponent } from './components/logged/map/customer-purchase/customer-purchase.component';
 import {ErrorComponent} from './components/error/error.component';
 import { UserComponent } from './components/logged/map/user/user.component';
+import {InterCattor} from "./interceptors/cat.interceptor";
 
 @NgModule({
   declarations: [
@@ -84,6 +85,11 @@ import { UserComponent } from './components/logged/map/user/user.component';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: InterCattor,
       multi: true
     }
   ],

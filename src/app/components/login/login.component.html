@@ -1,6 +1,7 @@
 <div>
     <mat-card class="card">
         <mat-card-content>
+            <p *ngIf="expired">Sessione scaduta</p>
             <p *ngIf="!valid">Credenziali inserite non valide</p>
             <form class="full-form">
                 <mat-form-field class="full-width">

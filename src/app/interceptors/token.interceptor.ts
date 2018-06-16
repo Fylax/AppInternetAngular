@@ -8,8 +8,7 @@ import {LoginService} from "../services/login.service";
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
 
-  constructor(private user: UserTokenService,
-              private login: LoginService) {
+  constructor(private user: UserTokenService) {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {

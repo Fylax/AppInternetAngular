@@ -3,26 +3,28 @@ import {Injectable} from "@angular/core";
 import {Observable} from "rxjs/internal/Observable";
 import {Role, UserTokenService} from '../../services/user.service';
 import {LoginService} from "../../services/login.service";
-import {catchError, first, map, mergeMap} from "rxjs/operators";
-import {e} from "@angular/core/src/render3";
-import {forkJoin} from "rxjs/internal/observable/forkJoin";
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
-import {HttpErrorResponse} from "@angular/common/http";
+import {catchError, first, map} from "rxjs/operators";
+import {BehaviorSubject, Subject} from "rxjs";
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationGuard implements CanActivate {
 
-  private event_ = new BehaviorSubject<boolean>(this.user.isLogged);
+  private loggedEvent_ = new BehaviorSubject<boolean>(true);
+  private tokenEvent_ = new Subject();
 
   constructor(private user: UserTokenService,
               private login: LoginService,
               private router: Router) {
-    this.event_.subscribe((logged) => {
+    this.loggedEvent_.subscribe((logged) => {
       if (!logged) {
         this.router.navigate(['login']);
       }
+    });
+    this.tokenEvent_.subscribe(() => {
+      this.router.navigate(['login', {session: 'expired'}]);
     });
   }
 
@@ -30,25 +32,29 @@ export class AuthenticationGuard implements CanActivate {
       route: ActivatedRouteSnapshot,
       state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     if (!this.user.isLogged) {
+      if (this.user.isRefreshTokenExpired) {
+        this.tokenEvent_.next();
+        return false;
+      }
       const token = this.user.refreshToken;
       if (token !== null) {
         return this.login.refresh(token).pipe(
             map((resp) => {
               this.user.setTokens(resp.access_token, resp.refresh_token);
-              this.event_.next(true);
+              this.loggedEvent_.next(true);
               return true;
             }),
             catchError(() => {
-              this.event_.next(false);
+              this.loggedEvent_.next(false);
               return new BehaviorSubject<boolean>(false).asObservable();
             }),
             first());
       } else {
-        this.event_.next(false);
+        this.loggedEvent_.next(false);
         return false;
       }
     }
-    this.event_.next(true);
+    this.loggedEvent_.next(true);
     return true;
   }
 }
@@ -58,7 +64,7 @@ export class AuthenticationGuard implements CanActivate {
 })
 export class LoginGuard implements CanActivate {
 
-  private event_ = new BehaviorSubject<boolean>(this.user.isLogged);
+  private event_ = new BehaviorSubject<boolean>(false);
 
   constructor(private user: UserTokenService,
               private login: LoginService,
@@ -80,6 +86,9 @@ export class LoginGuard implements CanActivate {
       route: ActivatedRouteSnapshot,
       state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     if (!this.user.isLogged) {
+      if (this.user.isRefreshTokenExpired) {
+        return true;
+      }
       const token = this.user.refreshToken;
       if (token !== null) {
         return this.login.refresh(token).pipe(

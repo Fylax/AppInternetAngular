@@ -4,7 +4,7 @@ import {DatesService} from "../../../../services/dates.service";
 import {ShareMapInfoService} from "../../../../services/share-map-info.service";
 import {FormControl, Validators} from '@angular/forms';
 import {Moment} from 'moment';
-import {Subscription} from "rxjs/Subscription";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'dates',

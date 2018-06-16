@@ -5,7 +5,7 @@ import {LoginService} from "../../services/login.service";
 import {SpinnerService} from "../../services/spinner.service";
 import {HttpErrorResponse} from "@angular/common/http";
 import {ActivatedRoute, Router, RouterStateSnapshot} from "@angular/router";
-import {catchError, first, tap} from "rxjs/operators";
+import {catchError, first, map, tap} from "rxjs/operators";
 import {throwError} from "rxjs/internal/observable/throwError";
 
 @Component({
@@ -31,12 +31,18 @@ export class LoginComponent implements AfterViewInit {
     ]
   });
 
+  expired: boolean;
+
   constructor(private loginservice: LoginService,
               private user: UserTokenService,
               private spinner: SpinnerService,
               private route: ActivatedRoute,
               private router: Router,
               private injector: Injector) {
+    this.route.params.pipe(first())
+        .subscribe((params) => {
+          this.expired = params.session !== undefined;
+        });
   }
 
   login() {

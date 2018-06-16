@@ -10,6 +10,8 @@ import {AuthenticationGuard, LoginGuard} from "./guards/authentication.guard";
 import {CustomerPurchaseComponent} from '../components/logged/map/customer-purchase/customer-purchase.component';
 import {ErrorComponent} from '../components/error/error.component';
 import {UserComponent} from '../components/logged/map/user/user.component';
+import {AdminGuard, UserGuard, CustomerGuard} from "./guards/role.guard";
+import {UnreachableGuard} from "./guards/unreachable.guard";
 
 const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
@@ -21,34 +23,37 @@ const routes: Routes = [
   {
     path: 'map',
     component: LoggedComponent,
-    canActivate: [AuthenticationGuard],
+    canActivate: [AuthenticationGuard, UnreachableGuard],
     children: [
       {
         path: 'positions',
+        canActivate: [UnreachableGuard],
         component: MapComponent,
         children: [
           {
             path: 'customer',
             component: CustomerComponent,
-              children: [
-                  {
-                      path: 'confirmation',
-                      canActivate: [CustomerConfirmationGuard],
-                      component: CustomerConfirmationComponent
-                  }
-              ]
+            canActivate: [CustomerGuard],
+            children: [
+              {
+                path: 'confirmation',
+                canActivate: [CustomerConfirmationGuard],
+                component: CustomerConfirmationComponent
+              }
+            ]
           },
-            {
-                path: 'user',
-                component: UserComponent
-                /*children: [
-                    {
-                        path: 'send',
-                        canActivate: [UserConfirmationGuard],
-                        component: UserConfirmationComponent
-                    }
-                ]*/
-            }
+          {
+            path: 'user',
+            component: UserComponent,
+            canActivate: [UserGuard]
+            /*children: [
+                {
+                    path: 'send',
+                    canActivate: [UserConfirmationGuard],
+                    component: UserConfirmationComponent
+                }
+            ]*/
+          }
         ]
       }]
   }
@@ -56,7 +61,7 @@ const routes: Routes = [
   {
     path: 'purchases',
     component: LoggedComponent,
-    canActivate: [AuthenticationGuard],
+    canActivate: [AuthenticationGuard, CustomerGuard],
     children: [{
       path: '',
       component: CustomerPurchaseComponent
