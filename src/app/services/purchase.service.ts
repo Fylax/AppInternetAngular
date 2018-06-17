@@ -1,20 +1,35 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {Purchase} from '../model/Purchase';
-import {environment} from '../../environments/environment';
-import {map} from 'rxjs/operators';
+import {UrlService} from './url.service';
+import {fromPromise} from 'rxjs/internal-compatibility';
+import {switchMap} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PurchaseService {
 
-  private url = environment.baseUrl + 'positions/customer/purchase';
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private baseService: UrlService) { }
 
   getPurchaseList(): Observable<Purchase[]> {
-    return this.http.get<Purchase[]>(this.url);
+     return fromPromise(this.baseService.promise)
+         .pipe(
+             switchMap(urlList => {
+                return this.http.get<Purchase[]>(urlList['purchases']);
+             })
+         );
   }
+
+  getPurchaseDetails(purchaseId: string): Observable<Purchase> {
+    return fromPromise(this.baseService.promise)
+        .pipe(
+            switchMap(urlList => {
+              const url = `${urlList['purchaseDetails']}${purchaseId}`;
+              return this.http.get<Purchase>(url);
+            })
+        );
+  }
+
 }

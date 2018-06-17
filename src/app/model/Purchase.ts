@@ -1,10 +1,30 @@
+import {Position} from './Position';
+
 export class Purchase {
+  private _purchaseId: string;
   private _timestamp: number;
   private _status: string;
   private _amount: number;
   private _countPosition: number;
   private _start: number;
   private _end: number;
+  private _positions: Position[];
+
+  get purchaseId(): string {
+    return this._purchaseId;
+  }
+
+  set purchaseId(value: string) {
+    this._purchaseId = value;
+  }
+
+  get positions(): Position[] {
+    return this._positions;
+  }
+
+  set positions(value: Position[]) {
+    this._positions = value;
+  }
 
   get timestamp(): number {
     return this._timestamp;

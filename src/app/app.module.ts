@@ -37,6 +37,7 @@ import { CustomerPurchaseComponent } from './components/logged/map/customer-purc
 import {ErrorComponent} from './components/error/error.component';
 import { UserComponent } from './components/logged/map/user/user.component';
 import {InterCattor} from "./interceptors/cat.interceptor";
+import { CustomerPurchaseDetailsComponent } from './components/logged/map/customer-purchase-details/customer-purchase-details.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import {InterCattor} from "./interceptors/cat.interceptor";
     SpinnerComponent,
     ErrorComponent,
     CustomerPurchaseComponent,
-    UserComponent
+    UserComponent,
+    CustomerPurchaseDetailsComponent
   ],
   imports: [
     BrowserModule,

@@ -2,7 +2,6 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator} from '@angular/material';
 import {PurchaseService} from '../../../../services/purchase.service';
 import {PurchaseDataSource} from './PurchaseDataSource';
-import {Purchase} from '../../../../model/Purchase';
 
 @Component({
   selector: 'app-customer-purchase',
@@ -22,9 +21,5 @@ export class CustomerPurchaseComponent implements OnInit {
   ngOnInit() {
     this.dataSource = new PurchaseDataSource(this.purchaseService);
     this.dataSource.loadPurchases();
-  }
-
-  showDetails(row: Purchase): void {
-    console.log(row);
   }
 }

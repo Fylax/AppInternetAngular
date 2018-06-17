@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {UserService, UserTokenService} from "../../services/user.service";
+import {UrlService} from '../../services/url.service';
 
 
 @Component({
@@ -9,5 +10,4 @@ import {UserService, UserTokenService} from "../../services/user.service";
   providers: [{provide: UserService, useExisting: UserTokenService}]
 })
 export class LoggedComponent {
-
 }

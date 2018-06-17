@@ -10,6 +10,7 @@ import {AuthenticationGuard, LoginGuard} from "./guards/authentication.guard";
 import {CustomerPurchaseComponent} from '../components/logged/map/customer-purchase/customer-purchase.component';
 import {ErrorComponent} from '../components/error/error.component';
 import {UserComponent} from '../components/logged/map/user/user.component';
+import {CustomerPurchaseDetailsComponent} from '../components/logged/map/customer-purchase-details/customer-purchase-details.component';
 import {AdminGuard, UserGuard, CustomerGuard} from "./guards/role.guard";
 import {UnreachableGuard} from "./guards/unreachable.guard";
 
@@ -34,13 +35,11 @@ const routes: Routes = [
             path: 'customer',
             component: CustomerComponent,
             canActivate: [CustomerGuard],
-            children: [
-              {
-                path: 'confirmation',
-                component: CustomerConfirmationComponent,
-                canActivate: [CustomerConfirmationGuard]
-              }
-            ]
+          },
+          {
+            path: 'customer/confirmation',
+            component: CustomerConfirmationComponent,
+            canActivate: [CustomerConfirmationGuard]
           },
           {
             path: 'user',
@@ -65,6 +64,9 @@ const routes: Routes = [
     children: [{
       path: '',
       component: CustomerPurchaseComponent
+    }, {
+      path: ':id',
+      component: CustomerPurchaseDetailsComponent
     }]
   },
   {path: 'error/:id', component: ErrorComponent},
@@ -74,7 +76,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes, )
   ],
   exports: [RouterModule]
 })

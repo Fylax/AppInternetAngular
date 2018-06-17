@@ -13,6 +13,9 @@ export class TokenInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const url = req.url.substring(environment.baseUrl.length);
+    if (url === '' && this.user.accessToken === null) {
+      return next.handle(req);
+    }
     if (url === 'oauth/token') {
       return next.handle(req);
     }
