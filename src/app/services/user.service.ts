@@ -12,8 +12,10 @@ export class UserService {
   private readonly roles_: Role[] = [];
   private exp_ = 0;
 
-  constructor() {
-    this.checkLogin(localStorage.getItem('access'));
+  constructor(accessToken?: string) {
+    if (accessToken !== null) {
+      this.checkLogin(accessToken);
+    }
   }
 
   public get isLogged(): boolean {
@@ -32,7 +34,7 @@ export class UserService {
     return this.roles_.includes(role);
   }
 
-  protected parseToken(token: string): { exp: number, user_name: string, authorities: string[] } {
+  protected parseToken(token: string): { exp: number, user_name: string, authorities: string[] } | null {
     if (token !== null) {
       const parts = token.split('.');
       if (parts.length === 3) {
@@ -60,7 +62,6 @@ export class UserService {
       }
     }
   }
-
 }
 
 @Injectable({
@@ -72,10 +73,12 @@ export class UserTokenService extends UserService {
   private refreshExp_ = 0;
 
   constructor() {
-    super();
+    super(localStorage.getItem('access'));
     this.accessToken_ = localStorage.getItem('access');
-    const parsed = super.parseToken(this.refreshToken);
-    this.refreshExp_ = parsed.exp * 1000;
+    if (this.accessToken_ !== null) {
+      const parsed = super.parseToken(this.refreshToken);
+      this.refreshExp_ = parsed.exp * 1000;
+    }
   }
 
   public get isRefreshTokenExpired(): boolean {

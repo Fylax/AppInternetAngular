@@ -27,8 +27,8 @@ const routes: Routes = [
     children: [
       {
         path: 'positions',
-        canActivate: [UnreachableGuard],
         component: MapComponent,
+        canActivate: [UnreachableGuard],
         children: [
           {
             path: 'customer',
@@ -37,8 +37,8 @@ const routes: Routes = [
             children: [
               {
                 path: 'confirmation',
-                canActivate: [CustomerConfirmationGuard],
-                component: CustomerConfirmationComponent
+                component: CustomerConfirmationComponent,
+                canActivate: [CustomerConfirmationGuard]
               }
             ]
           },

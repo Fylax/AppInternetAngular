@@ -32,12 +32,12 @@ export class AuthenticationGuard implements CanActivate {
       route: ActivatedRouteSnapshot,
       state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     if (!this.user.isLogged) {
-      if (this.user.isRefreshTokenExpired) {
-        this.tokenEvent_.next();
-        return false;
-      }
       const token = this.user.refreshToken;
       if (token !== null) {
+        if (this.user.isRefreshTokenExpired) {
+          this.tokenEvent_.next();
+          return false;
+        }
         return this.login.refresh(token).pipe(
             map((resp) => {
               this.user.setTokens(resp.access_token, resp.refresh_token);
@@ -86,11 +86,11 @@ export class LoginGuard implements CanActivate {
       route: ActivatedRouteSnapshot,
       state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     if (!this.user.isLogged) {
-      if (this.user.isRefreshTokenExpired) {
-        return true;
-      }
       const token = this.user.refreshToken;
       if (token !== null) {
+        if (this.user.isRefreshTokenExpired) {
+          return true;
+        }
         return this.login.refresh(token).pipe(
             map((resp) => {
               this.user.setTokens(resp.access_token, resp.refresh_token);
