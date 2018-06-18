@@ -11,8 +11,8 @@ import {DatesService} from '../../../../services/dates.service';
   styleUrls: ['./customer-purchase-details.component.css']
 })
 export class CustomerPurchaseDetailsComponent implements OnInit {
-
-  purchaseDetails: Purchase;
+  displayedColumns = ['date', 'status', 'amount', 'count', 'start', 'end'];
+  purchaseDetails: Purchase[];
 
   constructor(private purchaseService: PurchaseService, private route: ActivatedRoute,
               datesService: DatesService) {
@@ -22,8 +22,8 @@ export class CustomerPurchaseDetailsComponent implements OnInit {
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     this.purchaseService.getPurchaseDetails(id).subscribe(p => {
-      this.purchaseDetails = p;
-      console.log(this.purchaseDetails);
+      p.countPosition = p.positions.length;
+      this.purchaseDetails = [p];
     });
   }
 

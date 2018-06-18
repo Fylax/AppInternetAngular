@@ -8,6 +8,7 @@ export class PurchaseDataSource implements DataSource<Purchase> {
 
   private purchasesSubject = new BehaviorSubject<Purchase[]>([]);
   private loadingSubject = new BehaviorSubject<boolean>(false);
+  private total = new BehaviorSubject<number>(0);
 
   public loading$ = this.loadingSubject.asObservable();
 
@@ -22,14 +23,21 @@ export class PurchaseDataSource implements DataSource<Purchase> {
     this.purchasesSubject.complete();
   }
 
-  loadPurchases() {
+  loadPurchases(pageIndex = 1, pageSize = 3) {
     this.loadingSubject.next(true);
 
-    this.purchaseService.getPurchaseList()
+    this.purchaseService.getPurchaseList(pageIndex, pageSize)
         .pipe(
             catchError(() => of([])),
             finalize(() => this.loadingSubject.next(false))
         )
-        .subscribe(purchases => this.purchasesSubject.next(purchases));
+        .subscribe(response => {
+          this.purchasesSubject.next(response.items); // these properties exist
+          this.total.next(response.totalElements);
+        });
+  }
+
+  get resultLength(): BehaviorSubject<number> {
+    return this.total;
   }
 }

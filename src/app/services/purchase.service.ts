@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {Purchase} from '../model/Purchase';
 import {UrlService} from './url.service';
 import {fromPromise} from 'rxjs/internal-compatibility';
-import {catchError, switchMap} from 'rxjs/operators';
+import {switchMap} from 'rxjs/operators';
 import {CustomerRequest} from '../components/logged/map/customer/CustomerRequest';
+import {PurchasesPaginationSupport} from '../model/PurchasesPaginationSupport';
 
 @Injectable({
   providedIn: 'root'
@@ -23,12 +24,15 @@ export class PurchaseService {
         );
   }
 
-  getPurchaseList(): Observable<Purchase[]> {
+  getPurchaseList(pageIndex = 1, pageSize = 3): Observable<PurchasesPaginationSupport> {
      return fromPromise(this.baseService.promise)
          .pipe(
              switchMap(urlList => {
-                return this.http.get<Purchase[]>(urlList['purchases']);
-             })
+                return this.http.get<PurchasesPaginationSupport>(urlList['purchases'], {
+                  params: new HttpParams()
+                      .set('page', pageIndex.toString())
+                      .set('limit', pageSize.toString())});
+                })
          );
   }
 

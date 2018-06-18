@@ -63,7 +63,7 @@ const routes: Routes = [
     canActivate: [AuthenticationGuard, CustomerGuard],
     children: [{
       path: '',
-      component: CustomerPurchaseComponent
+      component: CustomerPurchaseComponent,
     }, {
       path: ':id',
       component: CustomerPurchaseDetailsComponent
