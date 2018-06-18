@@ -3,6 +3,7 @@ import {Purchase} from '../../../../model/Purchase';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {PurchaseService} from '../../../../services/purchase.service';
 import {catchError, finalize} from 'rxjs/operators';
+import {PurchasesPaginationSupport} from '../../../../model/PurchasesPaginationSupport';
 
 export class PurchaseDataSource implements DataSource<Purchase> {
 
@@ -32,8 +33,10 @@ export class PurchaseDataSource implements DataSource<Purchase> {
             finalize(() => this.loadingSubject.next(false))
         )
         .subscribe(response => {
-          this.purchasesSubject.next(response.items); // these properties exist
-          this.total.next(response.totalElements);
+          if (response instanceof PurchasesPaginationSupport) {
+            this.purchasesSubject.next(response.items); // these properties exist
+            this.total.next(response.totalElements);
+          }
         });
   }
 
