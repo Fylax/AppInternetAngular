@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator} from '@angular/material';
 import {PurchaseService} from '../../../../services/purchase.service';
 import {PurchaseDataSource} from './PurchaseDataSource';
@@ -10,7 +10,7 @@ import {Subscription} from 'rxjs';
   templateUrl: './customer-purchase.component.html',
   styleUrls: ['./customer-purchase.component.css']
 })
-export class CustomerPurchaseComponent implements OnInit, AfterViewInit {
+export class CustomerPurchaseComponent implements OnInit, AfterViewInit, OnDestroy{
   displayedColumns = ['date', 'status', 'amount', 'count', 'start', 'end', 'details'];
   dataSource: PurchaseDataSource;
 
@@ -41,5 +41,10 @@ export class CustomerPurchaseComponent implements OnInit, AfterViewInit {
     this.dataSource.loadPurchases(
         this.paginator.pageIndex + 1,
         this.paginator.pageSize);
+  }
+
+  ngOnDestroy(): void {
+    this.paginator.page.unsubscribe();
+    this.subscription.unsubscribe();
   }
 }

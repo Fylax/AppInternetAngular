@@ -26,6 +26,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MAT_DATE_LOCALE, MatExpansionModule, MatInputModule} from '@angular/material';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatMomentDateModule} from '@angular/material-moment-adapter';
+import {MatListModule} from '@angular/material/list';
 
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {AppRoutingModule} from './app-routing/app-routing.module';
@@ -38,6 +39,7 @@ import {ErrorComponent} from './components/error/error.component';
 import { UserComponent } from './components/logged/map/user/user.component';
 import {InterCattor} from "./interceptors/cat.interceptor";
 import { CustomerPurchaseDetailsComponent } from './components/logged/map/customer-purchase-details/customer-purchase-details.component';
+import { AdminComponent } from './components/logged/map/admin/admin.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +54,8 @@ import { CustomerPurchaseDetailsComponent } from './components/logged/map/custom
     ErrorComponent,
     CustomerPurchaseComponent,
     UserComponent,
-    CustomerPurchaseDetailsComponent
+    CustomerPurchaseDetailsComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule,
@@ -77,7 +80,8 @@ import { CustomerPurchaseDetailsComponent } from './components/logged/map/custom
     MatProgressSpinnerModule,
     MatTableModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+    MatListModule
   ],
   providers: [
     {

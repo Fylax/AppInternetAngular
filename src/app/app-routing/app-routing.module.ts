@@ -13,6 +13,7 @@ import {UserComponent} from '../components/logged/map/user/user.component';
 import {CustomerPurchaseDetailsComponent} from '../components/logged/map/customer-purchase-details/customer-purchase-details.component';
 import {AdminGuard, UserGuard, CustomerGuard} from "./guards/role.guard";
 import {UnreachableGuard} from "./guards/unreachable.guard";
+import {AdminComponent} from '../components/logged/map/admin/admin.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
@@ -69,6 +70,15 @@ const routes: Routes = [
       component: CustomerPurchaseDetailsComponent
     }]
   },
+  {
+    path: 'admin',
+    component: LoggedComponent,
+    canActivate: [AuthenticationGuard, AdminGuard],
+    children: [{
+      path: '',
+      component: AdminComponent
+    }]
+  },
   {path: 'error/:id', component: ErrorComponent},
   {path: '**', redirectTo: '/error/404'}
 ];
@@ -76,7 +86,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, {enableTracing:true})
+    RouterModule.forRoot(routes)
   ],
   exports: [RouterModule]
 })

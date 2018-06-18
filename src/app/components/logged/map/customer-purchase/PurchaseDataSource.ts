@@ -32,11 +32,9 @@ export class PurchaseDataSource implements DataSource<Purchase> {
             catchError(() => of([])),
             finalize(() => this.loadingSubject.next(false))
         )
-        .subscribe(response => {
-          if (response instanceof PurchasesPaginationSupport) {
+        .subscribe((response: PurchasesPaginationSupport) => {
             this.purchasesSubject.next(response.items); // these properties exist
             this.total.next(response.totalElements);
-          }
         });
   }
 
