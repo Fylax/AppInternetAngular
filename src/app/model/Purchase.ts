@@ -27,7 +27,7 @@ export class Purchase {
   }
 
   get timestamp(): number {
-    return this._timestamp;
+    return this._timestamp * 1000;
   }
 
   get status(): string {
@@ -43,11 +43,11 @@ export class Purchase {
   }
 
   get start(): number {
-    return this._start;
+    return this._start * 1000;
   }
 
   get end(): number {
-    return this._end;
+    return this._end * 1000;
   }
 
   set timestamp(value: number) {

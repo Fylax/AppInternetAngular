@@ -6,6 +6,8 @@ import {LeafletDirective, LeafletDirectiveWrapper} from '@asymmetrik/ngx-leaflet
 import {SpinnerService} from "../../../../services/spinner.service";
 import {DatesService} from "../../../../services/dates.service";
 import {first} from "rxjs/operators";
+import {PurchaseService} from '../../../../services/purchase.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-customer-purchase',
@@ -20,7 +22,9 @@ export class CustomerConfirmationComponent implements OnInit, OnDestroy {
   constructor(private shareInfoService: ShareMapInfoService,
               private positionsService: PositionsService,
               private spinnerService: SpinnerService,
+              private purchaseService: PurchaseService,
               private location: Location,
+              private router: Router,
               datesService: DatesService,
               leafletDirective: LeafletDirective) {
     this.leafletDirective = new LeafletDirectiveWrapper(leafletDirective);
@@ -45,6 +49,17 @@ export class CustomerConfirmationComponent implements OnInit, OnDestroy {
       }).openTooltip().addTo(this.leafletDirective.getMap());
       this.spinnerService.hideSpinner();
     });
+  }
+
+  buyPositions(): void {
+    this.spinnerService.showSpinner();
+    this.purchaseService.buyPositions(this.shareInfoService.customerRequest)
+        .subscribe(
+            x => {
+              this.spinnerService.hideSpinner();
+              this.router.navigate(['purchases']);
+            }
+        );
   }
 
   ngOnDestroy() {

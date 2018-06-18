@@ -59,7 +59,7 @@ export class ShareMapInfoService {
         if (point === null) {
             this.marker_.next(false);
         } else {
-            //TODO add point into list markersUser???
+            // TODO add point into list markersUser???
             this.marker_.next(true);
         }
     }
@@ -124,5 +124,9 @@ export class ShareMapInfoService {
 
   set customerRequest(cr: CustomerRequest) {
     this.customerRequest_ = cr;
+  }
+
+  reset(): void {
+    this.customerRequest = new CustomerRequest();
   }
 }

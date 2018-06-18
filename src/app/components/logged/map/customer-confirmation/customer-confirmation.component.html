@@ -5,6 +5,7 @@
         (mousedown)="$event.stopPropagation();"
         (dblclick)="$event.stopPropagation();"
         (wheel)="$event.stopPropagation();"
+        (click)="buyPositions();$event.stopPropagation();"
         color="primary"
         id="buy-button">ACQUISTA</button>
 <button
