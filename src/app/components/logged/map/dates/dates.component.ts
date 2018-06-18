@@ -65,6 +65,7 @@ export class DatesComponent implements OnDestroy {
         this.eminutes.enable();
       }
     });
+
   }
 
   setDate(type: string, event: MatDatepickerInputEvent<Moment>) {

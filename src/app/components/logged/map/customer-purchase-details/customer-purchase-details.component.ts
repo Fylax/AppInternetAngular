@@ -3,6 +3,7 @@ import {PurchaseService} from '../../../../services/purchase.service';
 import {Purchase} from '../../../../model/Purchase';
 import {first} from 'rxjs/operators';
 import {ActivatedRoute} from '@angular/router';
+import {DatesService} from '../../../../services/dates.service';
 
 @Component({
   selector: 'app-customer-purchase-details',
@@ -13,7 +14,9 @@ export class CustomerPurchaseDetailsComponent implements OnInit {
 
   purchaseDetails: Purchase;
 
-  constructor(private purchaseService: PurchaseService, private route: ActivatedRoute) {
+  constructor(private purchaseService: PurchaseService, private route: ActivatedRoute,
+              datesService: DatesService) {
+    datesService.hideDates();
   }
 
   ngOnInit() {
@@ -23,6 +26,7 @@ export class CustomerPurchaseDetailsComponent implements OnInit {
       console.log(this.purchaseDetails);
     });
   }
+
 }
 
 

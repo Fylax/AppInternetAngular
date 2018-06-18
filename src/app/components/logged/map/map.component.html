@@ -8,7 +8,8 @@
                       (pointerdown)="$event.stopPropagation();"
                       (mousedown)="$event.stopPropagation();"
                       (dblclick)="$event.stopPropagation();"
-                      (wheel)="$event.stopPropagation();">
+                      (wheel)="$event.stopPropagation();"
+                      *ngIf="!hidden">
                 <mat-card-content>
                     <dates></dates>
                 </mat-card-content>
