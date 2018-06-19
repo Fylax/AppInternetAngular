@@ -12,8 +12,9 @@ import * as L from 'leaflet';
 })
 export class PositionsService {
 
-    private positionsUrl = `${environment.baseUrl}positions/customer`;  // URL to web api
-    private filePath = `${environment.baseIcons}myPositions.json`;
+    private positionsCustomerUrl = `${environment.baseUrl}positions/customer`;  // URL to web api
+    private positionsUserUrl = `${environment.baseUrl}positions/user`;  // URL to web api
+    private filePath = 'assets/myPositions.json';
 
     constructor(private http: HttpClient) {
     }
@@ -27,13 +28,17 @@ export class PositionsService {
      **/
 
     getPositionCount(cr: CustomerRequest): Observable<number> {
-        return this.http.get<number>(this.positionsUrl, {
+        return this.http.get<number>(this.positionsCustomerUrl, {
             headers: new HttpHeaders({'Accept': 'application/json'}),
             params: new HttpParams().set('request', btoa(JSON.stringify(cr)))
         });
     }
 
-    getJSON(): Observable<any> {
-        return this.http.get(this.filePath);
+    getPositions(): Observable<string> {
+        return this.http.get<string>(this.filePath);
+    }
+
+    postPositions(body: string): Observable<any> {
+        return this.http.post<any>(this.positionsUserUrl, body);
     }
 }

@@ -4,13 +4,19 @@ import {LeafletDirective, LeafletDirectiveWrapper} from '@asymmetrik/ngx-leaflet
 import {PositionsService} from '../../../../services/positions.service';
 import {ShareMapInfoService} from '../../../../services/share-map-info.service';
 import {SpinnerService} from '../../../../services/spinner.service';
-import {environment} from '../../../../../environments/environment';
-import {Marker} from 'leaflet';
-import {UserService} from '../../../../services/user.service';
-import {Position} from '../../../../model/Position';
-import {Http} from '@angular/http';
 import {HttpClient} from '@angular/common/http';
-import {map} from 'rxjs/operators';
+import {CustomerRequest} from '../customer/CustomerRequest';
+import {catchError, first, map} from 'rxjs/operators';
+import {throwError} from 'rxjs/internal/observable/throwError';
+
+
+const iconUrl = 'assets/my-icon.png';
+const myIcon = L.icon({
+    iconUrl: iconUrl,
+    iconSize: [60, 65] // size of the icon
+});
+L.Marker.prototype.options.icon = myIcon;
+
 
 @Component({
     selector: 'app-user',
@@ -20,68 +26,50 @@ import {map} from 'rxjs/operators';
 export class UserComponent implements OnInit {
 
     editableLayers = new L.FeatureGroup();
-
     leafletDirective: LeafletDirectiveWrapper;
-    drawOptions = {
-        edit: {
-            featureGroup: this.editableLayers
-        },
-        position: 'topright',
-        draw: {
-            marker: true,
-            circlemarker: false,
-            rectangle: false,
-            polyline: false,
-            circle: false,
-            polygon: false
-        }
-    };
 
     constructor(private shareInfoService: ShareMapInfoService,
                 private positionsService: PositionsService,
                 private http: HttpClient,
-                spinner: SpinnerService,
+                private spinner: SpinnerService,
                 leafletDirective: LeafletDirective) {
         spinner.hideSpinner();
         this.leafletDirective = new LeafletDirectiveWrapper(leafletDirective);
     }
 
     ngOnInit() {
-
-        const myIcon = L.icon({
-            iconUrl: `${environment.baseIcons}my-icon.png`,
-            iconSize: [52, 65] // size of the icon
-        });
-        const filePath = `${environment.baseIcons}myPositions.json`;
-        this.positionsService.getJSON()
-            .subscribe(data => {
-                const pos = JSON.parse(data);
-                L.marker(L.latLng([pos.latitude, pos.longitude]), {
-                        icon: myIcon
-                    }
-                )
-                    .bindPopup(pos.timestamp.toString())
-                    .addTo(this.leafletDirective.getMap());
-            });
-
         this.leafletDirective.init();
         this.leafletDirective.getMap().addLayer(this.editableLayers);
-        this.leafletDirective.getMap()
-            .on(L.Draw.Event.CREATED, (e: L.DrawEvents.Created) => {
-                if (e.type === 'draw:created' && e.layerType === 'marker') {
-                    L.marker((e.layer as L.Marker).getLatLng(), {
-                        icon: myIcon
-                    }).addTo(this.leafletDirective.getMap());
-                } else {
-                    return;
+
+        var array2 = new Array();
+        this.positionsService.getPositions()
+            .pipe(first())
+            .subscribe(data => {
+                var array = data.positions;
+                while (array.length > 0) {
+                    const pos = array.pop();
+                    L.marker(L.latLng([pos.position.coordinates[1], pos.position.coordinates[0]]), {
+                            icon: myIcon
+                        }
+                    )
+                        .bindPopup(pos.timestamp.toString())    //non ricordo se la data possiamo visualizzarla per privacy...
+                        .addTo(this.leafletDirective.getMap());
+
+                array2.push(pos);
                 }
-            })
-            .on(L.Draw.Event.EDITED, (e: L.DrawEvents.Edited) => {
-                const marker = (e.layers.getLayers()[0] as L.Marker);       // TODO l'ultimo marker? qualisasi..?
-                if (marker !== undefined) {
-                    this.shareInfoService.marker = marker;
-                }
+                //this.spinner.showSpinner();
+                this.positionsService.postPositions(array2.toString())
+                    .pipe(
+                        first(),
+                        catchError((error: Response) => {
+                            if (error.status === 500) {
+                                this.spinner.hideSpinner();
+                                return throwError(error);
+                            }
+                        })
+                    );
             });
+
     }
 
 
