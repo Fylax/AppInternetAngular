@@ -1,34 +1,32 @@
-{
-  "positions": [
-    {
-      "timestamp": 156534237,
-      "position": {
-        "type": "Point",
-        "coordinates": [
-          7.6624810695,
-          45.062059711
-        ]
-      }
-    },
-    {
-      "timestamp": 157474744,
-      "position": {
-        "type": "Point",
-        "coordinates": [
-          8.01010,
-          54.09
-        ]
-      }
-    },
-    {
-      "timestamp": 158383838,
-      "position": {
-        "type": "Point",
-        "coordinates": [
-          6.21202,
-          44.8889
-        ]
-      }
+[
+  {
+    "timestamp": 190430000,
+    "position": {
+      "type": "Point",
+      "coordinates": [
+        7.6624810695,
+        45.062059711
+      ]
     }
-  ]
-}
+  },
+  {
+    "timestamp": 190440000,
+    "position": {
+      "type": "Point",
+      "coordinates": [
+        7.6654810695,
+        45.042059711
+      ]
+    }
+  },
+  {
+    "timestamp": 190450000,
+    "position": {
+      "type": "Point",
+      "coordinates": [
+        7.670774459838867,
+        45.065488749118984
+      ]
+    }
+  }
+]

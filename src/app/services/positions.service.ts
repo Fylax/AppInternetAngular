@@ -6,6 +6,7 @@ import {environment} from '../../environments/environment';
 import {map} from 'rxjs/operators';
 import {Position} from '../model/Position';
 import * as L from 'leaflet';
+import {UserRequest} from '../components/logged/map/user/UserRequest';
 
 @Injectable({
     providedIn: 'root'
@@ -13,19 +14,11 @@ import * as L from 'leaflet';
 export class PositionsService {
 
     private positionsCustomerUrl = `${environment.baseUrl}positions/customer`;  // URL to web api
-    private positionsUserUrl = `${environment.baseUrl}positions/user`;  // URL to web api
+    private positionsUserUrl = `${environment.baseUrl}positions/user`;
     private filePath = 'assets/myPositions.json';
 
     constructor(private http: HttpClient) {
     }
-
-    /**
-     getPositions(timestamp: Date): Observable<Position[]> {
-        const currentUrl = `${this.positionsUrl}/${timestamp}`;
-        return this.http.get<Position[]>(currentUrl);
-        //.pipe(catchError(this.handleError('getPositions', [])))           //after add polygon and to implement handleError<T> ?!?!
-    }
-     **/
 
     getPositionCount(cr: CustomerRequest): Observable<number> {
         return this.http.get<number>(this.positionsCustomerUrl, {
@@ -38,7 +31,17 @@ export class PositionsService {
         return this.http.get<string>(this.filePath);
     }
 
-    postPositions(body: string): Observable<any> {
-        return this.http.post<any>(this.positionsUserUrl, body);
+    postPositions(body: string): Observable<Response> {
+        return this.http.post<Response>(this.positionsUserUrl, body);
+    }
+
+    getPositionsFromServer(ur: UserRequest): Observable<any> {
+        let myParams = new HttpParams();
+        myParams.append('start', (ur.start.getTime() * 1000).toString());
+        myParams.append('end', (ur.end.getTime() * 1000).toString());
+        return this.http.get<any>(this.positionsUserUrl, {
+            headers: new HttpHeaders({'Accept': 'application/json'}),
+            params: myParams
+        });
     }
 }

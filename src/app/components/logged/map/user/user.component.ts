@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import * as L from 'leaflet';
 import {LeafletDirective, LeafletDirectiveWrapper} from '@asymmetrik/ngx-leaflet';
 import {PositionsService} from '../../../../services/positions.service';
@@ -8,6 +8,8 @@ import {HttpClient} from '@angular/common/http';
 import {CustomerRequest} from '../customer/CustomerRequest';
 import {catchError, first, map} from 'rxjs/operators';
 import {throwError} from 'rxjs/internal/observable/throwError';
+import {RouterStateSnapshot} from '@angular/router';
+import {Subscription} from 'rxjs';
 
 
 const iconUrl = 'assets/my-icon.png';
@@ -23,10 +25,11 @@ L.Marker.prototype.options.icon = myIcon;
     templateUrl: './user.component.html',
     styleUrls: ['./user.component.css']
 })
-export class UserComponent implements OnInit {
+export class UserComponent implements OnInit, AfterViewInit, OnDestroy {
 
     editableLayers = new L.FeatureGroup();
     leafletDirective: LeafletDirectiveWrapper;
+    subscription: Subscription;
 
     constructor(private shareInfoService: ShareMapInfoService,
                 private positionsService: PositionsService,
@@ -41,36 +44,61 @@ export class UserComponent implements OnInit {
         this.leafletDirective.init();
         this.leafletDirective.getMap().addLayer(this.editableLayers);
 
-        var array2 = new Array();
+        this.spinner.showSpinner();
         this.positionsService.getPositions()
             .pipe(first())
             .subscribe(data => {
-                var array = data.positions;
-                while (array.length > 0) {
-                    const pos = array.pop();
-                    L.marker(L.latLng([pos.position.coordinates[1], pos.position.coordinates[0]]), {
-                            icon: myIcon
-                        }
-                    )
-                        .bindPopup(pos.timestamp.toString())    //non ricordo se la data possiamo visualizzarla per privacy...
-                        .addTo(this.leafletDirective.getMap());
-
-                array2.push(pos);
-                }
-                //this.spinner.showSpinner();
-                this.positionsService.postPositions(array2.toString())
+                this.positionsService.postPositions(JSON.stringify(data))
                     .pipe(
                         first(),
                         catchError((error: Response) => {
-                            if (error.status === 500) {
+                            if (error.status !== 201) {
                                 this.spinner.hideSpinner();
+                                console.log('Error: ' + error.status);
                                 return throwError(error);
                             }
                         })
-                    );
+                    ).subscribe(response => {
+                        this.spinner.hideSpinner();
+                });
             });
-
     }
 
+    ngAfterViewInit() {
+        this.subscription = this.shareInfoService.infoUserReady.subscribe(ready => {
+            if (ready) {
+                document.getElementById('confirmationUser-button').style.display = 'block';
+            } else {
+                document.getElementById('confirmationUser-button').style.display = 'none';
+            }
+        });
+    }
+
+    ngOnDestroy(): void {
+        this.subscription.unsubscribe();
+    }
+
+    showPositions(): void {
+        this.spinner.showSpinner();
+        this.positionsService.getPositionsFromServer(this.shareInfoService.userRequest)
+            .pipe(first())
+            .subscribe(
+            result => {
+                while (result.positionList.length > 0) {
+                    const pos = result.positionList.pop();
+                    const d = new Date(pos.timestamp * 1000);
+                    L.marker(L.latLng([pos.latitude, pos.longitude]), {
+                            icon: myIcon
+                        }
+                    )
+                        .bindPopup(d.toUTCString())
+                        .addTo(this.leafletDirective.getMap());
+
+                }
+                this.spinner.hideSpinner();
+                document.getElementById('confirmationUser-button').style.display = 'none';
+            }
+        );
+    }
 
 }
