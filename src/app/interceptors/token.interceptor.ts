@@ -3,7 +3,6 @@ import {HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpHeaders} from 
 import {Observable} from 'rxjs';
 import {UserTokenService} from "../services/user.service";
 import {environment} from "../../environments/environment";
-import {LoginService} from "../services/login.service";
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -13,9 +12,7 @@ export class TokenInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const url = req.url.substring(environment.baseUrl.length);
-    let headers = new HttpHeaders({
-      'Accept': 'application/json'
-    });
+    let headers = req.headers.set('Accept', 'application/json');
     if (url === 'oauth/token' || (url === '' && !this.user.isLogged)) {
       return next.handle(req.clone({
             headers: headers

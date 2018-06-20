@@ -1,9 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {PurchaseService} from '../../../../services/purchase.service';
-import {Purchase} from '../../../../model/Purchase';
+import {PurchaseService} from '../../../services/purchase.service';
+import {Purchase} from '../../../model/Purchase';
 import {first} from 'rxjs/operators';
 import {ActivatedRoute} from '@angular/router';
-import {DatesService} from '../../../../services/dates.service';
+import {DatesService} from '../../../services/dates.service';
 
 @Component({
   selector: 'app-customer-purchase-details',

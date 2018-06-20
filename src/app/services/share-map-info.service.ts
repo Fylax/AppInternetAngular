@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
-import {CustomerRequest} from '../components/logged/map/customer/CustomerRequest';
+import {CustomerRequest} from '../model/CustomerRequest';
 import {Observable} from 'rxjs/internal/Observable';
 import {BehaviorSubject} from 'rxjs/internal/BehaviorSubject';
 import {Moment} from 'moment';
 import {Marker, Polygon} from 'leaflet';
-import {UserRequest} from '../components/logged/map/user/UserRequest';
+import {UserRequest} from '../model/UserRequest';
 
 @Injectable({
     providedIn: 'root'

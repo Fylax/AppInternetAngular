@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator} from '@angular/material';
-import {PurchaseService} from '../../../../services/purchase.service';
+import {PurchaseService} from '../../../services/purchase.service';
 import {PurchaseDataSource} from './PurchaseDataSource';
 import {first, tap} from 'rxjs/operators';
 import {Subscription} from 'rxjs';

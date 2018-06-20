@@ -5,7 +5,7 @@ import {Purchase} from '../model/Purchase';
 import {Urls, UrlService} from './url.service';
 import {fromPromise} from 'rxjs/internal-compatibility';
 import {switchMap} from 'rxjs/operators';
-import {CustomerRequest} from '../components/logged/map/customer/CustomerRequest';
+import {CustomerRequest} from '../model/CustomerRequest';
 import {PurchasesPaginationSupport} from '../model/PurchasesPaginationSupport';
 import * as urijs from 'urijs';
 

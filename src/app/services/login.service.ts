@@ -41,8 +41,7 @@ export class LoginService {
                   urlList.oauth.href,
                   body, {
                     headers: new HttpHeaders({
-                      'Content-Type': 'application/x-www-form-urlencoded',
-                      'Accept': 'application/json'
+                      'Content-Type': 'application/x-www-form-urlencoded'
                     }),
                     responseType: 'json',
                     withCredentials: true

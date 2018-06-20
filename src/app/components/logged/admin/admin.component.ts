@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator} from '@angular/material';
-import {AdminService} from '../../../../services/admin.service';
+import {AdminService} from '../../../services/admin.service';
 import {tap} from 'rxjs/operators';
 import {UserDataSource} from './UserDataSource';
 import {Subscription} from 'rxjs';

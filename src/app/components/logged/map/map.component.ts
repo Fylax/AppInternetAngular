@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import * as L from 'leaflet';
 import {Subscription} from 'rxjs';
 import {DatesService} from '../../../services/dates.service';

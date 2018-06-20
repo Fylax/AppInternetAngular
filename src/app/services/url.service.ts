@@ -36,7 +36,7 @@ export class UrlService {
     return Object.keys(this.links).length === 1;
   }
 
-  get promise() {
+  get promise(): Promise<Urls> {
     return this.promise_;
   }
 
