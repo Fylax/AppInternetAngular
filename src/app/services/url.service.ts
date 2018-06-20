@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../environments/environment';
-import {BehaviorSubject} from 'rxjs';
 import {first} from 'rxjs/operators';
 
 interface Url {
@@ -9,16 +8,16 @@ interface Url {
 }
 
 export interface Urls {
-    oauth?: Url;
-    userPositions?: Url;
-    customerPositions?: Url;
-    customerPurchases?: Url;
-    customerPurchaseDetails?: Url;
-    adminUsers?: Url;
-    adminCustomers?: Url;
-    adminCustomerPurchases?: Url;
-    adminCustomerPurchase?: Url;
-    adminUserPositions?: Url;
+  oauth?: Url;
+  userPositions?: Url;
+  customerPositions?: Url;
+  customerPurchases?: Url;
+  customerPurchaseDetails?: Url;
+  adminUsers?: Url;
+  adminCustomers?: Url;
+  adminCustomerPurchases?: Url;
+  adminCustomerPurchase?: Url;
+  adminUserPositions?: Url;
 }
 
 @Injectable({
@@ -27,13 +26,25 @@ export interface Urls {
 export class UrlService {
 
   private links: Urls = {};
-  promise;
+  private promise_: Promise<Urls>;
 
   constructor(private http: HttpClient) {
-    this.promise = new Promise((resolve, reject) => {
+    this.refresh();
+  }
+
+  get hasOnlyOauth(): boolean {
+    return Object.keys(this.links).length === 1;
+  }
+
+  get promise() {
+    return this.promise;
+  }
+
+  refresh(): void {
+    this.promise_ = new Promise((resolve) => {
       this.http.get(environment.baseUrl)
           .pipe(first())
-          .subscribe((json: {_links: Urls}) => {
+          .subscribe((json: { _links: Urls }) => {
             this.links = json._links;
             resolve(this.links);
           });

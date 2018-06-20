@@ -1,10 +1,10 @@
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from "@angular/router";
 import {Injectable} from "@angular/core";
-import {Observable} from "rxjs/internal/Observable";
 import {Role, UserTokenService} from '../../services/user.service';
 import {LoginService} from "../../services/login.service";
 import {catchError, first, map} from "rxjs/operators";
-import {BehaviorSubject, Subject} from "rxjs";
+import {Observable, BehaviorSubject, Subject} from "rxjs";
+import {UrlService} from "../../services/url.service";
 
 
 @Injectable({
@@ -68,11 +68,15 @@ export class LoginGuard implements CanActivate {
 
   constructor(private user: UserTokenService,
               private login: LoginService,
-              router: Router) {
+              router: Router,
+              url: UrlService) {
     this.event_.subscribe((logged) => {
       if (logged) {
+        if (url.hasOnlyOauth) {
+          url.refresh();
+        }
         if (this.user.roles.includes(Role.ADMIN)) {
-          router.navigate(['map', 'positions', 'user']); // TODO change with '.../admin'
+          router.navigate(['map', 'positions', 'admin']);
         } else if (this.user.roles.includes(Role.CUSTOMER)) {
           router.navigate(['map', 'positions', 'customer']);
         } else if (this.user.roles.includes(Role.USER)) {

@@ -48,9 +48,8 @@ export class PurchaseService {
   getPurchaseDetails(purchaseId: string): Observable<Purchase> {
     return fromPromise(this.baseService.promise)
         .pipe(
-            switchMap(urlList => {
-              const url = `${urlList['customerPurchaseDetails']}${purchaseId}`;
-              return this.http.get<Purchase>(url);
+            switchMap((urlList: Urls) => {
+              return this.http.get<Purchase>(`${urlList.customerPurchaseDetails.href}${purchaseId}`);
             })
         );
   }

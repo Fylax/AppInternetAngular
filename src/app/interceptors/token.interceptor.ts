@@ -13,25 +13,24 @@ export class TokenInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const url = req.url.substring(environment.baseUrl.length);
-    if (url === '' && !this.user.isLogged) {
-      return next.handle(req);
-    }
-    if (url === 'oauth/token') {
-      return next.handle(req);
-    }
-
     let headers = new HttpHeaders({
-      'Accept': 'application/json',
-      'Authorization': `Bearer ${this.user.accessToken}`
+      'Accept': 'application/json'
     });
+    if (url === 'oauth/token' || (url === '' && !this.user.isLogged)) {
+      return next.handle(req.clone({
+            headers: headers
+          })
+      );
+    }
 
+    headers = headers.set('Authorization', `Bearer ${this.user.accessToken}`);
     if (req.method.toUpperCase() === 'POST') {
       headers = headers.set('Content-Type', 'application/json');
     }
 
-    const request = req.clone({
-      headers: headers
-    });
-    return next.handle(request);
+    return next.handle(req.clone({
+          headers: headers
+        })
+    );
   }
 }
