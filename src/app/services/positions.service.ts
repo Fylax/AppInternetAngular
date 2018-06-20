@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable, pipe} from 'rxjs';
-import {CustomerRequest} from '../components/logged/map/customer/CustomerRequest';
+import {CustomerRequest} from '../model/CustomerRequest';
 import {environment} from '../../environments/environment';
 import {map, switchMap} from 'rxjs/operators';
 import {Position} from '../model/Position';
 import * as L from 'leaflet';
-import {UserRequest} from '../components/logged/map/user/UserRequest';
+import {UserRequest} from '../model/UserRequest';
 import {fromPromise} from "rxjs/internal-compatibility";
 import {Urls, UrlService} from "./url.service";
 import {from} from "rxjs/internal/observable/from";

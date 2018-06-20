@@ -1,0 +1,12 @@
+#card {
+    width: 90%;
+    margin: 30px auto 30px auto;
+}
+
+.drop-zone {
+    border: dotted 3px lightgray;
+}
+
+.nv-file-over {
+    border: dotted 3px red;
+}

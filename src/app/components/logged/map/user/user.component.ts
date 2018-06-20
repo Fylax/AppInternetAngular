@@ -5,10 +5,8 @@ import {PositionsService} from '../../../../services/positions.service';
 import {ShareMapInfoService} from '../../../../services/share-map-info.service';
 import {SpinnerService} from '../../../../services/spinner.service';
 import {HttpClient} from '@angular/common/http';
-import {CustomerRequest} from '../customer/CustomerRequest';
-import {catchError, first, map} from 'rxjs/operators';
+import {catchError, first} from 'rxjs/operators';
 import {throwError} from 'rxjs/internal/observable/throwError';
-import {RouterStateSnapshot} from '@angular/router';
 import {Subscription} from 'rxjs';
 
 

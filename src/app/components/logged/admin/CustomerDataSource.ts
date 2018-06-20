@@ -1,15 +1,13 @@
 import {catchError, finalize} from 'rxjs/operators';
-import {Purchase} from '../../../../model/Purchase';
-import {PurchaseService} from '../../../../services/purchase.service';
 import {CollectionViewer, DataSource} from '@angular/cdk/collections';
 import {BehaviorSubject, Observable, of} from 'rxjs';
-import {AdminService} from '../../../../services/admin.service';
-import {Link} from '../../../../model/Link';
-import {AdminPaginatorSupport} from '../../../../model/AdminPaginatorSupport';
+import {AdminService} from '../../../services/admin.service';
+import {Link} from '../../../model/Link';
+import {AdminPaginatorSupport} from '../../../model/AdminPaginatorSupport';
 
-export class UserDataSource implements DataSource<Link> {
+export class CustomerDataSource implements DataSource<Link> {
 
-  private usersSubject = new BehaviorSubject<Link[]>([]);
+  private customersSubject = new BehaviorSubject<Link[]>([]);
   private loadingSubject = new BehaviorSubject<boolean>(false);
   private total = new BehaviorSubject<number>(0);
 
@@ -18,24 +16,24 @@ export class UserDataSource implements DataSource<Link> {
   constructor(private adminService: AdminService) {}
 
   connect(collectionViewer: CollectionViewer): Observable<Link[]> {
-    return this.usersSubject.asObservable();
+    return this.customersSubject.asObservable();
   }
 
   disconnect(collectionViewer: CollectionViewer): void {
     this.loadingSubject.complete();
-    this.usersSubject.complete();
+    this.customersSubject.complete();
   }
 
-  loadUsers(pageIndex = 1, pageSize = 3) {
+  loadCustomer(pageIndex = 1, pageSize = 3) {
     this.loadingSubject.next(true);
 
-    this.adminService.getUsers(pageIndex, pageSize)
+    this.adminService.getCustomers(pageIndex, pageSize)
         .pipe(
             catchError(() => of([])),
             finalize(() => this.loadingSubject.next(false))
         )
         .subscribe((response: AdminPaginatorSupport) => {
-          this.usersSubject.next(response.items); // these properties exist
+          this.customersSubject.next(response.items); // these properties exist
           this.total.next(response.totalElements);
         });
   }

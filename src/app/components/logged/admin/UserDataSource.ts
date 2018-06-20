@@ -1,13 +1,15 @@
 import {catchError, finalize} from 'rxjs/operators';
+import {Purchase} from '../../../model/Purchase';
+import {PurchaseService} from '../../../services/purchase.service';
 import {CollectionViewer, DataSource} from '@angular/cdk/collections';
 import {BehaviorSubject, Observable, of} from 'rxjs';
-import {AdminService} from '../../../../services/admin.service';
-import {Link} from '../../../../model/Link';
-import {AdminPaginatorSupport} from '../../../../model/AdminPaginatorSupport';
+import {AdminService} from '../../../services/admin.service';
+import {Link} from '../../../model/Link';
+import {AdminPaginatorSupport} from '../../../model/AdminPaginatorSupport';
 
-export class CustomerDataSource implements DataSource<Link> {
+export class UserDataSource implements DataSource<Link> {
 
-  private customersSubject = new BehaviorSubject<Link[]>([]);
+  private usersSubject = new BehaviorSubject<Link[]>([]);
   private loadingSubject = new BehaviorSubject<boolean>(false);
   private total = new BehaviorSubject<number>(0);
 
@@ -16,24 +18,24 @@ export class CustomerDataSource implements DataSource<Link> {
   constructor(private adminService: AdminService) {}
 
   connect(collectionViewer: CollectionViewer): Observable<Link[]> {
-    return this.customersSubject.asObservable();
+    return this.usersSubject.asObservable();
   }
 
   disconnect(collectionViewer: CollectionViewer): void {
     this.loadingSubject.complete();
-    this.customersSubject.complete();
+    this.usersSubject.complete();
   }
 
-  loadCustomer(pageIndex = 1, pageSize = 3) {
+  loadUsers(pageIndex = 1, pageSize = 3) {
     this.loadingSubject.next(true);
 
-    this.adminService.getCustomers(pageIndex, pageSize)
+    this.adminService.getUsers(pageIndex, pageSize)
         .pipe(
             catchError(() => of([])),
             finalize(() => this.loadingSubject.next(false))
         )
         .subscribe((response: AdminPaginatorSupport) => {
-          this.customersSubject.next(response.items); // these properties exist
+          this.usersSubject.next(response.items); // these properties exist
           this.total.next(response.totalElements);
         });
   }

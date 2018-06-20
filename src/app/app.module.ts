@@ -34,12 +34,14 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {LoginComponent} from './components/login/login.component';
 import {LoggedComponent} from './components/logged/logged.component';
 import {TokenInterceptor} from './interceptors/token.interceptor';
-import {CustomerPurchaseComponent} from './components/logged/map/customer-purchase/customer-purchase.component';
+import {CustomerPurchaseComponent} from './components/logged/customer-purchase/customer-purchase.component';
 import {ErrorComponent} from './components/error/error.component';
 import {UserComponent} from './components/logged/map/user/user.component';
 import {InterCattor} from './interceptors/cat.interceptor';
-import {CustomerPurchaseDetailsComponent} from './components/logged/map/customer-purchase-details/customer-purchase-details.component';
-import {AdminComponent} from './components/logged/map/admin/admin.component';
+import {CustomerPurchaseDetailsComponent} from './components/logged/customer-purchase-details/customer-purchase-details.component';
+import {AdminComponent} from './components/logged/admin/admin.component';
+import { UserUploadComponent } from './components/logged/user-upload/user-upload.component';
+import {FileUploadModule} from "ng2-file-upload";
 
 @NgModule({
   declarations: [
@@ -55,7 +57,8 @@ import {AdminComponent} from './components/logged/map/admin/admin.component';
     CustomerPurchaseComponent,
     UserComponent,
     CustomerPurchaseDetailsComponent,
-    AdminComponent
+    AdminComponent,
+    UserUploadComponent
   ],
   imports: [
     BrowserModule,
@@ -81,7 +84,8 @@ import {AdminComponent} from './components/logged/map/admin/admin.component';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatListModule
+    MatListModule,
+    FileUploadModule
   ],
   providers: [
     {
