@@ -2,31 +2,38 @@ import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/c
 import {MatPaginator} from '@angular/material';
 import {PurchaseService} from '../../../../services/purchase.service';
 import {PurchaseDataSource} from './PurchaseDataSource';
-import {tap} from 'rxjs/operators';
+import {first, tap} from 'rxjs/operators';
 import {Subscription} from 'rxjs';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-customer-purchase',
   templateUrl: './customer-purchase.component.html',
   styleUrls: ['./customer-purchase.component.css']
 })
-export class CustomerPurchaseComponent implements OnInit, AfterViewInit, OnDestroy{
+export class CustomerPurchaseComponent implements OnInit, AfterViewInit, OnDestroy {
   displayedColumns = ['date', 'status', 'amount', 'count', 'start', 'end', 'details'];
   dataSource: PurchaseDataSource;
 
   private subscription: Subscription;
   resultsLength = 0;
 
+  customerId: string;
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private purchaseService: PurchaseService) {
+  constructor(private purchaseService: PurchaseService,
+              route: ActivatedRoute) {
+    route.queryParams.pipe(first()).subscribe((param) => {
+      this.customerId = param.customer;
+    });
   }
 
   ngOnInit() {
     this.dataSource = new PurchaseDataSource(this.purchaseService);
     this.subscription = this.dataSource.resultLength
         .subscribe(totals => this.resultsLength = totals);
-    this.dataSource.loadPurchases(1, 3);
+    this.dataSource.loadPurchases(1, 3, this.customerId);
   }
 
   ngAfterViewInit(): void {
@@ -40,7 +47,8 @@ export class CustomerPurchaseComponent implements OnInit, AfterViewInit, OnDestr
   loadPurchasesPage() {
     this.dataSource.loadPurchases(
         this.paginator.pageIndex + 1,
-        this.paginator.pageSize);
+        this.paginator.pageSize,
+        this.customerId);
   }
 
   ngOnDestroy(): void {

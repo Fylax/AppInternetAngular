@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {UrlService} from './url.service';
+import {Urls, UrlService} from './url.service';
 import {switchMap} from 'rxjs/operators';
 import {fromPromise} from 'rxjs/internal-compatibility';
 import {PurchasesPaginationSupport} from '../model/PurchasesPaginationSupport';
@@ -17,8 +17,8 @@ export class AdminService {
   getUsers(pageIndex = 1, pageSize = 3): Observable<AdminPaginatorSupport> {
     return fromPromise(this.urlService.promise)
         .pipe(
-            switchMap(urlList => {
-              return this.http.get<AdminPaginatorSupport>(urlList['users'], {
+            switchMap((urlList: Urls) => {
+              return this.http.get<AdminPaginatorSupport>(urlList.adminUsers.href, {
                 params: new HttpParams()
                     .set('page', pageIndex.toString())
                     .set('limit', pageSize.toString())});
@@ -29,8 +29,8 @@ export class AdminService {
   getCustomers(pageIndex = 1, pageSize = 3): Observable<AdminPaginatorSupport> {
     return fromPromise(this.urlService.promise)
         .pipe(
-            switchMap(urlList => {
-              return this.http.get<AdminPaginatorSupport>(urlList['customers'], {
+            switchMap((urlList: Urls) => {
+              return this.http.get<AdminPaginatorSupport>(urlList.adminCustomers.href, {
                 params: new HttpParams()
                     .set('page', pageIndex.toString())
                     .set('limit', pageSize.toString())});

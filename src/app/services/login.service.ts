@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {environment} from "../../environments/environment";
-import {UrlService} from './url.service';
+import {Urls, UrlService} from './url.service';
 import {switchMap} from 'rxjs/operators';
 import {Purchase} from '../model/Purchase';
 import {fromPromise} from 'rxjs/internal-compatibility';
@@ -24,9 +24,9 @@ export class LoginService {
 
     return fromPromise(this.baseService.promise)
         .pipe(
-            switchMap(urlList => {
+            switchMap((urlList: Urls) => {
               return this.http.post<{ access_token: string, refresh_token: string }>(
-                  urlList['oauth'],
+                  urlList.oauth.href,
                   body.toString(), {
                     headers: new HttpHeaders({
                       'Content-Type': 'application/x-www-form-urlencoded',
@@ -47,9 +47,9 @@ export class LoginService {
         .set('refresh_token', refreshToken);
     return fromPromise(this.baseService.promise)
         .pipe(
-            switchMap(urlList => {
+            switchMap((urlList: Urls) => {
               return this.http.post<{ access_token: string, refresh_token: string }>(
-                  urlList['oauth'],
+                  urlList.oauth.href,
                   body.toString(), {
                     headers: new HttpHeaders({
                       'Content-Type': 'application/x-www-form-urlencoded',

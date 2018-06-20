@@ -25,7 +25,10 @@
             "styles": [
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/urijs/src/URI.js",
+              "node_modules/urijs/src/URITemplate.js"
+            ]
           },
           "configurations": {
             "production": {

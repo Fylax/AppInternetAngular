@@ -24,10 +24,10 @@ export class PurchaseDataSource implements DataSource<Purchase> {
     this.purchasesSubject.complete();
   }
 
-  loadPurchases(pageIndex = 1, pageSize = 3) {
+  loadPurchases(pageIndex = 1, pageSize = 3, customerId?: string) {
     this.loadingSubject.next(true);
 
-    this.purchaseService.getPurchaseList(pageIndex, pageSize)
+    this.purchaseService.getPurchaseList(pageIndex, pageSize, customerId)
         .pipe(
             catchError(() => of([])),
             finalize(() => this.loadingSubject.next(false))

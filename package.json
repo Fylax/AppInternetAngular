@@ -30,7 +30,8 @@
     "leaflet-draw": "^1.0.2",
     "moment": "^2.22.2",
     "rxjs": "^6.2.1",
-    "zone.js": "^0.8.26"
+    "zone.js": "^0.8.26",
+    "urijs": "^1.19.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.6.8",
@@ -46,6 +47,7 @@
     "protractor": "~5.3.0",
     "ts-node": "~6.1.1",
     "tslint": "~5.10.0",
-    "typescript": "~2.7.0"
+    "typescript": "~2.7.0",
+    "@types/urijs": "^1.15.38"
   }
 }

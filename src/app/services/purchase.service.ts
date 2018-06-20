@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {Purchase} from '../model/Purchase';
-import {UrlService} from './url.service';
+import {Urls, UrlService} from './url.service';
 import {fromPromise} from 'rxjs/internal-compatibility';
 import {switchMap} from 'rxjs/operators';
 import {CustomerRequest} from '../components/logged/map/customer/CustomerRequest';
 import {PurchasesPaginationSupport} from '../model/PurchasesPaginationSupport';
+import * as urijs from 'urijs';
 
 @Injectable({
   providedIn: 'root'
@@ -18,17 +19,25 @@ export class PurchaseService {
   buyPositions(cr: CustomerRequest): Observable<{}> {
     return fromPromise(this.baseService.promise)
         .pipe(
-            switchMap(urlList => {
-              return this.http.post(urlList['customerPositions'], cr.toJSON());
+            switchMap((urlList: Urls) => {
+              return this.http.post(urlList.customerPurchases.href, cr.toJSON());
             })
         );
   }
 
-  getPurchaseList(pageIndex = 1, pageSize = 3): Observable<PurchasesPaginationSupport> {
-     return fromPromise(this.baseService.promise)
+  getPurchaseList(pageIndex = 1, pageSize = 3, customerId?: string): Observable<PurchasesPaginationSupport> {
+    return fromPromise(this.baseService.promise)
          .pipe(
-             switchMap(urlList => {
-                return this.http.get<PurchasesPaginationSupport>(urlList['purchases'], {
+             switchMap((urlList: Urls) => {
+               let url: string;
+               if (customerId === null) {
+                 url = urlList.customerPurchases.href;
+               } else {
+                 url = URITemplate(urlList.adminCustomerPurchases.href).expand( {
+                   id: customerId
+                 }).valueOf();
+               }
+                return this.http.get<PurchasesPaginationSupport>(url, {
                   params: new HttpParams()
                       .set('page', pageIndex.toString())
                       .set('limit', pageSize.toString())});
@@ -40,7 +49,7 @@ export class PurchaseService {
     return fromPromise(this.baseService.promise)
         .pipe(
             switchMap(urlList => {
-              const url = `${urlList['purchaseDetails']}${purchaseId}`;
+              const url = `${urlList['customerPurchaseDetails']}${purchaseId}`;
               return this.http.get<Purchase>(url);
             })
         );
