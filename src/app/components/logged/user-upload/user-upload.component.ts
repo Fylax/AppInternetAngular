@@ -10,13 +10,15 @@ import {UserTokenService} from "../../../services/user.service";
 })
 export class UserUploadComponent implements OnInit {
 
-  public uploader: FileUploader;
-  public hasBaseDropZoneOver = false;
+  uploader: FileUploader = new FileUploader({url: ""});
+  hasBaseDropZoneOver = false;
+  displayedColumns = ['name', 'size', 'action', 'progress'];
 
   constructor(baseService: UrlService, user: UserTokenService) {
     baseService.promise.then((urlList: Urls) =>
         this.uploader = new FileUploader({
-          url: urlList.userPositions.href
+          url: urlList.userPositions.href,
+          disableMultipart: true
         }));
   }
 
