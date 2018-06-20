@@ -29,7 +29,7 @@ export class UserGuard implements CanActivate {
   canActivate(
       next: ActivatedRouteSnapshot,
       state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    return this.user.hasRole(Role.USER);
+    return this.user.hasRole(Role.USER) || this.user.hasRole(Role.ADMIN);
   }
 }
 
@@ -44,6 +44,6 @@ export class CustomerGuard implements CanActivate {
   canActivate(
       next: ActivatedRouteSnapshot,
       state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    return this.user.hasRole(Role.CUSTOMER);
+    return this.user.hasRole(Role.CUSTOMER) || this.user.hasRole(Role.ADMIN);
   }
 }

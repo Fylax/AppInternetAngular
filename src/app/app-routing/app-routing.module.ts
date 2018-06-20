@@ -30,7 +30,7 @@ const routes: Routes = [
       {
         path: 'positions',
         component: MapComponent,
-        canActivate: [UnreachableGuard],
+        canActivate: [UnreachableGuard, CustomerGuard],
         children: [
           {
             path: 'customer',
@@ -78,11 +78,18 @@ const routes: Routes = [
       path: '',
       component: AdminComponent,
     },
+    {
+      path: 'customer/:id/purchases',
+      component: CustomerPurchaseComponent
+    },
+    {
+      path: 'customer/:id/purchases/:pid',
+      component: CustomerPurchaseDetailsComponent
+    },
       {
-        path: 'customer/:id/purchases',
-        component: CustomerPurchaseComponent
-      }
-      ]
+        path: 'user/:id/positions',
+        component: UserComponent
+      }]
   },
   {path: 'error/:id', component: ErrorComponent},
   {path: '**', redirectTo: '/error/404'},

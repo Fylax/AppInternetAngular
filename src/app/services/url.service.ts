@@ -37,7 +37,7 @@ export class UrlService {
   }
 
   get promise() {
-    return this.promise;
+    return this.promise_;
   }
 
   refresh(): void {
