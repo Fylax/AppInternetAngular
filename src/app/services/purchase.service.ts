@@ -20,7 +20,7 @@ export class PurchaseService {
     return fromPromise(this.baseService.promise)
         .pipe(
             switchMap((urlList: Urls) => {
-              return this.http.post(urlList.customerPurchases.href, cr.toJSON());
+              return this.http.post(urlList.customerPositions.href, cr.toJSON());
             })
         );
   }
@@ -30,8 +30,8 @@ export class PurchaseService {
          .pipe(
              switchMap((urlList: Urls) => {
                let url: string;
-               if (customerId === null) {
-                 url = urlList.customerPurchases.href;
+               if (customerId === undefined) {
+                 url = URITemplate(urlList.customerPurchases.href).expand({}).valueOf();
                } else {
                  url = URITemplate(urlList.adminCustomerPurchases.href).expand( {
                    id: customerId
@@ -45,11 +45,19 @@ export class PurchaseService {
          );
   }
 
-  getPurchaseDetails(purchaseId: string): Observable<Purchase> {
+  getPurchaseDetails(purchaseId: string, customerId?: string): Observable<Purchase> {
     return fromPromise(this.baseService.promise)
         .pipe(
             switchMap((urlList: Urls) => {
-              return this.http.get<Purchase>(`${urlList.customerPurchaseDetails.href}${purchaseId}`);
+              let url: string;
+              if (customerId === undefined) {
+                url = URITemplate(urlList.customerPurchaseDetails.href).expand( {}).valueOf();
+              } else {
+                url = URITemplate(urlList.adminCustomerPurchase.href).expand( {
+                  id: customerId
+                }).valueOf();
+              }
+              return this.http.get<Purchase>(`${url}${purchaseId}`);
             })
         );
   }

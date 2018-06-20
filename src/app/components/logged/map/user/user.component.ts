@@ -8,6 +8,7 @@ import {HttpClient} from '@angular/common/http';
 import {catchError, first} from 'rxjs/operators';
 import {throwError} from 'rxjs/internal/observable/throwError';
 import {Subscription} from 'rxjs';
+import {ActivatedRoute} from '@angular/router';
 
 
 const iconUrl = 'assets/my-icon.png';
@@ -29,12 +30,18 @@ export class UserComponent implements OnInit, AfterViewInit, OnDestroy {
     leafletDirective: LeafletDirectiveWrapper;
     subscription: Subscription;
 
+    userId: string;
+
     constructor(private shareInfoService: ShareMapInfoService,
                 private positionsService: PositionsService,
                 private http: HttpClient,
                 private spinner: SpinnerService,
-                leafletDirective: LeafletDirective) {
+                leafletDirective: LeafletDirective,
+                route: ActivatedRoute) {
         spinner.hideSpinner();
+      route.queryParams.pipe(first()).subscribe((param) => {
+        this.userId = param.user;
+      });
         this.leafletDirective = new LeafletDirectiveWrapper(leafletDirective);
     }
 
@@ -42,24 +49,24 @@ export class UserComponent implements OnInit, AfterViewInit, OnDestroy {
         this.leafletDirective.init();
         this.leafletDirective.getMap().addLayer(this.editableLayers);
 
-        this.spinner.showSpinner();
-        this.positionsService.getPositions()
-            .pipe(first())
-            .subscribe(data => {
-                this.positionsService.postPositions(JSON.stringify(data))
-                    .pipe(
-                        first(),
-                        catchError((error: Response) => {
-                            if (error.status !== 201) {
-                                this.spinner.hideSpinner();
-                                console.log('Error: ' + error.status);
-                                return throwError(error);
-                            }
-                        })
-                    ).subscribe(response => {
-                        this.spinner.hideSpinner();
-                });
-            });
+        // this.spinner.showSpinner();
+        // this.positionsService.getPositions()
+        //     .pipe(first())
+        //     .subscribe(data => {
+        //         this.positionsService.postPositions(JSON.stringify(data))
+        //             .pipe(
+        //                 first(),
+        //                 catchError((error: Response) => {
+        //                     if (error.status !== 201) {
+        //                         this.spinner.hideSpinner();
+        //                         console.log('Error: ' + error.status);
+        //                         return throwError(error);
+        //                     }
+        //                 })
+        //             ).subscribe(response => {
+        //                 this.spinner.hideSpinner();
+        //         });
+        //     });
     }
 
     ngAfterViewInit() {
@@ -78,7 +85,7 @@ export class UserComponent implements OnInit, AfterViewInit, OnDestroy {
 
     showPositions(): void {
         this.spinner.showSpinner();
-        this.positionsService.getPositionsFromServer(this.shareInfoService.userRequest)
+        this.positionsService.getPositionsFromServer(this.shareInfoService.userRequest, this.userId)
             .pipe(first())
             .subscribe(
             result => {

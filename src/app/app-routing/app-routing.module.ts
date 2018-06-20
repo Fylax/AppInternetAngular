@@ -14,7 +14,7 @@ import {CustomerPurchaseDetailsComponent} from '../components/logged/customer-pu
 import {AdminGuard, UserGuard, CustomerGuard} from './guards/role.guard';
 import {UnreachableGuard} from './guards/unreachable.guard';
 import {AdminComponent} from '../components/logged/admin/admin.component';
-import {UserUploadComponent} from "../components/logged/user-upload/user-upload.component";
+import {UserUploadComponent} from '../components/logged/user-upload/user-upload.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
@@ -58,10 +58,11 @@ const routes: Routes = [
     children: [{
       path: '',
       component: CustomerPurchaseComponent,
-    }, {
-      path: ':id',
-      component: CustomerPurchaseDetailsComponent
-    }]
+    },
+      {
+        path: 'customer/purchases/:id',
+        component: CustomerPurchaseDetailsComponent
+      }]
   },
   {
     path: 'admin',
@@ -82,7 +83,11 @@ const routes: Routes = [
       },
       {
         path: 'user/:id/positions',
-        component: UserComponent
+        component: MapComponent,
+        children: [{
+          path: '',
+          component: UserComponent
+        }]
       }
     ]
   },
@@ -102,7 +107,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, {enableTracing: true})
+    RouterModule.forRoot(routes)
   ],
   exports: [RouterModule]
 })

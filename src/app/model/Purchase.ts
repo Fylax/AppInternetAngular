@@ -8,6 +8,7 @@ export class Purchase {
   private _countPosition: number;
   private _start: number;
   private _end: number;
+  private _customerid: string;
   private _positions: Position[];
 
   get purchaseId(): string {
@@ -72,5 +73,13 @@ export class Purchase {
 
   set end(value: number) {
     this._end = value;
+  }
+
+  get customerid(): string {
+    return this._customerid;
+  }
+
+  set customerid(value: string) {
+    this._customerid = value;
   }
 }

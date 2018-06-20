@@ -46,16 +46,28 @@ export class PositionsService {
         );
   }
 
-  getPositionsFromServer(ur: UserRequest): Observable<any> {
-    const params = new HttpParams()
-        .set('start', (ur.start.getTime() * 1000).toString())
-        .set('end', (ur.end.getTime() * 1000).toString());
+  getPositionsFromServer(ur: UserRequest, userId?: string): Observable<any> {
+    // const params = new HttpParams()
+    //     .set('start', (ur.start.getTime() * 1000).toString())
+    //     .set('end', (ur.end.getTime() * 1000).toString());
     return fromPromise(this.baseService.promise)
         .pipe(
             switchMap((urlList: Urls) => {
-              return this.http.get<any>(urlList.userPositions.href, {
-                headers: new HttpHeaders({'Accept': 'application/json'}),
-                params: params
+              let url: string;
+              if (userId === undefined) {
+                url = URITemplate(urlList.userPositions.href).expand( {
+                  start: (ur.start.getTime() * 1000).toString(),
+                  end: (ur.end.getTime() * 1000).toString()
+                }).valueOf();
+              } else {
+                url = URITemplate(urlList.adminUserPositions.href).expand( {
+                  id: userId,
+                  start: (ur.start.getTime() * 1000).toString(),
+                  end: (ur.end.getTime() * 1000).toString()
+                }).valueOf();
+              }
+              return this.http.get<any>(url, {
+                headers: new HttpHeaders({'Accept': 'application/json'})
               });
             })
         );
