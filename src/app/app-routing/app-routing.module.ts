@@ -77,78 +77,15 @@ const routes: Routes = [
     children: [{
       path: '',
       component: AdminComponent,
-      children: [{
+    },
+      {
         path: 'customer/:id/purchases',
         component: CustomerPurchaseComponent
-      }]
-    }]
+      }
+      ]
   },
   {path: 'error/:id', component: ErrorComponent},
-  {path: '**', redirectTo: '/error/404'}
-    {path: '', redirectTo: 'login', pathMatch: 'full'},
-    {
-        path: 'login',
-        component: LoginComponent,
-        canActivate: [LoginGuard]
-    },
-    {
-        path: 'map',
-        component: LoggedComponent,
-        canActivate: [AuthenticationGuard, UnreachableGuard],
-        children: [
-            {
-                path: 'positions',
-                component: MapComponent,
-                canActivate: [UnreachableGuard],
-                children: [
-                    {
-                        path: 'customer',
-                        component: CustomerComponent,
-                        canActivate: [CustomerGuard],
-                    },
-                    {
-                        path: 'customer/confirmation',
-                        component: CustomerConfirmationComponent,
-                        canActivate: [CustomerConfirmationGuard]
-                    },
-                    {
-                        path: 'user',
-                        component: UserComponent,
-                        canActivate: [UserGuard]
-                    }
-                    /*,
-                    {
-                        path: 'user/confirmation',
-                        component: UserConfirmationComponent,
-                        canActivate: [CustomerConfirmationGuard]
-                    }*/
-                ]
-            }]
-    }
-    ,
-    {
-        path: 'purchases',
-        component: LoggedComponent,
-        canActivate: [AuthenticationGuard, CustomerGuard],
-        children: [{
-            path: '',
-            component: CustomerPurchaseComponent,
-        }, {
-            path: ':id',
-            component: CustomerPurchaseDetailsComponent
-        }]
-    },
-    {
-        path: 'admin',
-        component: LoggedComponent,
-        canActivate: [AuthenticationGuard, AdminGuard],
-        children: [{
-            path: '',
-            component: AdminComponent
-        }]
-    },
-    {path: 'error/:id', component: ErrorComponent},
-    {path: '**', redirectTo: '/error/404'}
+  {path: '**', redirectTo: '/error/404'},
 ];
 
 

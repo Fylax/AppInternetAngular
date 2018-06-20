@@ -48,7 +48,7 @@
         <td mat-cell *matCellDef="let row">
           <a mat-button
              routerLink="customer/{{row.rel}}/purchases"
-             [queryParams]="{ customer: row.rel }"
+             [queryParams]="['']"
              color="primary" style="font-weight: bold;">
             DETTAGLIO
           </a>
