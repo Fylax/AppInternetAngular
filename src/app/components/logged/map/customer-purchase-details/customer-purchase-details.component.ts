@@ -14,9 +14,14 @@ export class CustomerPurchaseDetailsComponent implements OnInit {
   displayedColumns = ['date', 'status', 'amount', 'count', 'start', 'end'];
   purchaseDetails: Purchase[];
 
+  customerId: string;
+
   constructor(private purchaseService: PurchaseService, private route: ActivatedRoute,
               datesService: DatesService) {
     datesService.hideDates();
+    this.route.queryParams.pipe(first()).subscribe((param) => {
+      this.customerId = param.customer;
+    });
   }
 
   ngOnInit() {
