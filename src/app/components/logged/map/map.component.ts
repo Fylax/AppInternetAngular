@@ -1,11 +1,10 @@
-import {AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import * as L from 'leaflet';
 import {LeafletDirective, LeafletDirectiveWrapper} from '@asymmetrik/ngx-leaflet';
 import {Subscription} from 'rxjs';
-import {Point, Polygon} from 'geojson';
+import {Point} from 'geojson';
 import {DatesService} from '../../../services/dates.service';
 import {Archive} from '../../../model/Archive';
-import {polygon} from 'leaflet';
 
 @Component({
     selector: 'map',
@@ -43,7 +42,7 @@ export class MapComponent implements OnInit,  OnDestroy {
             })
         ],
         zoom: 16,
-        center: L.latLng(45.064950, 7.661550)
+        center: L.latLng(45.06495, 7.66155)
     };
 
     ngOnInit(): void {
@@ -69,7 +68,6 @@ export class MapComponent implements OnInit,  OnDestroy {
     }
 
     createCircleMarker(colorByArchive: string, pos: Point) {
-        // Change the values of these options to change the symbol's appearance
         const options = {
             radius: 8,
             fillColor: colorByArchive,
