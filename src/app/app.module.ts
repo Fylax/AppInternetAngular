@@ -8,12 +8,15 @@ import {DatesComponent} from './components/logged/map/dates/dates.component';
 import {CustomerComponent} from './components/logged/map/customer/customer.component';
 import {CustomerConfirmationComponent} from './components/logged/map/customer-confirmation/customer-confirmation.component';
 
+import {FlexLayoutModule} from '@angular/flex-layout';
+
 import {LeafletModule} from '@asymmetrik/ngx-leaflet';
 import {LeafletDrawModule} from '@asymmetrik/ngx-leaflet-draw';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MatDividerModule} from '@angular/material/divider';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+
+import {MatDividerModule} from '@angular/material/divider';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatButtonModule} from '@angular/material/button';
 import {MatPaginatorModule} from '@angular/material/paginator';
@@ -27,6 +30,7 @@ import {MAT_DATE_LOCALE, MatExpansionModule, MatInputModule} from '@angular/mate
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatMomentDateModule} from '@angular/material-moment-adapter';
 import {MatListModule} from '@angular/material/list';
+import {MatTabsModule} from '@angular/material/tabs';
 
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {AppRoutingModule} from './app-routing/app-routing.module';
@@ -40,7 +44,7 @@ import {UserComponent} from './components/logged/map/user/user.component';
 import {InterCattor} from './interceptors/cat.interceptor';
 import {CustomerPurchaseDetailsComponent} from './components/logged/customer-purchase-details/customer-purchase-details.component';
 import {AdminComponent} from './components/logged/admin/admin.component';
-import { UserUploadComponent } from './components/logged/user-upload/user-upload.component';
+import {UserUploadComponent} from './components/logged/user-upload/user-upload.component';
 import {FileUploadModule} from "ng2-file-upload";
 
 @NgModule({
@@ -66,6 +70,7 @@ import {FileUploadModule} from "ng2-file-upload";
     LeafletDrawModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
+    FlexLayoutModule,
     MatDividerModule,
     MatToolbarModule,
     MatButtonModule,
@@ -85,6 +90,7 @@ import {FileUploadModule} from "ng2-file-upload";
     MatPaginatorModule,
     MatSortModule,
     MatListModule,
+    MatTabsModule,
     FileUploadModule
   ],
   providers: [

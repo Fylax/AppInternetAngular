@@ -1,13 +1,26 @@
-<div>
-    <mat-card class="card">
-        <mat-card-content>
-            <p *ngIf="expired">Sessione scaduta</p>
-            <p *ngIf="!valid">Credenziali inserite non valide</p>
-            <form class="full-form">
+<div class="card">
+    <mat-card fxLayout="row">
+        <mat-card-header fxLayout="column" class="inner-card">
+            <div fxLayout="row" fxLayoutAlign="space-between center" >
+                <h1>Accedi</h1>
+                <mat-icon id="active">lock_outline</mat-icon>
+                <div id="triangle"></div>
+            </div>
+            <p>Effettua l'accesso con<br/>username e password</p>
+
+            <div fxLayout="row" fxLayoutAlign="space-between center" >
+                <h2 class="unfocus">Registrazione</h2>
+                <mat-icon id="inactive" class="unfocus">edit</mat-icon>
+            </div>
+            <p class="unfocus">Crea gratis il tuo account</p>
+        </mat-card-header>
+        <mat-card-content fxLayout="column" fxLayoutAlign="center center" class="inner-card">
+            <p *ngIf="expired" fxFlexAlign="center">Sessione scaduta</p>
+            <p *ngIf="!valid" fxFlexAlign="center">Credenziali inserite non valide</p>
+            <form fxLayout="column" fxFlexAlign="center" >
                 <mat-form-field class="full-width">
                     <input matInput [formControl]="username" placeholder="Username" autocomplete="username"/>
-                    <mat-error
-                            *ngIf="username.hasError('required')">
+                    <mat-error *ngIf="username.hasError('required')">
                         Username <strong>obbligatorio</strong>!
                     </mat-error>
                 </mat-form-field>
@@ -15,18 +28,24 @@
                 <mat-form-field class="full-width">
                     <input matInput [formControl]="password" placeholder="Password" type="password"
                            autocomplete="current-password"/>
-                    <mat-error
-                            *ngIf="password.hasError('required')">
+                    <mat-error *ngIf="password.hasError('required')">
                         Password <strong>obbligatoria</strong>!
                     </mat-error>
                 </mat-form-field>
-                <button
-                        mat-raised-button
-                        class="button full-width"
-                        color="primary"
-                        [disabled]="username.hasError('required') || password.hasError('required')"
-                        (click)="login()">Accedi
-                </button>
+                <div fxLayout="row" fxLayoutAlign="flex-start center" >
+                    <button
+                            mat-raised-button
+                            color="primary"
+                            [disabled]="username.hasError('required') || password.hasError('required')"
+                            (click)="login()">Accedi
+                    </button>
+                    <span>o</span>
+                    <button
+                            mat-raised-button
+                            color="link"
+                            routerLink="/register">Registrati
+                    </button>
+                </div>
             </form>
         </mat-card-content>
     </mat-card>

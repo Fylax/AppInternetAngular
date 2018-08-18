@@ -1,27 +1,80 @@
-div {
+div.card {
     display: flex;
     flex-direction: column;
     justify-content: center;
     height: 100%;
 }
 
-.card {
-    width: 450px;
+mat-card {
+    min-width: 850px;
     margin: 0 auto;
-    display: flex;
-    flex-direction: column;
+    padding: 0;
 }
 
-.full-width {
-    width: 100%;
+.inner-card {
+    padding: 24px;
 }
 
-.button {
-    margin-top: 12px;
+mat-card-header {
+    background-color: #3f51b5;
+    min-width: 250px;
+    width: 35%;
 }
 
-p {
+mat-card-header > div > h1,
+mat-card-header > div > h2,
+mat-card-header > div > mat-icon,
+mat-card-header > p {
+    color: white;
+    text-align: left;
+}
+
+mat-card-header > p {
+    margin-top: 0;
+}
+
+mat-card-header div:last-of-type {
+    margin-top: 4vh;
+}
+
+.unfocus {
+    color: #ced4da!important;
+}
+
+mat-card-content {
+    min-width: 500px;
+    width: 65%;
+}
+
+form {
+    width: 90%;
+}
+
+mat-card-content p {
     color: red;
     font-size: medium;
     text-align: center;
+}
+
+mat-icon#active {
+    margin-left: auto;
+    margin-right: 24px;
+}
+
+mat-icon#inactive {
+    margin-left: auto;
+    margin-right: 14px;
+}
+
+#triangle {
+    margin-right: -25px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0.5em 0.86em 0.5em 0;
+    border-color: transparent white transparent transparent;
+}
+
+form div:last-of-type span {
+    margin: 0 1vw;
 }

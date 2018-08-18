@@ -3,11 +3,9 @@ import {FormControl, Validators} from "@angular/forms";
 import {UserTokenService} from "../../services/user.service";
 import {LoginService} from "../../services/login.service";
 import {SpinnerService} from "../../services/spinner.service";
-import {HttpErrorResponse} from "@angular/common/http";
 import {ActivatedRoute, Router, RouterStateSnapshot} from "@angular/router";
-import {catchError, first, map, tap} from "rxjs/operators";
+import {catchError, first} from "rxjs/operators";
 import {throwError} from "rxjs/internal/observable/throwError";
-import {UrlService} from '../../services/url.service';
 
 @Component({
   selector: 'login',
