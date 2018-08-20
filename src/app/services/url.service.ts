@@ -9,6 +9,7 @@ interface Url {
 
 export interface Urls {
   oauth?: Url;
+  register?: Url;
   userPositions?: Url;
   customerPositions?: Url;
   customerPurchases?: Url;
@@ -33,7 +34,7 @@ export class UrlService {
   }
 
   get hasOnlyOauth(): boolean {
-    return Object.keys(this.links).length === 1;
+    return Object.keys(this.links).length === 2;
   }
 
   get promise(): Promise<Urls> {

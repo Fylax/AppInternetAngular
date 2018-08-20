@@ -61,6 +61,10 @@ mat-card-content p {
     text-align: center;
 }
 
+mat-progress-bar {
+    margin: 1vh 0 3vh;
+}
+
 mat-icon#active {
     margin-left: auto;
     margin-right: 24px;

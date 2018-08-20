@@ -31,11 +31,13 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatMomentDateModule} from '@angular/material-moment-adapter';
 import {MatListModule} from '@angular/material/list';
 import {MatTabsModule} from '@angular/material/tabs';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {AppRoutingModule} from './app-routing/app-routing.module';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {LoginComponent} from './components/login/login.component';
+import {RegisterComponent} from "./components/register/register.component";
 import {LoggedComponent} from './components/logged/logged.component';
 import {TokenInterceptor} from './interceptors/token.interceptor';
 import {CustomerPurchaseComponent} from './components/logged/customer-purchase/customer-purchase.component';
@@ -51,6 +53,7 @@ import {FileUploadModule} from "ng2-file-upload";
   declarations: [
     AppComponent,
     LoginComponent,
+    RegisterComponent,
     LoggedComponent,
     MapComponent,
     DatesComponent,
@@ -91,6 +94,7 @@ import {FileUploadModule} from "ng2-file-upload";
     MatSortModule,
     MatListModule,
     MatTabsModule,
+    MatProgressBarModule,
     FileUploadModule
   ],
   providers: [

@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, Injector} from '@angular/core';
-import {FormControl, Validators} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {UserTokenService} from "../../services/user.service";
 import {LoginService} from "../../services/login.service";
 import {SpinnerService} from "../../services/spinner.service";
@@ -16,18 +16,19 @@ export class LoginComponent implements AfterViewInit {
 
   valid = true;
 
-  username = new FormControl('', {
-    updateOn: 'blur',
-    validators: [
-      Validators.required
-    ]
-  });
-
-  password = new FormControl('', {
-    updateOn: 'change',
-    validators: [
-      Validators.required
-    ]
+  form = new FormGroup({
+    username: new FormControl('', {
+      updateOn: 'blur',
+      validators: [
+        Validators.required
+      ]
+    }),
+    password: new FormControl('', {
+      updateOn: 'change',
+      validators: [
+        Validators.required
+      ]
+    })
   });
 
   expired: boolean;
@@ -46,7 +47,7 @@ export class LoginComponent implements AfterViewInit {
 
   login() {
     this.spinner.showSpinner();
-    this.loginservice.login(this.username.value, this.password.value)
+    this.loginservice.login(this.form.get('username').value, this.form.get('password').value)
         .pipe(
             first(),
             catchError((error: Response) => {

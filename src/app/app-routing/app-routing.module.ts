@@ -15,12 +15,18 @@ import {AdminGuard, UserGuard, CustomerGuard} from './guards/role.guard';
 import {UnreachableGuard} from './guards/unreachable.guard';
 import {AdminComponent} from '../components/logged/admin/admin.component';
 import {UserUploadComponent} from '../components/logged/user-upload/user-upload.component';
+import {RegisterComponent} from "../components/register/register.component";
 
 const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
   {
     path: 'login',
     component: LoginComponent,
+    canActivate: [LoginGuard]
+  },
+  {
+    path: 'register',
+    component: RegisterComponent,
     canActivate: [LoginGuard]
   },
   {
