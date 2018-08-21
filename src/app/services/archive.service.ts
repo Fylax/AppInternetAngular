@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
-import {Archive} from '../model/Archive';
 import {ArchivesPaginationSupport} from "../model/ArchivesPaginationSupport";
 import {HttpClient, HttpHeaders, HttpParams} from '../../../node_modules/@angular/common/http';
 import {Urls, UrlService} from './url.service';
 import {UserSearchRequest} from '../model/UserSearchRequest';
 import {fromPromise} from 'rxjs/internal-compatibility';
 import {switchMap} from 'rxjs/operators';
-import {PurchasesPaginationSupport} from '../model/PurchasesPaginationSupport';
 import {Observable} from 'rxjs';
 import {ApproximatedArchive} from '../model/ApproximatedArchive';
 

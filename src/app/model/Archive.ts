@@ -2,7 +2,7 @@ export class Archive {
     private _archiveId: string;
     private _timestamp: number;
     private _userId: string;
-    private _counter: number;
+    private _countSales: number;
 
     get archiveId(): string {
         return this._archiveId;
@@ -28,11 +28,11 @@ export class Archive {
         this._userId = value;
     }
 
-    get counter(): number {
-        return this._counter;
+    get countSales(): number {
+        return this._countSales;
     }
 
-    set counter(value: number) {
-        this._counter = value;
+    set countSales(value: number) {
+        this._countSales = value;
     }
 }

@@ -49,6 +49,7 @@ import {AdminComponent} from './components/logged/admin/admin.component';
 import {UserUploadComponent} from './components/logged/user-upload/user-upload.component';
 import {FileUploadModule} from "ng2-file-upload";
 import { SearchComponent } from './components/logged/search/search.component';
+import {UserArchiveComponent} from './components/logged/user-archive/user-archive.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import { SearchComponent } from './components/logged/search/search.component';
     CustomerPurchaseDetailsComponent,
     AdminComponent,
     UserUploadComponent,
-    SearchComponent
+    SearchComponent,
+    UserArchiveComponent
   ],
   imports: [
     BrowserModule,

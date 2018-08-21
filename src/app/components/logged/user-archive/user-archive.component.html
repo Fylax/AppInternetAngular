@@ -8,21 +8,21 @@
 
         <table mat-table [dataSource]="dataSource" class="archives-table">
 
-            <ng-container matColumnDef="archive">
+            <ng-container matColumnDef="archiveId">
                 <th mat-header-cell *matHeaderCellDef>Archivio</th>
                 <td mat-cell *matCellDef="let row">{{row.archiveId}}</td>
             </ng-container>
 
-            <ng-container matColumnDef="date">
+            <ng-container matColumnDef="timestamp">
                 <th mat-header-cell *matHeaderCellDef>Data upload</th>
                 <td mat-cell *matCellDef="let row">{{ row.timestamp * 1000 | date:'dd / MMM / yyyy, HH:mm:ss' }}</td>
             </ng-container>
 
-            <ng-container matColumnDef="count">
+            <ng-container matColumnDef="counter">
                 <th mat-header-cell *matHeaderCellDef>
                     #N_venduto
                 </th>
-                <td mat-cell *matCellDef="let row">{{ row.counter}}</td>
+                <td mat-cell *matCellDef="let row">{{ row.countSales}}</td>
             </ng-container>
 
             <ng-container matColumnDef="delete">

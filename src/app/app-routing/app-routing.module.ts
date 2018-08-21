@@ -16,6 +16,7 @@ import {AdminComponent} from '../components/logged/admin/admin.component';
 import {UserUploadComponent} from '../components/logged/user-upload/user-upload.component';
 import {SearchComponent} from '../components/logged/search/search.component';
 import {RegisterComponent} from "../components/register/register.component";
+import {UserArchiveComponent} from '../components/logged/user-archive/user-archive.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
@@ -103,7 +104,7 @@ const routes: Routes = [
     canActivate: [AuthenticationGuard, UserGuard],
     children: [{
       path: '',
-      component: UserUploadComponent
+      component: UserArchiveComponent
     }]
   },
   {path: 'error/:id', component: ErrorComponent},
