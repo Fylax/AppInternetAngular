@@ -1,9 +1,9 @@
 import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import * as L from 'leaflet';
 import {LeafletDirective, LeafletDirectiveWrapper} from '@asymmetrik/ngx-leaflet';
-import {PositionsService} from '../../../../services/positions.service';
-import {ShareMapInfoService} from '../../../../services/share-map-info.service';
-import {SpinnerService} from '../../../../services/spinner.service';
+import {PositionsService} from '../../../services/positions.service';
+import {ShareMapInfoService} from '../../../services/share-map-info.service';
+import {SpinnerService} from '../../../services/spinner.service';
 import {HttpClient} from '@angular/common/http';
 import {catchError, first} from 'rxjs/operators';
 import {throwError} from 'rxjs/internal/observable/throwError';

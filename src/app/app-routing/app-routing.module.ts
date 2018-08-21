@@ -1,20 +1,21 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {MapComponent} from '../components/logged/map/map.component';
-import {CustomerComponent} from '../components/logged/map/customer/customer.component';
-import {CustomerConfirmationComponent} from '../components/logged/map/customer-confirmation/customer-confirmation.component';
+import {CustomerComponent} from '../components/logged/customer/customer.component';
+import {CustomerConfirmationComponent} from '../components/logged/customer-confirmation/customer-confirmation.component';
 import {CustomerConfirmationGuard} from './guards/customer-confirmation.guard';
 import {LoginComponent} from '../components/login/login.component';
 import {LoggedComponent} from '../components/logged/logged.component';
 import {AuthenticationGuard, LoginGuard} from './guards/authentication.guard';
 import {CustomerPurchaseComponent} from '../components/logged/customer-purchase/customer-purchase.component';
 import {ErrorComponent} from '../components/error/error.component';
-import {UserComponent} from '../components/logged/map/user/user.component';
+import {UserComponent} from '../components/logged/user/user.component';
 import {CustomerPurchaseDetailsComponent} from '../components/logged/customer-purchase-details/customer-purchase-details.component';
 import {AdminGuard, UserGuard, CustomerGuard} from './guards/role.guard';
 import {UnreachableGuard} from './guards/unreachable.guard';
 import {AdminComponent} from '../components/logged/admin/admin.component';
 import {UserUploadComponent} from '../components/logged/user-upload/user-upload.component';
+import {SearchComponent} from '../components/logged/search/search.component';
 import {RegisterComponent} from "../components/register/register.component";
 
 const routes: Routes = [
@@ -36,7 +37,7 @@ const routes: Routes = [
     children: [
       {
         path: 'positions',
-        component: MapComponent,
+        component: SearchComponent,
         canActivate: [UnreachableGuard],
         children: [
           {

@@ -1,12 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ShareMapInfoService} from '../../../../services/share-map-info.service';
+import {ShareMapInfoService} from '../../../services/share-map-info.service';
 import {Location} from '@angular/common';
-import {PositionsService} from '../../../../services/positions.service';
+import {PositionsService} from '../../../services/positions.service';
 import {LeafletDirective, LeafletDirectiveWrapper} from '@asymmetrik/ngx-leaflet';
-import {SpinnerService} from "../../../../services/spinner.service";
-import {DatesService} from "../../../../services/dates.service";
+import {SpinnerService} from "../../../services/spinner.service";
+import {DatesService} from "../../../services/dates.service";
 import {first} from "rxjs/operators";
-import {PurchaseService} from '../../../../services/purchase.service';
+import {PurchaseService} from '../../../services/purchase.service';
 import {Router} from '@angular/router';
 
 @Component({

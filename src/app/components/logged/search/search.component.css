@@ -1,0 +1,32 @@
+#timeline-map{
+  position: absolute;
+  right: 30%;
+  width: 70%;
+}
+
+#filters{
+  position: absolute;
+  left: 70%;
+  width: 30%;
+  align-content: center;
+}
+
+#allButton{
+  margin-right: 5px;
+}
+
+#noneButton{
+  margin-left: 5px;
+}
+
+mat-card-title{
+  text-align: center;
+}
+
+mat-selection-list{
+  margin-top: 2px;
+  flex-grow: 1;
+  height: 250px;
+  border: 1px solid rgba(0,0,0,0.3);
+  overflow: auto;
+}

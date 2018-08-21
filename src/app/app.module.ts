@@ -4,9 +4,9 @@ import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {SpinnerComponent} from './components/spinner/spinner.component';
 import {MapComponent} from './components/logged/map/map.component';
-import {DatesComponent} from './components/logged/map/dates/dates.component';
-import {CustomerComponent} from './components/logged/map/customer/customer.component';
-import {CustomerConfirmationComponent} from './components/logged/map/customer-confirmation/customer-confirmation.component';
+import {DatesComponent} from './components/logged/dates/dates.component';
+import {CustomerComponent} from './components/logged/customer/customer.component';
+import {CustomerConfirmationComponent} from './components/logged/customer-confirmation/customer-confirmation.component';
 
 import {FlexLayoutModule} from '@angular/flex-layout';
 
@@ -42,12 +42,13 @@ import {LoggedComponent} from './components/logged/logged.component';
 import {TokenInterceptor} from './interceptors/token.interceptor';
 import {CustomerPurchaseComponent} from './components/logged/customer-purchase/customer-purchase.component';
 import {ErrorComponent} from './components/error/error.component';
-import {UserComponent} from './components/logged/map/user/user.component';
+import {UserComponent} from './components/logged/user/user.component';
 import {InterCattor} from './interceptors/cat.interceptor';
 import {CustomerPurchaseDetailsComponent} from './components/logged/customer-purchase-details/customer-purchase-details.component';
 import {AdminComponent} from './components/logged/admin/admin.component';
 import {UserUploadComponent} from './components/logged/user-upload/user-upload.component';
 import {FileUploadModule} from "ng2-file-upload";
+import { SearchComponent } from './components/logged/search/search.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import {FileUploadModule} from "ng2-file-upload";
     UserComponent,
     CustomerPurchaseDetailsComponent,
     AdminComponent,
-    UserUploadComponent
+    UserUploadComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,
