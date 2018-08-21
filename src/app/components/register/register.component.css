@@ -91,3 +91,7 @@ form div:last-of-type {
 form div:last-of-type span {
     margin: 0 1vw;
 }
+
+mat-form-field {
+    margin-top: 2vh;
+}

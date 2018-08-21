@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {first} from 'rxjs/operators';
+import {fromPromise} from "rxjs/internal-compatibility";
 
 interface Url {
   href: string;
@@ -26,7 +27,7 @@ export interface Urls {
 })
 export class UrlService {
 
-  private links: Urls = {};
+  private onlyOauth_: boolean;
   private promise_: Promise<Urls>;
 
   constructor(private http: HttpClient) {
@@ -34,7 +35,7 @@ export class UrlService {
   }
 
   get hasOnlyOauth(): boolean {
-    return Object.keys(this.links).length === 2;
+    return this.onlyOauth_;
   }
 
   get promise(): Promise<Urls> {
@@ -46,8 +47,8 @@ export class UrlService {
       this.http.get(environment.baseUrl)
           .pipe(first())
           .subscribe((json: { _links: Urls }) => {
-            this.links = json._links;
-            resolve(this.links);
+            this.onlyOauth_ = Object.keys(json._links).length === 2;
+            resolve(json._links);
           });
     });
   }

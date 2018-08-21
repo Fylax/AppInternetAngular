@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
-import {Observable} from "rxjs";
-import {environment} from "../../environments/environment";
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from "@angular/common/http";
+import {Observable, throwError} from "rxjs";
 import {Urls, UrlService} from './url.service';
-import {first, switchMap} from 'rxjs/operators';
+import {catchError, first, switchMap} from 'rxjs/operators';
 import {fromPromise} from 'rxjs/internal-compatibility';
+import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
@@ -46,28 +46,21 @@ export class RegisterService {
         );
   }
 
-  public login(username: string, password: string): Observable<{ access_token: string, refresh_token: string }> {
+  public register(username: string, email: string, password: string) {
     const body = new HttpParams()
-        .set('grant_type', 'password')
         .set('username', username)
-        .set('password', password)
-        .set('client_id', environment.clientId)
-        .set('client_secret', environment.clientSecret);
-    return this.request(body.toString());
-  }
-
-  private request(body: string) {
+        .set('email', email)
+        .set('password', password);
     return fromPromise(this.baseService.promise)
         .pipe(
-            switchMap((urlList: Urls) => {
-              return this.http.post<{ access_token: string, refresh_token: string }>(
-                  urlList.oauth.href,
+            switchMap((urls: Urls) => {
+              return this.http.post<string>(
+                  urls.register.href,
                   body, {
                     headers: new HttpHeaders({
                       'Content-Type': 'application/x-www-form-urlencoded'
                     }),
-                    responseType: 'json',
-                    withCredentials: true
+                    responseType: 'json'
                   });
             })
         );

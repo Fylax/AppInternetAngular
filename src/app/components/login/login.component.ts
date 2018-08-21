@@ -4,7 +4,7 @@ import {UserTokenService} from "../../services/user.service";
 import {LoginService} from "../../services/login.service";
 import {SpinnerService} from "../../services/spinner.service";
 import {ActivatedRoute, Router, RouterStateSnapshot} from "@angular/router";
-import {catchError, first} from "rxjs/operators";
+import {catchError, first, retry} from "rxjs/operators";
 import {throwError} from "rxjs/internal/observable/throwError";
 
 @Component({
@@ -50,6 +50,7 @@ export class LoginComponent implements AfterViewInit {
     this.loginservice.login(this.form.get('username').value, this.form.get('password').value)
         .pipe(
             first(),
+            retry(3),
             catchError((error: Response) => {
               if (error.status === 400) {
                 this.valid = false;
@@ -57,14 +58,15 @@ export class LoginComponent implements AfterViewInit {
                 return throwError(error);
               }
             })
-        ).subscribe((data) => {
-      this.user.setTokens(data.access_token, data.refresh_token);
-      const curr_route = this.route.root.children['0'];
-      const AuthGuard = curr_route.snapshot.routeConfig.canActivate['0'];
-      const authGuard = this.injector.get(AuthGuard);
-      const routerStateSnapshot: RouterStateSnapshot = Object.assign({}, curr_route.snapshot, {url: this.router.url});
-      authGuard.canActivate(curr_route.snapshot, routerStateSnapshot);
-    });
+        )
+        .subscribe((data) => {
+          this.user.setTokens(data.access_token, data.refresh_token);
+          const curr_route = this.route.root.children['0'];
+          const AuthGuard = curr_route.snapshot.routeConfig.canActivate['0'];
+          const authGuard = this.injector.get(AuthGuard);
+          const routerStateSnapshot: RouterStateSnapshot = Object.assign({}, curr_route.snapshot, {url: this.router.url});
+          authGuard.canActivate(curr_route.snapshot, routerStateSnapshot);
+        });
   }
 
   ngAfterViewInit(): void {

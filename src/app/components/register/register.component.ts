@@ -4,8 +4,10 @@ import {AsyncValidatorFn, FormControl, FormGroup, ValidatorFn, Validators} from 
 import * as zxcvbn from "zxcvbn";
 import * as XRegExp from "xregexp";
 import {RegisterService} from "../../services/register.service";
-import {Observable} from "rxjs";
-import {map} from "rxjs/operators";
+import {Observable, throwError} from "rxjs";
+import {catchError, first, map, switchMap} from "rxjs/operators";
+import {HttpErrorResponse} from "@angular/common/http";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'register',
@@ -14,6 +16,7 @@ import {map} from "rxjs/operators";
 })
 export class RegisterComponent implements AfterViewInit, OnInit {
 
+  error = false;
   progressPerc = 0;
   progressCol = 'warn';
   form: FormGroup;
@@ -22,7 +25,8 @@ export class RegisterComponent implements AfterViewInit, OnInit {
   private digit = XRegExp('\\p{N}');
   private symbol = XRegExp('\\p{S}|\\p{P}|\\p{Zs}');
 
-  constructor(private registerService: RegisterService) {
+  constructor(private registerService: RegisterService,
+              private router: Router) {
   }
 
   ngOnInit() {
@@ -33,7 +37,7 @@ export class RegisterComponent implements AfterViewInit, OnInit {
           Validators.required
         ],
         asyncValidators: [
-            this.userValidator()
+          this.userValidator()
         ]
       }),
       email: new FormControl('', {
@@ -43,33 +47,35 @@ export class RegisterComponent implements AfterViewInit, OnInit {
           Validators.email
         ],
         asyncValidators: [
-            this.emailValidator()
+          this.emailValidator()
         ]
       }),
-      password: new FormControl('', {
-        updateOn: 'blur',
-        validators: [
-          Validators.required,
-          Validators.minLength(8),
-          this.symbols()
-        ]
-      }),
-      confirm: new FormControl('', {
-        updateOn: 'blur',
-        validators: [
-          Validators.required,
-          this.matching()
-        ]
-      })
     });
+    this.form.addControl('password', new FormControl('', {
+          updateOn: 'blur',
+          validators: [
+            Validators.required,
+            Validators.minLength(8),
+            this.symbols()
+          ]
+        })
+    );
+    this.form.addControl('confirm', new FormControl('', {
+          updateOn: 'change',
+          validators: [
+            Validators.required,
+            this.matching()
+          ]
+        })
+    );
   }
 
   userValidator(): AsyncValidatorFn {
     return (control: FormControl): Observable<{ [key: string]: any } | null> => {
       return this.registerService.usernameAvailable(control.value)
           .pipe(
-              map(res => {
-                    return (res) ? {'exists': true} : null;
+              map(usable => {
+                    return (usable) ? null : {'exists': true};
                   }
               )
           );
@@ -80,8 +86,8 @@ export class RegisterComponent implements AfterViewInit, OnInit {
     return (control: FormControl): Observable<{ [key: string]: any } | null> => {
       return this.registerService.emailAvailable(control.value)
           .pipe(
-              map(res => {
-                    return (res) ? {'exists': true} : null;
+              map(usable => {
+                    return (usable) ? null : {'exists': true};
                   }
               )
           );
@@ -126,6 +132,21 @@ export class RegisterComponent implements AfterViewInit, OnInit {
       const match = control.value === this.form.get('password').value;
       return match ? null : {'matching': {value: control.value}};
     };
+  }
+
+  register() {
+    this.registerService.register(this.form.get('username').value,
+        this.form.get('email').value, this.form.get('password').value)
+        .pipe(
+            first(),
+            catchError((error: HttpErrorResponse) => {
+              this.error = true;
+              return throwError(error.message);
+            })
+        )
+        .subscribe(() => {
+          this.router.navigate(['login']);
+        });
   }
 
   ngAfterViewInit() {
