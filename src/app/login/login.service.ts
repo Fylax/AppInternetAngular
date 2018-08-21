@@ -1,19 +1,22 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {from, Observable} from "rxjs";
 import {environment} from "../../environments/environment";
-import {Urls, UrlService} from './url.service';
+import {Urls, UrlService} from '../services/url.service';
 import {switchMap} from 'rxjs/operators';
-import {fromPromise} from 'rxjs/internal-compatibility';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class LoginService {
 
-  constructor(private http: HttpClient, private baseService: UrlService) {
-  }
+  constructor(private http: HttpClient, private baseService: UrlService) { }
 
+  /**
+   * Method for trying user login.
+   * @param username Username.
+   * @param password Clear-text user password.
+   * @returns Observable containing both access token and refresh token
+   * to be stored in application local memory.
+   */
   public login(username: string, password: string): Observable<{ access_token: string, refresh_token: string }> {
     const body = new HttpParams()
         .set('grant_type', 'password')
@@ -34,7 +37,7 @@ export class LoginService {
   }
 
   private request(body: string) {
-    return fromPromise(this.baseService.promise)
+    return from(this.baseService.promise)
         .pipe(
             switchMap((urlList: Urls) => {
               return this.http.post<{ access_token: string, refresh_token: string }>(

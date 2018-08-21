@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {Observable, of} from 'rxjs';
+import {from, Observable, of} from 'rxjs';
 import {Purchase} from '../model/Purchase';
 import {Urls, UrlService} from './url.service';
-import {fromPromise} from 'rxjs/internal-compatibility';
 import {switchMap} from 'rxjs/operators';
 import {UserSearchRequest} from '../model/UserSearchRequest';
 import {PurchasesPaginationSupport} from '../model/PurchasesPaginationSupport';
@@ -17,7 +16,7 @@ export class PurchaseService {
   constructor(private http: HttpClient, private baseService: UrlService) { }
 
   buyPositions(cr: UserSearchRequest): Observable<{}> {
-    return fromPromise(this.baseService.promise)
+    return from(this.baseService.promise)
         .pipe(
             switchMap((urlList: Urls) => {
               return this.http.post(urlList.customerPositions.href, cr.toJSON());
@@ -26,7 +25,7 @@ export class PurchaseService {
   }
 
   getPurchaseList(pageIndex = 1, pageSize = 3, customerId?: string): Observable<PurchasesPaginationSupport> {
-    return fromPromise(this.baseService.promise)
+    return from(this.baseService.promise)
          .pipe(
              switchMap((urlList: Urls) => {
                let url: string;
@@ -46,7 +45,7 @@ export class PurchaseService {
   }
 
   getPurchaseDetails(purchaseId: string, customerId?: string): Observable<Purchase> {
-    return fromPromise(this.baseService.promise)
+    return from(this.baseService.promise)
         .pipe(
             switchMap((urlList: Urls) => {
               let url: string;

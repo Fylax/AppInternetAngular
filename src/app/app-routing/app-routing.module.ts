@@ -3,9 +3,8 @@ import {RouterModule, Routes} from '@angular/router';
 import {MapComponent} from '../components/logged/map/map.component';
 import {CustomerConfirmationComponent} from '../components/logged/customer-confirmation/customer-confirmation.component';
 import {CustomerConfirmationGuard} from './guards/customer-confirmation.guard';
-import {LoginComponent} from '../components/login/login.component';
 import {LoggedComponent} from '../components/logged/logged.component';
-import {AuthenticationGuard, LoginGuard} from './guards/authentication.guard';
+import {AuthenticationGuard} from './guards/authentication.guard';
 import {CustomerPurchaseComponent} from '../components/logged/customer-purchase/customer-purchase.component';
 import {ErrorComponent} from '../components/error/error.component';
 import {UserComponent} from '../components/logged/user/user.component';
@@ -13,22 +12,18 @@ import {CustomerPurchaseDetailsComponent} from '../components/logged/customer-pu
 import {AdminGuard, UserGuard, CustomerGuard} from './guards/role.guard';
 import {UnreachableGuard} from './guards/unreachable.guard';
 import {AdminComponent} from '../components/logged/admin/admin.component';
-import {UserUploadComponent} from '../components/logged/user-upload/user-upload.component';
 import {SearchComponent} from '../components/logged/search/search.component';
-import {RegisterComponent} from "../components/register/register.component";
 import {UserArchiveComponent} from '../components/logged/user-archive/user-archive.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
   {
     path: 'login',
-    component: LoginComponent,
-    canActivate: [LoginGuard]
+    loadChildren: '../login/login.module#LoginModule'
   },
   {
     path: 'register',
-    component: RegisterComponent,
-    canActivate: [LoginGuard]
+    loadChildren: '../register/register.module#RegisterModule'
   },
   {
     path: 'map',

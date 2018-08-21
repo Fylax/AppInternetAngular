@@ -1,10 +1,8 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from "@angular/common/http";
-import {Observable, throwError} from "rxjs";
-import {Urls, UrlService} from './url.service';
-import {catchError, first, switchMap} from 'rxjs/operators';
-import {fromPromise} from 'rxjs/internal-compatibility';
-import {Router} from "@angular/router";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
+import {from, Observable} from "rxjs";
+import {Urls, UrlService} from '../services/url.service';
+import {first, switchMap} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +16,7 @@ export class RegisterService {
     const params = new HttpParams()
         .set('type', 'username')
         .set('value', username);
-    return fromPromise(this.baseService.promise)
+    return from(this.baseService.promise)
         .pipe(
             first(),
             switchMap((urls: Urls) => {
@@ -34,7 +32,7 @@ export class RegisterService {
     const params = new HttpParams()
         .set('type', 'email')
         .set('value', email);
-    return fromPromise(this.baseService.promise)
+    return from(this.baseService.promise)
         .pipe(
             first(),
             switchMap((urls: Urls) => {
@@ -51,7 +49,7 @@ export class RegisterService {
         .set('username', username)
         .set('email', email)
         .set('password', password);
-    return fromPromise(this.baseService.promise)
+    return from(this.baseService.promise)
         .pipe(
             switchMap((urls: Urls) => {
               return this.http.post<string>(

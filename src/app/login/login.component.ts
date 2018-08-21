@@ -1,8 +1,8 @@
 import {AfterViewInit, Component, Injector} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {UserTokenService} from "../../services/user.service";
-import {LoginService} from "../../services/login.service";
-import {SpinnerService} from "../../services/spinner.service";
+import {UserTokenService} from "../services/user.service";
+import {LoginService} from "./login.service";
+import {SpinnerService} from "../services/spinner.service";
 import {ActivatedRoute, Router, RouterStateSnapshot} from "@angular/router";
 import {catchError, first, retry} from "rxjs/operators";
 import {throwError} from "rxjs/internal/observable/throwError";

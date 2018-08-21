@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {first} from 'rxjs/operators';
-import {fromPromise} from "rxjs/internal-compatibility";
 
 interface Url {
   href: string;
