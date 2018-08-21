@@ -38,7 +38,7 @@ export class CustomerConfirmationComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.positionsService.getPositionCount(this.shareInfoService.customerRequest)
+    this.positionsService.getPositionCount(this.shareInfoService.userSearchRequest)
         .pipe(first()).subscribe(count => {
       this.count = count;
       this.shareInfoService.polygon.bindTooltip(count.toString(), {
@@ -53,7 +53,7 @@ export class CustomerConfirmationComponent implements OnInit, OnDestroy {
 
   buyPositions(): void {
     this.spinnerService.showSpinner();
-    this.purchaseService.buyPositions(this.shareInfoService.customerRequest)
+    this.purchaseService.buyPositions(this.shareInfoService.userSearchRequest)
         .subscribe(
             x => {
               this.spinnerService.hideSpinner();

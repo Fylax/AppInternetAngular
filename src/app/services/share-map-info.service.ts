@@ -11,7 +11,7 @@ import {UserRequest} from '../model/UserRequest';
 })
 export class ShareMapInfoService {
 
-    private customerRequest_: UserSearchRequest;
+    private userSearchRequest_: UserSearchRequest;
     private userRequest_: UserRequest;
 
     private allSet_ = new BehaviorSubject<boolean>(false);
@@ -29,7 +29,7 @@ export class ShareMapInfoService {
     private endMinutes_ = new BehaviorSubject<boolean>(false);
 
     constructor() {
-        this.customerRequest_ = new UserSearchRequest();
+        this.userSearchRequest_ = new UserSearchRequest();
         this.userRequest_ = new UserRequest();
         this.polygon_.subscribe(() => this.checkAllSet());
         this.startDate_.subscribe(() => this.checkAllSet());
@@ -61,7 +61,7 @@ export class ShareMapInfoService {
         if (area === null) {
             this.polygon_.next(false);
         } else {
-            this.customerRequest_.area = area;
+            this.userSearchRequest_.area = area;
             this.polygon_.next(true);
         }
     }
@@ -75,8 +75,8 @@ export class ShareMapInfoService {
         }
     }
 
-    get customerRequest() {
-        return this.customerRequest_;
+    get userSearchRequest() {
+        return this.userSearchRequest_;
     }
 
     get userRequest() {
@@ -84,11 +84,11 @@ export class ShareMapInfoService {
     }
 
     get polygon(): Polygon {
-        return (this.polygon_.getValue()) ? this.customerRequest_.area : undefined;
+        return (this.polygon_.getValue()) ? this.userSearchRequest_.area : undefined;
     }
 
     set startDate(date: Moment) {
-        this.customerRequest_.start.setFullYear(date.year(), date.month(), date.date());
+        this.userSearchRequest_.start.setFullYear(date.year(), date.month(), date.date());
         this.userRequest_.start.setFullYear(date.year(), date.month(), date.date());
         this.startDate_.next(true);
     }
@@ -96,7 +96,7 @@ export class ShareMapInfoService {
         if (isNaN(hours)) {
             this.startHour_.next(false);
         } else {
-            this.customerRequest_.start.setHours(hours);
+            this.userSearchRequest_.start.setHours(hours);
             this.userRequest_.start.setHours(hours);
             this.startHour_.next(true);
         }
@@ -106,14 +106,14 @@ export class ShareMapInfoService {
         if (isNaN(minutes)) {
             this.startMinutes_.next(false);
         } else {
-            this.customerRequest_.start.setMinutes(minutes);
+            this.userSearchRequest_.start.setMinutes(minutes);
             this.userRequest_.start.setMinutes(minutes);
             this.startMinutes_.next(true);
         }
     }
 
     set endDate(date: Moment) {
-        this.customerRequest_.end.setFullYear(date.year(), date.month(), date.date());
+        this.userSearchRequest_.end.setFullYear(date.year(), date.month(), date.date());
         this.userRequest_.end.setFullYear(date.year(), date.month(), date.date());
         this.endDate_.next(true);
     }
@@ -122,7 +122,7 @@ export class ShareMapInfoService {
         if (isNaN(hours)) {
             this.endHour_.next(false);
         } else {
-            this.customerRequest_.end.setHours(hours);
+            this.userSearchRequest_.end.setHours(hours);
             this.userRequest_.end.setHours(hours);
             this.endHour_.next(true);
         }
@@ -132,7 +132,7 @@ export class ShareMapInfoService {
         if (isNaN(minutes)) {
             this.endMinutes_.next(false);
         } else {
-            this.customerRequest_.end.setMinutes(minutes);
+            this.userSearchRequest_.end.setMinutes(minutes);
             this.userRequest_.end.setMinutes(minutes);
             this.endMinutes_.next(true);
         }
@@ -146,8 +146,8 @@ export class ShareMapInfoService {
         return this.infoUserSet_;
     }
 
-    set customerRequest(cr: UserSearchRequest) {
-        this.customerRequest_ = cr;
+    set userSearchRequest(cr: UserSearchRequest) {
+        this.userSearchRequest_ = cr;
     }
 
     set userRequest(ur: UserRequest) {
@@ -155,6 +155,6 @@ export class ShareMapInfoService {
     }
 
     reset(): void {
-        this.customerRequest = new UserSearchRequest();
+        this.userSearchRequest = new UserSearchRequest();
     }
 }

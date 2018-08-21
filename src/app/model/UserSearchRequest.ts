@@ -6,7 +6,8 @@ export class UserSearchRequest {
   end: Date;
 
   constructor() {
-    this.start = new Date(0);
+    this.start = new Date();
+    this.start.setDate(this.start.getDate() - 2);
     this.end = new Date();
   }
 

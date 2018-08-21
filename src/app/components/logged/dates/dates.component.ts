@@ -17,8 +17,8 @@ export class DatesComponent implements OnDestroy {
 
   disabled = false;
 
-  @Input() start: Date;
-  @Input() end: Date;
+  start: Date;
+  end: Date;
 
   shour = new FormControl('', {
     updateOn: 'blur',
@@ -54,6 +54,8 @@ export class DatesComponent implements OnDestroy {
   });
 
   constructor(private shareInfoService: ShareMapInfoService, datesService: DatesService) {
+    this.start = this.shareInfoService.userSearchRequest.start;
+    this.end = this.shareInfoService.userSearchRequest.end;
     this.subscription_ = datesService.datesStatus.subscribe(event => {
       this.disabled = event;
       if (this.disabled) {
@@ -114,8 +116,8 @@ export class DatesComponent implements OnDestroy {
   }
 
   setFormControlValidator(type: string): void {
-    if (this.shareInfoService.customerRequest.start.getDate() ===
-        this.shareInfoService.customerRequest.end.getDate() && this.shour.value >= this.ehour.value) {
+    if (this.shareInfoService.userSearchRequest.start.getDate() ===
+        this.shareInfoService.userSearchRequest.end.getDate() && this.shour.value >= this.ehour.value) {
       this.shour.setValidators([Validators.required, Validators.max(this.ehour.value), Validators.min(0)]);
       this.ehour.setValidators([Validators.required, Validators.min(this.shour.value), Validators.max(23)]);
       if (this.shour.value === this.ehour.value && this.sminutes.value >= this.eminutes.value) {
@@ -168,12 +170,12 @@ export class DatesComponent implements OnDestroy {
   }
 
   filterStartDate = (d: Moment): boolean => {
-    return d.toDate() <= this.shareInfoService.customerRequest.end;
+    return d.toDate() <= this.shareInfoService.userSearchRequest.end;
   }
 
   filterEndDate = (d: Moment): boolean => {
-    const newDate = new Date(this.shareInfoService.customerRequest.start);
-    newDate.setDate(this.shareInfoService.customerRequest.start.getDate() - 1);
+    const newDate = new Date(this.shareInfoService.userSearchRequest.start);
+    newDate.setDate(this.shareInfoService.userSearchRequest.start.getDate() - 1);
     return d.toDate() >= newDate && d.toDate() <= new Date();
   }
 

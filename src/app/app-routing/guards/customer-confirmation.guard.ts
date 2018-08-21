@@ -12,6 +12,6 @@ export class CustomerConfirmationGuard implements CanActivate {
   canActivate(
       next: ActivatedRouteSnapshot,
       state: RouterStateSnapshot): boolean {
-    return this.customer.customerRequest !== undefined && this.customer.customerRequest.area !== undefined;
+    return this.customer.userSearchRequest !== undefined && this.customer.userSearchRequest.area !== undefined;
   }
 }

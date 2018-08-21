@@ -11,7 +11,7 @@
     <mat-card-subtitle style="text-align: center">
       Utenti selezionati: {{userSelected?.length}}
     </mat-card-subtitle>
-    <mat-selection-list [(ngModel)]="userSelected">
+    <mat-selection-list [(ngModel)]="userSelected" (selectionChange)="onSelectionChange()">
       <mat-list-option *ngFor="let user of userList" [value]="user">
         {{user}}
       </mat-list-option>
@@ -22,5 +22,6 @@
     </div>
     <mat-divider></mat-divider>
     <dates></dates>
+    <button mat-raised-button id="dateButton" (click)="getArchives()">Cambia date</button>
   </mat-card>
 </div>

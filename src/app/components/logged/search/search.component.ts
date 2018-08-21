@@ -4,6 +4,7 @@ import {UserSearchRequest} from '../../../model/UserSearchRequest';
 import {ArchiveService} from '../../../services/archive.service';
 import {first} from 'rxjs/operators';
 import {ApproximatedArchive} from '../../../model/ApproximatedArchive';
+import {ShareMapInfoService} from '../../../services/share-map-info.service';
 
 @Component({
   selector: 'app-search',
@@ -12,74 +13,25 @@ import {ApproximatedArchive} from '../../../model/ApproximatedArchive';
 })
 export class SearchComponent implements OnInit {
 
-  timestamps: Date[];
-  chart = [];
+  chart;
   userList = [];
   userSelected = [];
 
-  datasets = new Map();
+  colorByUser = new Map();
+  datasets;
 
   userMap = new Map();
 
-  userSearchReq: UserSearchRequest;
   approximatedArchiveList: ApproximatedArchive[];
 
-  constructor(private archiveService: ArchiveService) {
+  constructor(private archiveService: ArchiveService, private shareInfoService: ShareMapInfoService) {
   }
 
   ngOnInit(): void {
-    this.userSearchReq = new UserSearchRequest();
-  }
-
-  selectAll() {
-    this.userSelected = this.userList;
-  }
-
-  deselectAll() {
-    this.userSelected = [];
-  }
-
-  onPolygonReady(p: L.Polygon) {
-    this.userSearchReq.area = p;
-    this.archiveService.searchArchives(this.userSearchReq)
-        .pipe(first()).subscribe(aaList => {
-      this.approximatedArchiveList = aaList;
-      this.setTimestampsMap(aaList);
-    });
-  }
-
-  setTimestampsMap(archives: ApproximatedArchive[]) {
-    for (const archive of archives) {
-      if (this.userMap.has(archive.username)) {
-        const timestampList = this.userMap.get(archive.username).concat(archive.timestamps);
-        this.userMap.set(archive.username, timestampList);
-      } else {
-        this.userMap.set(archive.username, archive.timestamps);
-        this.userList.push(archive.username);
-      }
-    }
-    this.setTimeline();
-    this.userSelected = this.userList;
-  }
-
-  setTimeline() {
-    for (const user of this.userList) {
-      const timeDates = []
-      for (const timestamp of this.userMap.get(user)) {
-        timeDates.push({x: timestamp * 1000, y: 0});
-      }
-      this.datasets.set(user, {
-        data: timeDates,
-        pointRadius: 5,
-        pointBorderColor: this.getColor(),
-        pointBackgroundColor: this.getColor()
-      });
-    }
-    console.log(Array.from(this.datasets.values()));
     this.chart = new Chart('canvas', {
       type: 'scatter',
       data: {
-        datasets: Array.from(this.datasets.values())
+        datasets: []
       },
       options: {
         legend: {
@@ -90,7 +42,11 @@ export class SearchComponent implements OnInit {
         },
         scales: {
           xAxes: [{
-            type: 'time'
+            type: 'time',
+            time: {
+              min: this.shareInfoService.userSearchRequest.start,
+              max: this.shareInfoService.userSearchRequest.end
+            },
           }],
           yAxes: [{
             gridLines: {
@@ -105,12 +61,83 @@ export class SearchComponent implements OnInit {
     });
   }
 
-  getColor() {
+  selectAll() {
+    this.userSelected = this.userList;
+    this.setTimeline();
+  }
+
+  deselectAll() {
+    this.userSelected = [];
+    this.setTimeline();
+  }
+
+  onSelectionChange() {
+    this.setTimeline();
+  }
+
+  onPolygonReady(p: L.Polygon) {
+    this.shareInfoService.userSearchRequest.area = p;
+    this.getArchives();
+  }
+
+  setUsersMap(archives: ApproximatedArchive[]) {
+    this.userMap = new Map();
+    this.userList = [];
+    for (const archive of archives) {
+      if (this.userMap.has(archive.username)) {
+        const timestampList = this.userMap.get(archive.username).concat(archive.timestamps);
+        this.userMap.set(archive.username, timestampList);
+      } else {
+        this.userMap.set(archive.username, archive.timestamps);
+        this.userList.push(archive.username);
+      }
+    }
+    this.userSelected = this.userList;
+    this.setTimeline();
+  }
+
+  setTimeline() {
+    this.datasets = new Map();
+    for (const user of this.userSelected) {
+      const timeDates = [];
+      for (const timestamp of this.userMap.get(user)) {
+        timeDates.push({x: timestamp * 1000, y: 0});
+      }
+      const color = this.getColorByUserID(user);
+      this.datasets.set(user, {
+        data: timeDates,
+        pointRadius: 5,
+        pointBorderColor: color,
+        pointBackgroundColor: color
+      });
+    }
+    this.chart.data.datasets = Array.from(this.datasets.values());
+    this.chart.options.scales.xAxes[0].time.min = this.shareInfoService.userSearchRequest.start;
+    this.chart.options.scales.xAxes[0].time.max = this.shareInfoService.userSearchRequest.end;
+    this.chart.update();
+
+  }
+
+  getColorByUserID(userId) {
+    if (this.colorByUser.has(userId)) {
+      return this.colorByUser.get(userId);
+    }
     let color;
     const r = Math.floor(Math.random() * 255);
     const g = Math.floor(Math.random() * 255);
     const b = Math.floor(Math.random() * 255);
-    color = 'rgba(' + r + ' ,' + g + ',' + b + ', 0.2)';
+    color = 'rgb(' + r + ' ,' + g + ',' + b + ', 0.2)';
+    this.colorByUser.set(userId, color);
     return color;
   }
+
+  getArchives() {
+    this.archiveService.searchArchives(this.shareInfoService.userSearchRequest)
+        .pipe(first()).subscribe(aaList => {
+      this.approximatedArchiveList = aaList;
+      this.setUsersMap(aaList);
+    });
+  }
+
+
 }
