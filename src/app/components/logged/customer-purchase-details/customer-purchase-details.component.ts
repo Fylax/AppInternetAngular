@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {PurchaseService} from '../../../services/purchase.service';
-import {Purchase} from '../../../model/Purchase';
+import {Purchase} from '../../../model/purchase';
 import {first} from 'rxjs/operators';
 import {ActivatedRoute} from '@angular/router';
 import {DatesService} from '../../../services/dates.service';

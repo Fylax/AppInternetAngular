@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {Urls, UrlService} from "../../../services/url.service";
-import {FileUploader, FileUploaderOptions, FilterFunction} from 'ng2-file-upload';
+import { UrlService} from "../../../services/url.service";
+import {FileUploader, FilterFunction} from 'ng2-file-upload';
 import {UserTokenService} from "../../../services/user.service";
 import {FileLikeObject} from "ng2-file-upload/file-upload/file-like-object.class";
 
@@ -23,6 +23,7 @@ export class UserUploadComponent implements OnInit {
         return (name.lastIndexOf('json') === name.length - 4);
       }
     };
+    /*
     baseService.promise.then((urlList: Urls) =>
         this.uploader.setOptions({
           url: urlList.userArchives.href,
@@ -30,7 +31,7 @@ export class UserUploadComponent implements OnInit {
           authToken: `Bearer ${user.accessToken}`,
           filters: [filter]
         })
-    );
+    );*/
   }
 
   public fileOverBase(e: any): void {

@@ -1,4 +1,4 @@
-import {Archive} from "./Archive";
+import {Archive} from "./archive";
 
 
 export class ArchivesPaginationSupport {

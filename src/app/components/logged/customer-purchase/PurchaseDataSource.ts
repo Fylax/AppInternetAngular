@@ -1,9 +1,9 @@
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
-import {Purchase} from '../../../model/Purchase';
+import {Purchase} from '../../../model/purchase';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {PurchaseService} from '../../../services/purchase.service';
 import {catchError, finalize} from 'rxjs/operators';
-import {PurchasesPaginationSupport} from '../../../model/PurchasesPaginationSupport';
+import {PurchasesPaginationSupport} from '../../../model/purchases-pagination-support';
 
 export class PurchaseDataSource implements DataSource<Purchase> {
 

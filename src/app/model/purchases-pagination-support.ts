@@ -1,4 +1,4 @@
-import {Purchase} from './Purchase';
+import {Purchase} from './purchase';
 
 /*
   add this class to support the pagination: in particular it's important to retrieve the total elements

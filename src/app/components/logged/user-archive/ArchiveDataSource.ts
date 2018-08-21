@@ -1,9 +1,9 @@
 import {CollectionViewer, DataSource} from "@angular/cdk/collections";
 import {BehaviorSubject, Observable, of} from "rxjs";
 import {catchError, finalize} from "rxjs/operators";
-import {Archive} from "../../../model/Archive";
+import {Archive} from "../../../model/archive";
 import {ArchiveService} from "../../../services/archive.service";
-import {ArchivesPaginationSupport} from "../../../model/ArchivesPaginationSupport";
+import {ArchivesPaginationSupport} from "../../../model/archives-pagination-support";
 
 export class ArchiveDataSource implements DataSource<Archive> {
 

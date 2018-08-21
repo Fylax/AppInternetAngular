@@ -2,8 +2,8 @@ import {catchError, finalize} from 'rxjs/operators';
 import {CollectionViewer, DataSource} from '@angular/cdk/collections';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {AdminService} from '../../../services/admin.service';
-import {Link} from '../../../model/Link';
-import {AdminPaginatorSupport} from '../../../model/AdminPaginatorSupport';
+import {Link} from '../../../model/link';
+import {AdminPaginatorSupport} from '../../../model/admin-paginator-support';
 
 export class CustomerDataSource implements DataSource<Link> {
 

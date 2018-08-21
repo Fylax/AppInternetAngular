@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
-import {UserSearchRequest} from '../model/UserSearchRequest';
+import {UserSearchRequest} from '../model/user-search-request';
 import {Observable} from 'rxjs/internal/Observable';
 import {BehaviorSubject} from 'rxjs/internal/BehaviorSubject';
 import {Moment} from 'moment';
 import {Marker, Polygon} from 'leaflet';
-import {UserRequest} from '../model/UserRequest';
+import {UserRequest} from '../model/user-request';
 
 @Injectable({
     providedIn: 'root'

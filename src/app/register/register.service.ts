@@ -1,47 +1,26 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
-import {from, Observable} from "rxjs";
-import {Urls, UrlService} from '../services/url.service';
-import {first, switchMap} from 'rxjs/operators';
+import {Observable} from "rxjs";
+import {UrlService} from '../services/url.service';
+import {RestResource} from "../model/rest-resource.enum";
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class RegisterService {
 
-  constructor(private http: HttpClient, private baseService: UrlService) {
-  }
+  constructor(private http: HttpClient, private baseService: UrlService) { }
 
   public usernameAvailable(username: string): Observable<boolean> {
     const params = new HttpParams()
         .set('type', 'username')
         .set('value', username);
-    return from(this.baseService.promise)
-        .pipe(
-            first(),
-            switchMap((urls: Urls) => {
-              return this.http.get<boolean>(urls.register.href, {
-                params: params,
-                responseType: 'json'
-              });
-            })
-        );
+    return this.baseService.get(RestResource.Register, new HttpHeaders(), params, false);
   }
 
   public emailAvailable(email: string): Observable<boolean> {
     const params = new HttpParams()
         .set('type', 'email')
         .set('value', email);
-    return from(this.baseService.promise)
-        .pipe(
-            first(),
-            switchMap((urls: Urls) => {
-              return this.http.get<boolean>(urls.register.href, {
-                params: params,
-                responseType: 'json'
-              });
-            })
-        );
+    return this.baseService.get(RestResource.Register, new HttpHeaders(), params, false);
   }
 
   public register(username: string, email: string, password: string) {
@@ -49,19 +28,10 @@ export class RegisterService {
         .set('username', username)
         .set('email', email)
         .set('password', password);
-    return from(this.baseService.promise)
-        .pipe(
-            switchMap((urls: Urls) => {
-              return this.http.post<string>(
-                  urls.register.href,
-                  body, {
-                    headers: new HttpHeaders({
-                      'Content-Type': 'application/x-www-form-urlencoded'
-                    }),
-                    responseType: 'json'
-                  });
-            })
-        );
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded'
+    });
+    return this.baseService.post(RestResource.Register, body.toString(), headers, false);
   }
 
 }

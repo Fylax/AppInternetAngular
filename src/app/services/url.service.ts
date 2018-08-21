@@ -1,27 +1,12 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../environments/environment';
-import {first} from 'rxjs/operators';
-
-interface Url {
-  href: string;
-}
-
-export interface Urls {
-  oauth?: Url;
-  register?: Url;
-  userArchives?: Url;
-  userArchive?: Url;
-  userArchiveSearch?: Url;
-  customerPositions?: Url;
-  customerPurchases?: Url;
-  customerPurchaseDetails?: Url;
-  adminUsers?: Url;
-  adminCustomers?: Url;
-  adminCustomerPurchases?: Url;
-  adminCustomerPurchase?: Url;
-  adminUserPositions?: Url;
-}
+import {first, switchMap} from 'rxjs/operators';
+import {from, Observable} from "rxjs";
+import {HttpParams} from "@angular/common/http";
+import {Urls} from "../model/urls";
+import {RestResource} from "../model/rest-resource.enum";
+import * as urijs from 'urijs';
 
 @Injectable({
   providedIn: 'root'
@@ -39,10 +24,6 @@ export class UrlService {
     return this.onlyOauth_;
   }
 
-  get promise(): Promise<Urls> {
-    return this.promise_;
-  }
-
   refresh(): void {
     this.promise_ = new Promise((resolve) => {
       this.http.get(environment.baseUrl)
@@ -52,6 +33,58 @@ export class UrlService {
             resolve(json._links);
           });
     });
+  }
+
+  public get(url: RestResource, headers: HttpHeaders, query: HttpParams,
+             authenticated: boolean, urlTemplate?: {}): Observable<any> {
+    return from(this.promise_)
+        .pipe(
+            switchMap((urls: Urls) => {
+              let href = urls[url].href;
+              if (urlTemplate) {
+                href = URITemplate(RestResource.ArchiveSearch).expand(urlTemplate).valueOf();
+              }
+              return this.http.get(href, {
+                headers: headers,
+                params: query,
+                responseType: 'json',
+                withCredentials: authenticated
+              });
+            })
+        );
+  }
+
+  public post(url: RestResource, body: string, headers: HttpHeaders, authenticated: boolean): Observable<any> {
+    return from(this.promise_)
+        .pipe(
+            switchMap((urls: Urls) => {
+              return this.http.post(
+                  urls[url].href,
+                  body, {
+                    headers: headers,
+                    responseType: 'json',
+                    withCredentials: authenticated
+                  });
+            })
+        );
+  }
+
+  public delete(url: RestResource, authenticated: boolean, urlTemplate?: {}): Observable<any> {
+    return from(this.promise_)
+        .pipe(
+            switchMap((urls: Urls) => {
+              let href = urls[url].href;
+              if (urlTemplate) {
+                href = URITemplate(RestResource.ArchiveSearch).expand(urlTemplate).valueOf();
+              }
+              return this.http.delete(
+                  href,
+                  {
+                    withCredentials: authenticated
+                  }
+              );
+            })
+        );
   }
 }
 
