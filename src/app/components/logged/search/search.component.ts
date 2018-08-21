@@ -17,6 +17,8 @@ export class SearchComponent implements OnInit {
   userList = [];
   userSelected = [];
 
+  datasets = new Map();
+
   userMap = new Map();
 
   userSearchReq: UserSearchRequest;
@@ -27,45 +29,6 @@ export class SearchComponent implements OnInit {
 
   ngOnInit(): void {
     this.userSearchReq = new UserSearchRequest();
-    this.chart = new Chart('canvas', {
-      type: 'scatter',
-      data: {
-        datasets: [
-          {
-            data: this.timestamps,
-            borderColor: '#ffffff',
-            pointRadius: 5,
-            pointBorderColor: 'rgba(0, 0, 0, 0.2)',
-            pointBackgroundColor: 'rgba(0, 0, 0, 0.2)'
-          }
-        ]
-      },
-      options: {
-        legend: {
-          display: false
-        },
-        tooltips: {
-          enabled: false
-        },
-        scales: {
-          xAxes: [{
-            type: 'time',
-            time: {
-              min: new Date(1533891140 * 1000),
-              max: new Date(1533898860 * 1000)
-            },
-          }],
-          yAxes: [{
-            gridLines: {
-              display: false,
-            },
-            ticks: {
-              display: false
-            }
-          }]
-        }
-      }
-    });
   }
 
   selectAll() {
@@ -95,6 +58,59 @@ export class SearchComponent implements OnInit {
         this.userList.push(archive.username);
       }
     }
+    this.setTimeline();
     this.userSelected = this.userList;
+  }
+
+  setTimeline() {
+    for (const user of this.userList) {
+      const timeDates = []
+      for (const timestamp of this.userMap.get(user)) {
+        timeDates.push({x: timestamp * 1000, y: 0});
+      }
+      this.datasets.set(user, {
+        data: timeDates,
+        pointRadius: 5,
+        pointBorderColor: this.getColor(),
+        pointBackgroundColor: this.getColor()
+      });
+    }
+    console.log(Array.from(this.datasets.values()));
+    this.chart = new Chart('canvas', {
+      type: 'scatter',
+      data: {
+        datasets: Array.from(this.datasets.values())
+      },
+      options: {
+        legend: {
+          display: false
+        },
+        tooltips: {
+          enabled: false
+        },
+        scales: {
+          xAxes: [{
+            type: 'time'
+          }],
+          yAxes: [{
+            gridLines: {
+              display: false,
+            },
+            ticks: {
+              display: false
+            }
+          }]
+        }
+      }
+    });
+  }
+
+  getColor() {
+    let color;
+    const r = Math.floor(Math.random() * 255);
+    const g = Math.floor(Math.random() * 255);
+    const b = Math.floor(Math.random() * 255);
+    color = 'rgba(' + r + ' ,' + g + ',' + b + ', 0.2)';
+    return color;
   }
 }
