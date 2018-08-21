@@ -7,7 +7,6 @@ import {map, switchMap} from 'rxjs/operators';
 import {Position} from '../model/Position';
 import * as L from 'leaflet';
 import {UserRequest} from '../model/UserRequest';
-import {fromPromise} from "rxjs/internal-compatibility";
 import {Urls, UrlService} from "./url.service";
 import {from} from "rxjs/internal/observable/from";
 
@@ -22,7 +21,7 @@ export class PositionsService {
   }
 
   getPositionCount(cr: UserSearchRequest): Observable<number> {
-    return fromPromise(this.baseService.promise)
+    return from(this.baseService.promise)
         .pipe(
             switchMap((urlList: Urls) => {
               return this.http.get<number>(urlList.customerPositions.href, {
@@ -38,7 +37,7 @@ export class PositionsService {
   }
 
   postPositions(body: string): Observable<Response> {
-    return fromPromise(this.baseService.promise)
+    return from(this.baseService.promise)
         .pipe(
             switchMap((urlList: Urls) => {
               return this.http.post<Response>(urlList.userArchives.href, body);
@@ -50,7 +49,7 @@ export class PositionsService {
     // const params = new HttpParams()
     //     .set('start', (ur.start.getTime() * 1000).toString())
     //     .set('end', (ur.end.getTime() * 1000).toString());
-    return fromPromise(this.baseService.promise)
+    return from(this.baseService.promise)
         .pipe(
             switchMap((urlList: Urls) => {
               let url: string;

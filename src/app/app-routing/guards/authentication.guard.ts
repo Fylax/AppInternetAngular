@@ -1,7 +1,7 @@
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from "@angular/router";
 import {Injectable} from "@angular/core";
 import {Role, UserTokenService} from '../../services/user.service';
-import {LoginService} from "../../services/login.service";
+import {LoginService} from "../../login/login.service";
 import {catchError, first, map} from "rxjs/operators";
 import {Observable, BehaviorSubject, Subject} from "rxjs";
 import {UrlService} from "../../services/url.service";

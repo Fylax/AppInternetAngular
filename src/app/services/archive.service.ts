@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import {ArchivesPaginationSupport} from "../model/ArchivesPaginationSupport";
-import {HttpClient, HttpHeaders, HttpParams} from '../../../node_modules/@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Urls, UrlService} from './url.service';
 import {UserSearchRequest} from '../model/UserSearchRequest';
-import {fromPromise} from 'rxjs/internal-compatibility';
 import {switchMap} from 'rxjs/operators';
-import {Observable} from 'rxjs';
+import {from, Observable} from 'rxjs';
 import {ApproximatedArchive} from '../model/ApproximatedArchive';
 
 @Injectable({
@@ -17,7 +16,7 @@ export class ArchiveService {
   }
 
   searchArchives(usr: UserSearchRequest): Observable<ApproximatedArchive[]> {
-    return fromPromise(this.baseService.promise)
+    return from(this.baseService.promise)
         .pipe(
             switchMap((urlList: Urls) => {
               const url = URITemplate(urlList.userArchiveSearch.href).expand({
@@ -32,7 +31,7 @@ export class ArchiveService {
 
 
   getArchiveList(pageIndex = 1, pageSize = 3, userId?: string): Observable<ArchivesPaginationSupport> {
-        return fromPromise(this.baseService.promise)
+        return from(this.baseService.promise)
             .pipe(
                 switchMap((urlList: Urls) => {
                     let url: string;
@@ -53,7 +52,7 @@ export class ArchiveService {
   }
 
     deleteArchive(archiveId: string): Observable<{}> {
-        return fromPromise(this.baseService.promise)
+        return from(this.baseService.promise)
             .pipe(
                 switchMap((urlList: Urls) => {
                     let url: string;
@@ -64,7 +63,7 @@ export class ArchiveService {
     }
 
     downloadArchive(archiveId: string): Observable<{}> {
-        return fromPromise(this.baseService.promise)
+        return from(this.baseService.promise)
             .pipe(
                 switchMap((urlList: Urls) => {
                     let url: string;

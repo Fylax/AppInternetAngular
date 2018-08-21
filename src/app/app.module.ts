@@ -36,8 +36,6 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {AppRoutingModule} from './app-routing/app-routing.module';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {LoginComponent} from './components/login/login.component';
-import {RegisterComponent} from "./components/register/register.component";
 import {LoggedComponent} from './components/logged/logged.component';
 import {TokenInterceptor} from './interceptors/token.interceptor';
 import {CustomerPurchaseComponent} from './components/logged/customer-purchase/customer-purchase.component';
@@ -48,14 +46,14 @@ import {CustomerPurchaseDetailsComponent} from './components/logged/customer-pur
 import {AdminComponent} from './components/logged/admin/admin.component';
 import {UserUploadComponent} from './components/logged/user-upload/user-upload.component';
 import {FileUploadModule} from "ng2-file-upload";
-import { SearchComponent } from './components/logged/search/search.component';
 import {UserArchiveComponent} from './components/logged/user-archive/user-archive.component';
+import {SearchComponent} from './components/logged/search/search.component';
+import {LoginModule} from "./login/login.module";
+import {RegisterModule} from "./register/register.module";
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
-    RegisterComponent,
     LoggedComponent,
     MapComponent,
     DatesComponent,
@@ -73,6 +71,9 @@ import {UserArchiveComponent} from './components/logged/user-archive/user-archiv
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
+    LoginModule.forRoot(),
+    RegisterModule.forRoot(),
     LeafletModule.forRoot(),
     LeafletDrawModule.forRoot(),
     FormsModule,

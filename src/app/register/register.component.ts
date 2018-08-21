@@ -3,7 +3,7 @@ import {AsyncValidatorFn, FormControl, FormGroup, ValidatorFn, Validators} from 
 
 import * as zxcvbn from "zxcvbn";
 import * as XRegExp from "xregexp";
-import {RegisterService} from "../../services/register.service";
+import {RegisterService} from "./register.service";
 import {Observable, throwError} from "rxjs";
 import {catchError, first, map, switchMap} from "rxjs/operators";
 import {HttpErrorResponse} from "@angular/common/http";
@@ -24,6 +24,7 @@ export class RegisterComponent implements AfterViewInit, OnInit {
   private upper = XRegExp('\\p{Lu}');
   private digit = XRegExp('\\p{N}');
   private symbol = XRegExp('\\p{S}|\\p{P}|\\p{Zs}');
+  private email = new RegExp('/^(([^<>()\\[\\]\\\\.,;:\\s@"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@"]+)*)|(".+"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$/');
 
   constructor(private registerService: RegisterService,
               private router: Router) {
@@ -44,7 +45,8 @@ export class RegisterComponent implements AfterViewInit, OnInit {
         updateOn: 'blur',
         validators: [
           Validators.required,
-          Validators.email
+          Validators.email,
+          Validators.pattern(this.email)
         ],
         asyncValidators: [
           this.emailValidator()
