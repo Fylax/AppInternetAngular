@@ -30,3 +30,7 @@ form:last-child {
     width: 1px !important;
     margin-left: auto !important;
 }
+
+#dates-container{
+    padding-top: 5px;
+}

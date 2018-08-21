@@ -1,10 +1,10 @@
-import {Component, OnDestroy} from "@angular/core";
-import {MatDatepickerInputEvent} from "@angular/material";
-import {DatesService} from "../../../services/dates.service";
-import {ShareMapInfoService} from "../../../services/share-map-info.service";
+import {Component, Input, OnDestroy} from '@angular/core';
+import {MatDatepickerInputEvent} from '@angular/material';
+import {DatesService} from '../../../services/dates.service';
+import {ShareMapInfoService} from '../../../services/share-map-info.service';
 import {FormControl, Validators} from '@angular/forms';
 import {Moment} from 'moment';
-import {Subscription} from "rxjs";
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'dates',
@@ -16,6 +16,9 @@ export class DatesComponent implements OnDestroy {
   private subscription_: Subscription;
 
   disabled = false;
+
+  @Input() start: Date;
+  @Input() end: Date;
 
   shour = new FormControl('', {
     updateOn: 'blur',

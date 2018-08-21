@@ -1,6 +1,6 @@
 import {Polygon} from 'leaflet';
 
-export class CustomerRequest {
+export class UserSearchRequest {
   area: Polygon;
   start: Date;
   end: Date;

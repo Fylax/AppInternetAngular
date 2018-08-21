@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {MapComponent} from '../components/logged/map/map.component';
-import {CustomerComponent} from '../components/logged/customer/customer.component';
 import {CustomerConfirmationComponent} from '../components/logged/customer-confirmation/customer-confirmation.component';
 import {CustomerConfirmationGuard} from './guards/customer-confirmation.guard';
 import {LoginComponent} from '../components/login/login.component';
@@ -42,8 +41,8 @@ const routes: Routes = [
         children: [
           {
             path: 'customer',
-            component: CustomerComponent,
-            canActivate: [CustomerGuard],
+            component: SearchComponent,
+            canActivate: [UserGuard],
           },
           {
             path: 'customer/confirmation',

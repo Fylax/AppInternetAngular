@@ -2,6 +2,7 @@
   <mat-card>
     <mat-card-title>Timeline</mat-card-title>
     <canvas id="canvas" height="15">{{ chart }}</canvas>
+    <map [setItems]="approximatedArchiveList" (polygonOutput)="onPolygonReady($event)"></map>
   </mat-card>
 </div>
 <div id="filters">
@@ -11,13 +12,13 @@
       Utenti selezionati: {{userSelected?.length}}
     </mat-card-subtitle>
     <mat-selection-list [(ngModel)]="userSelected">
-      <mat-list-option *ngFor="let user of userList" >
+      <mat-list-option *ngFor="let user of userList" [value]="user">
         {{user}}
       </mat-list-option>
     </mat-selection-list>
     <div style="margin: 10px;text-align: center">
-      <button mat-raised-button id="allButton" (click)="selectAll($event)">Seleziona tutti</button>
-      <button mat-raised-button id="noneButton" (click)="deselectAll($event)">Deseleziona tutti</button>
+      <button mat-raised-button id="allButton" (click)="selectAll()">Seleziona tutti</button>
+      <button mat-raised-button id="noneButton" (click)="deselectAll()">Deseleziona tutti</button>
     </div>
     <mat-divider></mat-divider>
     <dates></dates>

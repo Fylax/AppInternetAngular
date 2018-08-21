@@ -1,5 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {Chart} from 'chart.js';
+import {UserSearchRequest} from '../../../model/UserSearchRequest';
+import {ArchiveService} from '../../../services/archive.service';
+import {first} from 'rxjs/operators';
+import {ApproximatedArchive} from '../../../model/ApproximatedArchive';
 
 @Component({
   selector: 'app-search',
@@ -8,22 +12,27 @@ import {Chart} from 'chart.js';
 })
 export class SearchComponent implements OnInit {
 
-  data = [{x: new Date(1533892140 * 1000), y: 0},
-    {x: new Date(1533895740 * 1000), y: 0}, {x: new Date(1533895800 * 1000), y: 0},
-    {x: new Date(1533895860 * 1000), y: 0}];
+  timestamps: Date[];
   chart = [];
-  userList: string[] = ['Boots', 'Clogs', 'Loafers', 'Moccasins', 'Sneakers',
-    'Boots', 'Clogs', 'Loafers', 'Moccasins', 'Sneakers'];
+  userList = [];
   userSelected = [];
 
+  userMap = new Map();
+
+  userSearchReq: UserSearchRequest;
+  approximatedArchiveList: ApproximatedArchive[];
+
+  constructor(private archiveService: ArchiveService) {
+  }
+
   ngOnInit(): void {
-    this.userSelected = this.userList;
+    this.userSearchReq = new UserSearchRequest();
     this.chart = new Chart('canvas', {
       type: 'scatter',
       data: {
         datasets: [
           {
-            data: this.data,
+            data: this.timestamps,
             borderColor: '#ffffff',
             pointRadius: 5,
             pointBorderColor: 'rgba(0, 0, 0, 0.2)',
@@ -59,18 +68,33 @@ export class SearchComponent implements OnInit {
     });
   }
 
-  onSelectionChange(users) {
-    console.log(users.selectedOptions.selected);
+  selectAll() {
+    this.userSelected = this.userList;
   }
 
-  selectAll(users) {
-    users.selectAll();
-    // this.userSelected = this.userList;
+  deselectAll() {
+    this.userSelected = [];
   }
 
-  deselectAll(users) {
-    users.deselectAll();
-    // this.userSelected = [];
+  onPolygonReady(p: L.Polygon) {
+    this.userSearchReq.area = p;
+    this.archiveService.searchArchives(this.userSearchReq)
+        .pipe(first()).subscribe(aaList => {
+      this.approximatedArchiveList = aaList;
+      this.setTimestampsMap(aaList);
+    });
   }
 
+  setTimestampsMap(archives: ApproximatedArchive[]) {
+    for (const archive of archives) {
+      if (this.userMap.has(archive.username)) {
+        const timestampList = this.userMap.get(archive.username).concat(archive.timestamps);
+        this.userMap.set(archive.username, timestampList);
+      } else {
+        this.userMap.set(archive.username, archive.timestamps);
+        this.userList.push(archive.username);
+      }
+    }
+    this.userSelected = this.userList;
+  }
 }

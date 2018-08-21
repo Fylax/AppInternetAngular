@@ -11,7 +11,9 @@ interface Url {
 export interface Urls {
   oauth?: Url;
   register?: Url;
-  userPositions?: Url;
+  userArchives?: Url;
+  userArchive?: Url;
+  userArchiveSearch?: Url;
   customerPositions?: Url;
   customerPurchases?: Url;
   customerPurchaseDetails?: Url;

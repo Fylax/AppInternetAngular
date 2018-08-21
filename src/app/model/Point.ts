@@ -1,9 +1,9 @@
 export class Point {
-    latitude: number;
-    longitude: number;
+    lat: number;
+    lon: number;
 
     constructor(latitude: number, longitude: number) {
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.lat = latitude;
+        this.lon = longitude;
     }
 }

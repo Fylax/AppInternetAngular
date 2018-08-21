@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable, pipe} from 'rxjs';
-import {CustomerRequest} from '../model/CustomerRequest';
+import {UserSearchRequest} from '../model/UserSearchRequest';
 import {environment} from '../../environments/environment';
 import {map, switchMap} from 'rxjs/operators';
 import {Position} from '../model/Position';
@@ -21,7 +21,7 @@ export class PositionsService {
   constructor(private http: HttpClient, private baseService: UrlService) {
   }
 
-  getPositionCount(cr: CustomerRequest): Observable<number> {
+  getPositionCount(cr: UserSearchRequest): Observable<number> {
     return fromPromise(this.baseService.promise)
         .pipe(
             switchMap((urlList: Urls) => {
@@ -41,7 +41,7 @@ export class PositionsService {
     return fromPromise(this.baseService.promise)
         .pipe(
             switchMap((urlList: Urls) => {
-              return this.http.post<Response>(urlList.userPositions.href, body);
+              return this.http.post<Response>(urlList.userArchives.href, body);
             })
         );
   }
@@ -55,7 +55,7 @@ export class PositionsService {
             switchMap((urlList: Urls) => {
               let url: string;
               if (userId === undefined) {
-                url = URITemplate(urlList.userPositions.href).expand( {
+                url = URITemplate(urlList.userArchives.href).expand( {
                   start: (ur.start.getTime() * 1000).toString(),
                   end: (ur.end.getTime() * 1000).toString()
                 }).valueOf();

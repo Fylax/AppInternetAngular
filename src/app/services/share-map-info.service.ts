@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {CustomerRequest} from '../model/CustomerRequest';
+import {UserSearchRequest} from '../model/UserSearchRequest';
 import {Observable} from 'rxjs/internal/Observable';
 import {BehaviorSubject} from 'rxjs/internal/BehaviorSubject';
 import {Moment} from 'moment';
@@ -11,7 +11,7 @@ import {UserRequest} from '../model/UserRequest';
 })
 export class ShareMapInfoService {
 
-    private customerRequest_: CustomerRequest;
+    private customerRequest_: UserSearchRequest;
     private userRequest_: UserRequest;
 
     private allSet_ = new BehaviorSubject<boolean>(false);
@@ -29,7 +29,7 @@ export class ShareMapInfoService {
     private endMinutes_ = new BehaviorSubject<boolean>(false);
 
     constructor() {
-        this.customerRequest_ = new CustomerRequest();
+        this.customerRequest_ = new UserSearchRequest();
         this.userRequest_ = new UserRequest();
         this.polygon_.subscribe(() => this.checkAllSet());
         this.startDate_.subscribe(() => this.checkAllSet());
@@ -146,7 +146,7 @@ export class ShareMapInfoService {
         return this.infoUserSet_;
     }
 
-    set customerRequest(cr: CustomerRequest) {
+    set customerRequest(cr: UserSearchRequest) {
         this.customerRequest_ = cr;
     }
 
@@ -155,6 +155,6 @@ export class ShareMapInfoService {
     }
 
     reset(): void {
-        this.customerRequest = new CustomerRequest();
+        this.customerRequest = new UserSearchRequest();
     }
 }

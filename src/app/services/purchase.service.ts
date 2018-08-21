@@ -5,7 +5,7 @@ import {Purchase} from '../model/Purchase';
 import {Urls, UrlService} from './url.service';
 import {fromPromise} from 'rxjs/internal-compatibility';
 import {switchMap} from 'rxjs/operators';
-import {CustomerRequest} from '../model/CustomerRequest';
+import {UserSearchRequest} from '../model/UserSearchRequest';
 import {PurchasesPaginationSupport} from '../model/PurchasesPaginationSupport';
 import * as urijs from 'urijs';
 
@@ -16,7 +16,7 @@ export class PurchaseService {
 
   constructor(private http: HttpClient, private baseService: UrlService) { }
 
-  buyPositions(cr: CustomerRequest): Observable<{}> {
+  buyPositions(cr: UserSearchRequest): Observable<{}> {
     return fromPromise(this.baseService.promise)
         .pipe(
             switchMap((urlList: Urls) => {

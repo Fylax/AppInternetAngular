@@ -1,19 +1,9 @@
 <mat-card id="map-card">
     <mat-card-content>
-        <div style="height: 500px;width: 100%;"
+        <div style="height: 420px;width: 100%;"
              leaflet
-             [leafletOptions]="options">
-            <mat-card id="map-inner-input"
-                      (click)="$event.stopPropagation();"
-                      (pointerdown)="$event.stopPropagation();"
-                      (mousedown)="$event.stopPropagation();"
-                      (dblclick)="$event.stopPropagation();"
-                      (wheel)="$event.stopPropagation();"
-                      *ngIf="!hidden">
-                <mat-card-content>
-                    <dates></dates>
-                </mat-card-content>
-            </mat-card>
+             [leafletOptions]="options"
+             (leafletMapReady)="onMapReady($event)">
         </div>
     </mat-card-content>
 </mat-card>

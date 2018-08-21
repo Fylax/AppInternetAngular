@@ -25,7 +25,7 @@ export class UserUploadComponent implements OnInit {
     };
     baseService.promise.then((urlList: Urls) =>
         this.uploader.setOptions({
-          url: urlList.userPositions.href,
+          url: urlList.userArchives.href,
           disableMultipart: true,
           authToken: `Bearer ${user.accessToken}`,
           filters: [filter]
