@@ -17,6 +17,7 @@
             <p>Crea gratis il tuo account</p>
         </mat-card-header>
         <mat-card-content fxLayout="column" fxLayoutAlign="center center" class="inner-card">
+            <p *ngIf="error" fxFlexAlign="center">Si è verificato un errore</p>
             <form fxLayout="column" fxFlexAlign="center">
                 <mat-form-field>
                     <input matInput [formControl]="form.get('username')" placeholder="Username" autocomplete="username"/>
@@ -80,7 +81,8 @@
                     <button
                             mat-raised-button
                             color="primary"
-                            [disabled]="!form.valid">Registrati
+                            [disabled]="!form.valid"
+                            (click)="register()" >Registrati
                     </button>
                     <span>o</span>
                     <button
