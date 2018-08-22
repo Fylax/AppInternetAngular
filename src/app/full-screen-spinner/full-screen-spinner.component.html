@@ -1,0 +1,8 @@
+<div *ngIf="visible"
+     (click)="cancel(); $event.stopPropagation();"
+     (pointerdown)="$event.stopPropagation();"
+     (mousedown)="$event.stopPropagation();"
+     (dblclick)="$event.stopPropagation();"
+     (wheel)="$event.stopPropagation();">
+    <mat-spinner></mat-spinner>
+</div>

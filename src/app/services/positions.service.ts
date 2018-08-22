@@ -6,9 +6,7 @@ import {UserRequest} from '../model/user-request';
 import {UrlService} from "./url.service";
 import {RestResource} from "../model/rest-resource.enum";
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class PositionsService {
 
   private filePath = 'assets/myPositions.json';

@@ -7,9 +7,7 @@ import {Observable} from 'rxjs';
 import {ApproximatedArchive} from '../model/approximated-archive';
 import {RestResource} from "../model/rest-resource.enum";
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class ArchiveService {
 
   constructor(private http: HttpClient, private baseService: UrlService) {
