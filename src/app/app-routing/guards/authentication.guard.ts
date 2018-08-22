@@ -1,6 +1,6 @@
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from "@angular/router";
 import {Injectable} from "@angular/core";
-import {Role, UserTokenService} from '../../services/user.service';
+import {Role, UserService} from '../../services/user.service';
 import {LoginService} from "../../login/login.service";
 import {catchError, first, map} from "rxjs/operators";
 import {Observable, BehaviorSubject, Subject} from "rxjs";
@@ -15,7 +15,7 @@ export class AuthenticationGuard implements CanActivate {
   private loggedEvent_ = new BehaviorSubject<boolean>(true);
   private tokenEvent_ = new Subject();
 
-  constructor(private user: UserTokenService,
+  constructor(private user: UserService,
               private login: LoginService,
               private router: Router) {
     this.loggedEvent_.subscribe((logged) => {
@@ -32,7 +32,7 @@ export class AuthenticationGuard implements CanActivate {
       route: ActivatedRouteSnapshot,
       state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     if (!this.user.isLogged) {
-      const token = this.user.refreshToken;
+      const token = UserService.refreshToken;
       if (token !== null) {
         if (this.user.isRefreshTokenExpired) {
           this.tokenEvent_.next();
@@ -66,7 +66,7 @@ export class LoginGuard implements CanActivate {
 
   private event_ = new BehaviorSubject<boolean>(false);
 
-  constructor(private user: UserTokenService,
+  constructor(private user: UserService,
               private login: LoginService,
               router: Router,
               url: UrlService) {
@@ -77,10 +77,8 @@ export class LoginGuard implements CanActivate {
         }
         if (this.user.roles.includes(Role.ADMIN)) {
           router.navigate(['admin']);
-        } else if (this.user.roles.includes(Role.CUSTOMER)) {
-          router.navigate(['map', 'positions', 'customer']);
         } else if (this.user.roles.includes(Role.USER)) {
-          router.navigate(['map', 'positions', 'user']);
+          router.navigate(['positions', 'user']);
         }
       }
     });
@@ -90,7 +88,7 @@ export class LoginGuard implements CanActivate {
       route: ActivatedRouteSnapshot,
       state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     if (!this.user.isLogged) {
-      const token = this.user.refreshToken;
+      const token = UserService.refreshToken;
       if (token !== null) {
         if (this.user.isRefreshTokenExpired) {
           return true;

@@ -18,9 +18,12 @@
         </mat-card-header>
         <mat-card-content fxLayout="column" fxLayoutAlign="center center" class="inner-card">
             <p *ngIf="error" fxFlexAlign="center">Si è verificato un errore</p>
-            <form fxLayout="column" fxFlexAlign="center">
+            <form fxLayout="column"
+                  fxFlexAlign="center"
+                  [formGroup]="form"
+                  (ngSubmit)="register()">
                 <mat-form-field>
-                    <input matInput [formControl]="form.get('username')" placeholder="Username"
+                    <input matInput formControlName="username" placeholder="Username"
                            autocomplete="username"/>
                     <mat-error *ngIf="form.get('username').hasError('required')">
                         Username <strong>obbligatorio</strong>!
@@ -31,7 +34,7 @@
                 </mat-form-field>
 
                 <mat-form-field>
-                    <input matInput [formControl]="form.get('email')" placeholder="Email" autocomplete="email"/>
+                    <input matInput formControlName="email" placeholder="Email" autocomplete="email"/>
                     <mat-error *ngIf="form.get('email').hasError('email') || form.get('email').hasError('pattern')">
                         Email <strong>invalida</strong>!
                     </mat-error>
@@ -46,7 +49,7 @@
 
                 <mat-form-field>
                     <input matInput
-                           [formControl]="form.get('password')"
+                           formControlName="password"
                            placeholder="Password" type="password"
                            (keyup)="strength($event)"
                            (blur)="updateConfirmation()"
@@ -70,7 +73,7 @@
                 ></mat-progress-bar>
                 <mat-form-field>
                     <input matInput
-                           [formControl]="form.get('confirm')"
+                           formControlName="confirm"
                            placeholder="Conferma password"
                            type="password"/>
                     <mat-error *ngIf="form.get('confirm').hasError('required')">
@@ -82,15 +85,13 @@
                 </mat-form-field>
 
                 <div fxLayout="row" fxLayoutAlign="flex-start center">
-                    <button
-                            mat-raised-button
+                    <button mat-raised-button
                             color="primary"
-                            [disabled]="!form.valid"
-                            (click)="register()">Registrati
+                            type="submit"
+                            [disabled]="!form.valid">Registrati
                     </button>
                     <span>o</span>
-                    <button
-                            mat-raised-button
+                    <button mat-raised-button
                             color="link"
                             routerLink="/login">Login
                     </button>

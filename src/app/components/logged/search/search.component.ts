@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {Chart} from 'chart.js';
-import {UserSearchRequest} from '../../../model/UserSearchRequest';
+import {UserSearchRequest} from '../../../model/user-search-request';
 import {ArchiveService} from '../../../services/archive.service';
 import {first} from 'rxjs/operators';
+import {ApproximatedArchive} from '../../../model/approximated-archive';
 import {ApproximatedArchive} from '../../../model/ApproximatedArchive';
 import {ShareMapInfoService} from '../../../services/share-map-info.service';
 

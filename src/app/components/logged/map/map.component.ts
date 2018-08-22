@@ -2,8 +2,8 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angula
 import * as L from 'leaflet';
 import {Subscription} from 'rxjs';
 import {DatesService} from '../../../services/dates.service';
-import {ApproximatedArchive} from '../../../model/ApproximatedArchive';
-import {Point} from '../../../model/Point';
+import {ApproximatedArchive} from '../../../model/approximated-archive';
+import {Point} from '../../../model/point';
 
 @Component({
   selector: 'map',

@@ -1,11 +1,11 @@
 import {catchError, finalize} from 'rxjs/operators';
-import {Purchase} from '../../../model/Purchase';
+import {Purchase} from '../../../model/purchase';
 import {PurchaseService} from '../../../services/purchase.service';
 import {CollectionViewer, DataSource} from '@angular/cdk/collections';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {AdminService} from '../../../services/admin.service';
-import {Link} from '../../../model/Link';
-import {AdminPaginatorSupport} from '../../../model/AdminPaginatorSupport';
+import {Link} from '../../../model/link';
+import {AdminPaginatorSupport} from '../../../model/admin-paginator-support';
 
 export class UserDataSource implements DataSource<Link> {
 

@@ -1,4 +1,4 @@
-import {Link} from './Link';
+import {Link} from './link';
 
 export class AdminPaginatorSupport {
   private _items: Link[];

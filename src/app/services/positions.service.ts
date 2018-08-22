@@ -1,14 +1,10 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {Observable, pipe} from 'rxjs';
-import {UserSearchRequest} from '../model/UserSearchRequest';
-import {environment} from '../../environments/environment';
-import {map, switchMap} from 'rxjs/operators';
-import {Position} from '../model/Position';
-import * as L from 'leaflet';
-import {UserRequest} from '../model/UserRequest';
-import {Urls, UrlService} from "./url.service";
-import {from} from "rxjs/internal/observable/from";
+import {Observable} from 'rxjs';
+import {UserSearchRequest} from '../model/user-search-request';
+import {UserRequest} from '../model/user-request';
+import {UrlService} from "./url.service";
+import {RestResource} from "../model/rest-resource.enum";
 
 @Injectable({
   providedIn: 'root'
@@ -21,15 +17,8 @@ export class PositionsService {
   }
 
   getPositionCount(cr: UserSearchRequest): Observable<number> {
-    return from(this.baseService.promise)
-        .pipe(
-            switchMap((urlList: Urls) => {
-              return this.http.get<number>(urlList.customerPositions.href, {
-                headers: new HttpHeaders({'Accept': 'application/json'}),
-                params: new HttpParams().set('request', btoa(JSON.stringify(cr)))
-              });
-            })
-        );
+    const params = new HttpParams().set('request', btoa(JSON.stringify(cr)));
+    return this.baseService.get(RestResource.Positions, new HttpHeaders(), params, true);
   }
 
   getPositions(): Observable<string> {
@@ -37,38 +26,19 @@ export class PositionsService {
   }
 
   postPositions(body: string): Observable<Response> {
-    return from(this.baseService.promise)
-        .pipe(
-            switchMap((urlList: Urls) => {
-              return this.http.post<Response>(urlList.userArchives.href, body);
-            })
-        );
+    return this.baseService.post(RestResource.Positions, body, new HttpHeaders(), true);
   }
 
   getPositionsFromServer(ur: UserRequest, userId?: string): Observable<any> {
-    // const params = new HttpParams()
-    //     .set('start', (ur.start.getTime() * 1000).toString())
-    //     .set('end', (ur.end.getTime() * 1000).toString());
-    return from(this.baseService.promise)
-        .pipe(
-            switchMap((urlList: Urls) => {
-              let url: string;
-              if (userId === undefined) {
-                url = URITemplate(urlList.userArchives.href).expand( {
-                  start: (ur.start.getTime() * 1000).toString(),
-                  end: (ur.end.getTime() * 1000).toString()
-                }).valueOf();
-              } else {
-                url = URITemplate(urlList.adminUserPositions.href).expand( {
-                  id: userId,
-                  start: (ur.start.getTime() * 1000).toString(),
-                  end: (ur.end.getTime() * 1000).toString()
-                }).valueOf();
-              }
-              return this.http.get<any>(url, {
-                headers: new HttpHeaders({'Accept': 'application/json'})
-              });
-            })
-        );
+    const expand = {
+      start: (ur.start.getTime() * 1000).toString(),
+      end: (ur.end.getTime() * 1000).toString()
+    };
+    if (userId) {
+      expand['id'] = userId;
+      return this.baseService.get(RestResource.AdminUserPositions, new HttpHeaders(), new HttpParams(), true, expand);
+    } else {
+      return this.baseService.get(RestResource.Archives, new HttpHeaders(), new HttpParams(), true, expand);
+    }
   }
 }

@@ -1,11 +1,10 @@
 import {AfterViewInit, Component, Injector} from '@angular/core';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {UserTokenService} from "../services/user.service";
+import {UserService} from "../services/user.service";
 import {LoginService} from "./login.service";
 import {SpinnerService} from "../services/spinner.service";
 import {ActivatedRoute, Router, RouterStateSnapshot} from "@angular/router";
 import {catchError, first, retry} from "rxjs/operators";
-import {throwError} from "rxjs/internal/observable/throwError";
+import {throwError} from "rxjs";
 
 @Component({
   selector: 'login',
@@ -14,27 +13,21 @@ import {throwError} from "rxjs/internal/observable/throwError";
 })
 export class LoginComponent implements AfterViewInit {
 
+  /**
+   * Whether credentials are valid. Can be set to false with a REST request.
+   */
   valid = true;
 
-  form = new FormGroup({
-    username: new FormControl('', {
-      updateOn: 'blur',
-      validators: [
-        Validators.required
-      ]
-    }),
-    password: new FormControl('', {
-      updateOn: 'change',
-      validators: [
-        Validators.required
-      ]
-    })
-  });
+  form = this.loginservice.form;
 
+  /**
+   * Whether the session has expired (meaning that refresh token is out of life).
+   * This value is derived from query param.
+   */
   expired: boolean;
 
   constructor(private loginservice: LoginService,
-              private user: UserTokenService,
+              private user: UserService,
               private spinner: SpinnerService,
               private route: ActivatedRoute,
               private router: Router,
@@ -45,8 +38,12 @@ export class LoginComponent implements AfterViewInit {
         });
   }
 
+  /**
+   * Tries login. In case of success it redirects to user homepage, otherwise it shows an error message.
+   */
   login() {
     this.spinner.showSpinner();
+    // Tries login for tree times, managing errors.
     this.loginservice.login(this.form.get('username').value, this.form.get('password').value)
         .pipe(
             first(),
@@ -61,11 +58,12 @@ export class LoginComponent implements AfterViewInit {
         )
         .subscribe((data) => {
           this.user.setTokens(data.access_token, data.refresh_token);
-          const curr_route = this.route.root.children['0'];
-          const AuthGuard = curr_route.snapshot.routeConfig.canActivate['0'];
+          // Loads from injector the Authentication Guard and reexecutes it, so that it redirects to correct user
+          // homepage without requiring to code here (again) what homepage for each user is.
+          const AuthGuard = this.route.snapshot.routeConfig.canActivate['0'];
           const authGuard = this.injector.get(AuthGuard);
-          const routerStateSnapshot: RouterStateSnapshot = Object.assign({}, curr_route.snapshot, {url: this.router.url});
-          authGuard.canActivate(curr_route.snapshot, routerStateSnapshot);
+          const routerStateSnapshot: RouterStateSnapshot = Object.assign({}, this.route.snapshot, {url: this.router.url});
+          authGuard.canActivate(this.route.snapshot, routerStateSnapshot);
         });
   }
 

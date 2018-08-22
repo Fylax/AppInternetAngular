@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import {ArchivesPaginationSupport} from "../model/ArchivesPaginationSupport";
+import {Injectable} from '@angular/core';
+import {ArchivesPaginationSupport} from "../model/archives-pagination-support";
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {Urls, UrlService} from './url.service';
-import {UserSearchRequest} from '../model/UserSearchRequest';
-import {switchMap} from 'rxjs/operators';
-import {from, Observable} from 'rxjs';
-import {ApproximatedArchive} from '../model/ApproximatedArchive';
+import {UrlService} from './url.service';
+import {UserSearchRequest} from '../model/user-search-request';
+import {Observable} from 'rxjs';
+import {ApproximatedArchive} from '../model/approximated-archive';
+import {RestResource} from "../model/rest-resource.enum";
 
 @Injectable({
   providedIn: 'root'
@@ -16,60 +16,30 @@ export class ArchiveService {
   }
 
   searchArchives(usr: UserSearchRequest): Observable<ApproximatedArchive[]> {
-    return from(this.baseService.promise)
-        .pipe(
-            switchMap((urlList: Urls) => {
-              const url = URITemplate(urlList.userArchiveSearch.href).expand({
-                request:  btoa(JSON.stringify(usr))
-              }).valueOf();
-              return this.http.get<ApproximatedArchive[]>(url, {
-                headers: new HttpHeaders({'Accept': 'application/json'})
-              });
-            })
-        );
+    const headers = new HttpHeaders({'Accept': 'application/json'});
+    const expand = {request: btoa(JSON.stringify(usr))};
+    return this.baseService.get(RestResource.ArchiveSearch, headers, new HttpParams(),
+        true, expand);
   }
-
 
   getArchiveList(pageIndex = 1, pageSize = 3, userId?: string): Observable<ArchivesPaginationSupport> {
-        return from(this.baseService.promise)
-            .pipe(
-                switchMap((urlList: Urls) => {
-                    let url: string;
-                    if (userId === undefined) {
-                        url = URITemplate(urlList.userArchives.href).expand({}).valueOf();
-                    } else {
-                        url = URITemplate(urlList.adminCustomerPurchases.href).expand({
-                            id: userId
-                        }).valueOf();
-                    }
-                    return this.http.get<ArchivesPaginationSupport>(url, {
-                        params: new HttpParams()
-                            .set('page', pageIndex.toString())
-                            .set('limit', pageSize.toString())
-                    });
-                })
-            );
+    const params = new HttpParams()
+        .set('page', pageIndex.toString())
+        .set('limit', pageSize.toString());
+    if (userId) {
+      const expand = {id : userId};
+      return this.baseService.get(RestResource.AdminCustomerPurchases, new HttpHeaders(), params, true, expand);
+    }
+    return this.baseService.get(RestResource.Archives, new HttpHeaders(), params, true);
   }
 
-    deleteArchive(archiveId: string): Observable<{}> {
-        return from(this.baseService.promise)
-            .pipe(
-                switchMap((urlList: Urls) => {
-                    let url: string;
-                    url = URITemplate(urlList.userArchive.href).expand({}).valueOf();
-                    return this.http.delete(`${url}${archiveId}`);
-                })
-            );
-    }
+  deleteArchive(archiveId: string): Observable<{}> {
+    const expand = {id: archiveId};
+    return this.baseService.delete(RestResource.Archive, true, expand);
+  }
 
-    downloadArchive(archiveId: string): Observable<{}> {
-        return from(this.baseService.promise)
-            .pipe(
-                switchMap((urlList: Urls) => {
-                    let url: string;
-                    url = URITemplate(urlList.userArchive.href).expand({}).valueOf();
-                    return this.http.get<any>(`${url}${archiveId}`);
-                })
-            );
-    }
+  downloadArchive(archiveId: string): Observable<{}> {
+    const expand = {id: archiveId};
+    return this.baseService.get(RestResource.Archive, new HttpHeaders(), new HttpParams(), true, expand);
+  }
 }

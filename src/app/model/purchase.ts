@@ -1,4 +1,4 @@
-import {Position} from './Position';
+import {Position} from './position';
 
 export class Purchase {
   private _purchaseId: string;

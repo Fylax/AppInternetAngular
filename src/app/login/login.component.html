@@ -19,16 +19,19 @@
         <mat-card-content fxLayout="column" fxLayoutAlign="center center" class="inner-card">
             <p *ngIf="expired" fxFlexAlign="center">Sessione scaduta</p>
             <p *ngIf="!valid" fxFlexAlign="center">Credenziali inserite non valide</p>
-            <form fxLayout="column" fxFlexAlign="center">
+            <form fxLayout="column"
+                  fxFlexAlign="center"
+                  [formGroup]="form"
+                  (ngSubmit)="login()" >
                 <mat-form-field class="full-width">
-                    <input matInput [formControl]="form.get('username')" placeholder="Username" autocomplete="username"/>
+                    <input matInput formControlName="username" placeholder="Username" autocomplete="username"/>
                     <mat-error *ngIf="form.get('username').hasError('required')">
                         Username <strong>obbligatorio</strong>!
                     </mat-error>
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                    <input matInput [formControl]="form.get('password')" placeholder="Password" type="password"
+                    <input matInput formControlName="password" placeholder="Password" type="password"
                            autocomplete="current-password"/>
                     <mat-error *ngIf="form.get('password').hasError('required')">
                         Password <strong>obbligatoria</strong>!
@@ -38,8 +41,8 @@
                     <button
                             mat-raised-button
                             color="primary"
-                            [disabled]="!form.valid"
-                            (click)="login()">Accedi
+                            type="submit"
+                            [disabled]="!form.valid">Accedi
                     </button>
                     <span>o</span>
                     <button
