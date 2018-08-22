@@ -48,6 +48,7 @@ import {UserUploadComponent} from './components/logged/user-upload/user-upload.c
 import {FileUploadModule} from "ng2-file-upload";
 import {UserArchiveComponent} from './components/logged/user-archive/user-archive.component';
 import {SearchComponent} from './components/logged/search/search.component';
+
 import {LoginModule} from "./login/login.module";
 import {RegisterModule} from "./register/register.module";
 

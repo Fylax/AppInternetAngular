@@ -4,11 +4,37 @@ import {Observable} from "rxjs";
 import {environment} from "../../environments/environment";
 import {UrlService} from '../services/url.service';
 import {RestResource} from "../model/rest-resource.enum";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Injectable()
 export class LoginService {
 
+  /**
+   * See getter.
+   */
+  private form_ = new FormGroup({
+    username: new FormControl('', {
+      updateOn: 'blur',
+      validators: [
+        Validators.required
+      ]
+    }),
+    password: new FormControl('', {
+      updateOn: 'change',
+      validators: [
+        Validators.required
+      ]
+    })
+  });
+
   constructor(private http: HttpClient, private baseService: UrlService) { }
+
+  /**
+   * Persistent form containing username and password status and validators.
+   */
+  get form(): FormGroup {
+    return this.form_;
+  }
 
   /**
    * Method for trying user login.

@@ -1,116 +1,56 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {AsyncValidatorFn, FormControl, FormGroup, ValidatorFn, Validators} from "@angular/forms";
-
-import * as zxcvbn from "zxcvbn";
-import * as XRegExp from "xregexp";
-import {RegisterService} from "./register.service";
-import {Observable, throwError} from "rxjs";
-import {catchError, first, map, switchMap} from "rxjs/operators";
+import {AfterViewInit, Component} from '@angular/core';
 import {HttpErrorResponse} from "@angular/common/http";
 import {Router} from "@angular/router";
+import {RegisterService} from "./register.service";
+import {throwError} from "rxjs";
+import {catchError, first, retry} from "rxjs/operators";
+import * as zxcvbn from "zxcvbn";
 
 @Component({
   selector: 'register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
 })
-export class RegisterComponent implements AfterViewInit, OnInit {
+export class RegisterComponent implements AfterViewInit {
 
+  /**
+   * Generic error after REST request.
+   */
   error = false;
+  /**
+   * Strength progress bar percentage.
+   */
   progressPerc = 0;
+  /**
+   * Strength prorgress bar color:
+   * * `warn`: [0-40)%
+   * * `accent`: [40-80)%
+   * * `primary`: [80-100]%
+   */
   progressCol = 'warn';
-  form: FormGroup;
-  private lower = XRegExp('\\p{Ll}');
-  private upper = XRegExp('\\p{Lu}');
-  private digit = XRegExp('\\p{N}');
-  private symbol = XRegExp('\\p{S}|\\p{P}|\\p{Zs}');
-  private email = new RegExp('/^(([^<>()\\[\\]\\\\.,;:\\s@"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@"]+)*)|(".+"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$/');
+  form = this.registerService.form;
 
   constructor(private registerService: RegisterService,
               private router: Router) {
   }
 
-  ngOnInit() {
-    this.form = new FormGroup({
-      username: new FormControl('', {
-        updateOn: 'blur',
-        validators: [
-          Validators.required
-        ],
-        asyncValidators: [
-          this.userValidator()
-        ]
-      }),
-      email: new FormControl('', {
-        updateOn: 'blur',
-        validators: [
-          Validators.required,
-          Validators.email,
-          Validators.pattern(this.email)
-        ],
-        asyncValidators: [
-          this.emailValidator()
-        ]
-      }),
-    });
-    this.form.addControl('password', new FormControl('', {
-          updateOn: 'blur',
-          validators: [
-            Validators.required,
-            Validators.minLength(8),
-            this.symbols()
-          ]
-        })
-    );
-    this.form.addControl('confirm', new FormControl('', {
-          updateOn: 'change',
-          validators: [
-            Validators.required,
-            this.matching()
-          ]
-        })
-    );
-  }
-
-  userValidator(): AsyncValidatorFn {
-    return (control: FormControl): Observable<{ [key: string]: any } | null> => {
-      return this.registerService.usernameAvailable(control.value)
-          .pipe(
-              map(usable => {
-                    return (usable) ? null : {'exists': true};
-                  }
-              )
-          );
-    };
-  }
-
-  emailValidator(): AsyncValidatorFn {
-    return (control: FormControl): Observable<{ [key: string]: any } | null> => {
-      return this.registerService.emailAvailable(control.value)
-          .pipe(
-              map(usable => {
-                    return (usable) ? null : {'exists': true};
-                  }
-              )
-          );
-    };
-  }
-
-  symbols(): ValidatorFn {
-    return (control: FormControl): { [key: string]: any } | null => {
-      const match = Number(XRegExp.test(control.value, this.lower)) +
-          Number(XRegExp.test(control.value, this.upper)) +
-          Number(XRegExp.test(control.value, this.digit)) +
-          Number(XRegExp.test(control.value, this.symbol));
-      return match >= 3 ? null : {'symbols': {value: control.value}};
-    };
-  }
-
+  /**
+   * Evaluates password strength by means of zxcvbn library and updates
+   * the password strength progress bar accordingly.
+   *
+   * As unit of measure order of magnitude of guesses required for matching
+   * the password (Log<sub>10</sub>(guesses)) has been uses, choosing
+   * 12 as 100% and scaling values accordingly.
+   * @param event Keyboard `keyup` event.
+   */
   strength(event: KeyboardEvent) {
     const strength = zxcvbn((event.currentTarget as HTMLInputElement).value);
 
     const score = strength.guesses_log10;
     this.progressPerc = Math.round(25 * score / 3); // 12 is max
+    if (this.progressPerc > 100) {
+      this.progressPerc = 100;
+    }
     if (this.progressPerc < 40) {
       this.progressCol = 'warn';
     } else if (this.progressPerc < 80) {
@@ -120,6 +60,12 @@ export class RegisterComponent implements AfterViewInit, OnInit {
     }
   }
 
+  /**
+   * Once the password field emits the `blur` event, it calls this method that is
+   * charge of updating password confirm field validity (meaning that it checks if
+   * it non empty, and in the affermative case checks if both fields contains
+   * the same value).
+   */
   updateConfirmation() {
     if (this.form.get('password').valid) {
       const confirm = this.form.get('confirm');
@@ -129,18 +75,15 @@ export class RegisterComponent implements AfterViewInit, OnInit {
     }
   }
 
-  matching(): ValidatorFn {
-    return (control: FormControl): { [key: string]: any } | null => {
-      const match = control.value === this.form.get('password').value;
-      return match ? null : {'matching': {value: control.value}};
-    };
-  }
-
+  /**
+   * Tries registration. In case of success it redirects to login homepage, otherwise it shows an error message.
+   */
   register() {
     this.registerService.register(this.form.get('username').value,
         this.form.get('email').value, this.form.get('password').value)
         .pipe(
             first(),
+            retry(3),
             catchError((error: HttpErrorResponse) => {
               this.error = true;
               return throwError(error.message);
