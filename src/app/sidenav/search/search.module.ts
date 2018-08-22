@@ -16,7 +16,6 @@ import {DatesModule} from "../../dates/dates.module";
 @NgModule({
   imports: [
     CommonModule,
-    SearchRoutingModule,
     FormsModule,
     UserModule.forRoot(),
     LeafletModule.forRoot(),
@@ -26,7 +25,8 @@ import {DatesModule} from "../../dates/dates.module";
     MatCardModule,
     MatButtonModule,
     MatListModule,
-    MatDividerModule
+    MatDividerModule,
+    SearchRoutingModule
   ],
   declarations: [
     SearchComponent

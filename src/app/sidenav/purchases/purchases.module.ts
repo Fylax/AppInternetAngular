@@ -9,12 +9,13 @@ import {MatButtonModule, MatPaginatorModule, MatProgressSpinnerModule, MatTableM
 @NgModule({
   imports: [
     CommonModule,
-    PurchasesRoutingModule,
     PurchaseDetailsModule.forRoot(),
     MatProgressSpinnerModule,
     MatTableModule,
     MatButtonModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+      PurchasesRoutingModule
+
   ],
   declarations: [PurchasesComponent],
   exports: [PurchasesComponent]

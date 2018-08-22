@@ -8,6 +8,7 @@ import {HttpClient} from '@angular/common/http';
 import {first} from 'rxjs/operators';
 import {Subscription} from 'rxjs';
 import {ActivatedRoute} from '@angular/router';
+import {Point} from 'geojson';
 
 
 const iconUrl = 'assets/my-icon.png';
@@ -28,7 +29,7 @@ export class UserComponent implements OnInit, AfterViewInit, OnDestroy {
     editableLayers = new L.FeatureGroup();
     leafletDirective: LeafletDirectiveWrapper;
     subscription: Subscription;
-
+    public positions: Position[];
     userId: string;
 
     constructor(private shareInfoService: ShareMapInfoService,
@@ -38,9 +39,9 @@ export class UserComponent implements OnInit, AfterViewInit, OnDestroy {
                 leafletDirective: LeafletDirective,
                 route: ActivatedRoute) {
         spinner.hideSpinner();
-      route.queryParams.pipe(first()).subscribe((param) => {
-        this.userId = param.user;
-      });
+        route.queryParams.pipe(first()).subscribe((param) => {
+            this.userId = param.user;
+        });
         this.leafletDirective = new LeafletDirectiveWrapper(leafletDirective);
     }
 
@@ -87,22 +88,22 @@ export class UserComponent implements OnInit, AfterViewInit, OnDestroy {
         this.positionsService.getPositionsFromServer(this.shareInfoService.userRequest, this.userId)
             .pipe(first())
             .subscribe(
-            result => {
-                while (result.positionList.length > 0) {
-                    const pos = result.positionList.pop();
-                    const d = new Date(pos.timestamp * 1000);
-                    L.marker(L.latLng([pos.latitude, pos.longitude]), {
-                            icon: myIcon
-                        }
-                    )
-                        .bindPopup(d.toUTCString())
-                        .addTo(this.leafletDirective.getMap());
-
+                result => {
+                    this.positions = result as Position[];
+                    while (this.positions.length > 0) {
+                        const pos = result.positionList.pop();
+                        const d = new Date(pos.timestamp * 1000);
+                        L.marker(L.latLng([pos.latitude, pos.longitude]), {
+                                icon: myIcon
+                            }
+                        )
+                            .bindPopup(d.toUTCString())
+                            .addTo(this.leafletDirective.getMap());
+                    }
+                    this.spinner.hideSpinner();
+                    document.getElementById('confirmationUser-button').style.display = 'none';
                 }
-                this.spinner.hideSpinner();
-                document.getElementById('confirmationUser-button').style.display = 'none';
-            }
-        );
+            );
     }
 
 }

@@ -3,7 +3,8 @@ import {CommonModule} from '@angular/common';
 import {DatesComponent} from "./dates.component";
 import {DatesService} from "./dates.service";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {MAT_DATE_LOCALE, MatDatepickerModule, MatFormFieldModule, MatInputModule} from "@angular/material";
+import {MAT_DATE_LOCALE, MatDatepickerModule, MatFormFieldModule, MatInputModule, MatNativeDateModule} from '@angular/material';
+import {MatMomentDateModule} from '@angular/material-moment-adapter';
 
 @NgModule({
   imports: [
@@ -12,6 +13,8 @@ import {MAT_DATE_LOCALE, MatDatepickerModule, MatFormFieldModule, MatInputModule
     ReactiveFormsModule,
     MatFormFieldModule,
     MatDatepickerModule,
+      MatNativeDateModule,
+      MatMomentDateModule,
     MatInputModule
   ],
   declarations: [DatesComponent],

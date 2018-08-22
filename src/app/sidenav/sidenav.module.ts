@@ -10,14 +10,14 @@ import {MatIconModule, MatListModule, MatSidenavModule, MatToolbarModule} from "
 @NgModule({
   imports: [
     CommonModule,
-    SidenavRoutingModule,
     SearchModule.forRoot(),
     PurchasesModule.forRoot(),
     UserArchiveModule.forRoot(),
     MatSidenavModule,
     MatListModule,
     MatToolbarModule,
-    MatIconModule
+    MatIconModule,
+    SidenavRoutingModule
   ],
   declarations: [SidenavComponent],
   exports: [SidenavComponent]
