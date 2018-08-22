@@ -42,7 +42,7 @@ export class UrlService {
             switchMap((urls: Urls) => {
               let href = urls[url].href;
               if (urlTemplate) {
-                href = URITemplate(RestResource.ArchiveSearch).expand(urlTemplate).valueOf();
+                href = URITemplate(href).expand(urlTemplate).valueOf();
               }
               return this.http.get(href, {
                 headers: headers,
@@ -75,7 +75,7 @@ export class UrlService {
             switchMap((urls: Urls) => {
               let href = urls[url].href;
               if (urlTemplate) {
-                href = URITemplate(RestResource.ArchiveSearch).expand(urlTemplate).valueOf();
+                href = URITemplate(href).expand(urlTemplate).valueOf();
               }
               return this.http.delete(
                   href,

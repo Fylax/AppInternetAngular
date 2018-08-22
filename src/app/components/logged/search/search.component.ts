@@ -1,10 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Chart} from 'chart.js';
-import {UserSearchRequest} from '../../../model/user-search-request';
 import {ArchiveService} from '../../../services/archive.service';
 import {first} from 'rxjs/operators';
 import {ApproximatedArchive} from '../../../model/approximated-archive';
-import {ApproximatedArchive} from '../../../model/ApproximatedArchive';
 import {ShareMapInfoService} from '../../../services/share-map-info.service';
 
 @Component({
@@ -24,6 +22,7 @@ export class SearchComponent implements OnInit {
   userMap = new Map();
 
   approximatedArchiveList: ApproximatedArchive[];
+  approximatedArchiveSelectedList: ApproximatedArchive[];
 
   constructor(private archiveService: ArchiveService, private shareInfoService: ShareMapInfoService) {
   }
@@ -65,15 +64,18 @@ export class SearchComponent implements OnInit {
   selectAll() {
     this.userSelected = this.userList;
     this.setTimeline();
+    this.setApproximatedArchives();
   }
 
   deselectAll() {
     this.userSelected = [];
     this.setTimeline();
+    this.approximatedArchiveSelectedList = [];
   }
 
   onSelectionChange() {
     this.setTimeline();
+    this.setApproximatedArchives();
   }
 
   onPolygonReady(p: L.Polygon) {
@@ -86,6 +88,7 @@ export class SearchComponent implements OnInit {
     this.userList = [];
     for (const archive of archives) {
       if (this.userMap.has(archive.username)) {
+        archive.color = this.getColorByUserID(archive.username);
         const timestampList = this.userMap.get(archive.username).concat(archive.timestamps);
         this.userMap.set(archive.username, timestampList);
       } else {
@@ -93,7 +96,10 @@ export class SearchComponent implements OnInit {
         this.userList.push(archive.username);
       }
     }
-    this.userSelected = this.userList;
+    if (this.userSelected.length === 0) {
+      this.userSelected = this.userList;
+    }
+    this.setApproximatedArchives();
     this.setTimeline();
   }
 
@@ -141,4 +147,15 @@ export class SearchComponent implements OnInit {
   }
 
 
+  setApproximatedArchives() {
+    if (this.userSelected.length === 0) {
+      this.approximatedArchiveSelectedList = [];
+    } else {
+      this.approximatedArchiveSelectedList = this.approximatedArchiveList.map(archive => {
+        if (this.userSelected.indexOf(archive.username) > -1) {
+          return archive;
+        }
+      });
+    }
+  }
 }

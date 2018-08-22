@@ -17,22 +17,24 @@ export class MapComponent implements OnInit, OnDestroy {
   private subscription_: Subscription;
   hidden = false;
   map: L.Map;
+  markerLayers: L.LayerGroup;
 
   archives: ApproximatedArchive[];
 
   @Input() set setItems(value: ApproximatedArchive[]) {
+    this.markerLayers.remove();
+    this.markerLayers.clearLayers();
     this.archives = value;
-    const colorByUser = new Map();
     if (this.archives !== undefined) {
       for (let i = 0; i < this.archives.length; i++) {
         const curr_archive = this.archives[i];
         for (const pos of curr_archive.positions) {
-          const colorByArchive = this.getColorByUserID(colorByUser, curr_archive.username);
-          const currCircleMarker = this.createCircleMarker(colorByArchive, pos);
-          currCircleMarker.addTo(this.map);
+          const currCircleMarker = this.createCircleMarker(curr_archive.color, pos);
+          this.markerLayers.addLayer(currCircleMarker);
         }
       }
     }
+    this.markerLayers.addTo(this.map);
   }
 
   @Output() polygonOutput = new EventEmitter();
@@ -41,6 +43,7 @@ export class MapComponent implements OnInit, OnDestroy {
     this.subscription_ = datesService.datesShowed.subscribe(event => {
       this.hidden = event;
     });
+    this.markerLayers = new L.LayerGroup();
   }
 
   options = {
@@ -87,20 +90,6 @@ export class MapComponent implements OnInit, OnDestroy {
     latlngs.push(latLngBounds.getNorthWest());
     latlngs.push({lat: this.map.getCenter().lat, lng: latLngBounds.getWest()});
     return L.polygon(latlngs);
-  }
-
-  getColorByUserID(colorByUser, userID) {
-
-    if (colorByUser.has(userID)) {
-      return colorByUser.get(userID);
-    }
-    let color;
-    const r = Math.floor(Math.random() * 255);
-    const g = Math.floor(Math.random() * 255);
-    const b = Math.floor(Math.random() * 255);
-    color = 'rgb(' + r + ' ,' + g + ',' + b + ')';
-    colorByUser.set(userID, color);
-    return color;
   }
 
   onMapReady(map: L.Map) {
