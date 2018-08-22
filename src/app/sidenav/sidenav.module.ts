@@ -22,5 +22,5 @@ import {MatIconModule, MatListModule, MatSidenavModule, MatToolbarModule} from "
   declarations: [SidenavComponent],
   exports: [SidenavComponent]
 })
-export class SidenavModule {
+export class SidenavModule  {
 }
