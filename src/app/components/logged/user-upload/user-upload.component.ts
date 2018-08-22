@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import { UrlService} from "../../../services/url.service";
 import {FileUploader, FilterFunction} from 'ng2-file-upload';
-import {UserTokenService} from "../../../services/user.service";
+import {UserService} from "../../../services/user.service";
 import {FileLikeObject} from "ng2-file-upload/file-upload/file-like-object.class";
 
 @Component({
@@ -15,7 +15,7 @@ export class UserUploadComponent implements OnInit {
   hasBaseDropZoneOver = false;
   displayedColumns = ['name', 'size', 'action', 'progress'];
 
-  constructor(baseService: UrlService, user: UserTokenService) {
+  constructor(baseService: UrlService, user: UserService) {
     const filter: FilterFunction = {
       name: 'json',
       fn: (item: FileLikeObject) => {

@@ -7,11 +7,11 @@ import {Subscription} from 'rxjs';
 import {ActivatedRoute} from '@angular/router';
 
 @Component({
-  selector: 'app-customer-purchase',
-  templateUrl: './customer-purchase.component.html',
-  styleUrls: ['./customer-purchase.component.css']
+  selector: 'app-purchases',
+  templateUrl: './purchase.component.html',
+  styleUrls: ['./purchase.component.css']
 })
-export class CustomerPurchaseComponent implements OnInit, AfterViewInit, OnDestroy {
+export class PurchaseComponent implements OnInit, AfterViewInit, OnDestroy {
   displayedColumns = ['date', 'status', 'amount', 'count', 'start', 'end', 'details'];
   dataSource: PurchaseDataSource;
 

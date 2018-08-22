@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, Injector} from '@angular/core';
-import {UserTokenService} from "../services/user.service";
+import {UserService} from "../services/user.service";
 import {LoginService} from "./login.service";
 import {SpinnerService} from "../services/spinner.service";
 import {ActivatedRoute, Router, RouterStateSnapshot} from "@angular/router";
@@ -27,7 +27,7 @@ export class LoginComponent implements AfterViewInit {
   expired: boolean;
 
   constructor(private loginservice: LoginService,
-              private user: UserTokenService,
+              private user: UserService,
               private spinner: SpinnerService,
               private route: ActivatedRoute,
               private router: Router,

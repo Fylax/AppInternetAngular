@@ -6,7 +6,6 @@ import {SpinnerComponent} from './components/spinner/spinner.component';
 import {MapComponent} from './components/logged/map/map.component';
 import {DatesComponent} from './components/logged/dates/dates.component';
 import {CustomerComponent} from './components/logged/customer/customer.component';
-import {CustomerConfirmationComponent} from './components/logged/customer-confirmation/customer-confirmation.component';
 
 import {FlexLayoutModule} from '@angular/flex-layout';
 
@@ -36,13 +35,13 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {AppRoutingModule} from './app-routing/app-routing.module';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {LoggedComponent} from './components/logged/logged.component';
+import {SidenavComponent} from './components/logged/sidenav.component';
 import {TokenInterceptor} from './interceptors/token.interceptor';
-import {CustomerPurchaseComponent} from './components/logged/customer-purchase/customer-purchase.component';
+import {PurchaseComponent} from './components/logged/customer-purchase/purchase.component';
 import {ErrorComponent} from './components/error/error.component';
 import {UserComponent} from './components/logged/user/user.component';
 import {InterCattor} from './interceptors/cat.interceptor';
-import {CustomerPurchaseDetailsComponent} from './components/logged/customer-purchase-details/customer-purchase-details.component';
+import {PurchaseDetailsComponent} from './components/logged/customer-purchase-details/purchase-details.component';
 import {AdminComponent} from './components/logged/admin/admin.component';
 import {UserUploadComponent} from './components/logged/user-upload/user-upload.component';
 import {FileUploadModule} from "ng2-file-upload";
@@ -55,16 +54,15 @@ import {RegisterModule} from "./register/register.module";
 @NgModule({
   declarations: [
     AppComponent,
-    LoggedComponent,
+    SidenavComponent,
     MapComponent,
     DatesComponent,
     CustomerComponent,
-    CustomerConfirmationComponent,
     SpinnerComponent,
     ErrorComponent,
-    CustomerPurchaseComponent,
+    PurchaseComponent,
     UserComponent,
-    CustomerPurchaseDetailsComponent,
+    PurchaseDetailsComponent,
     AdminComponent,
     UserUploadComponent,
     SearchComponent,

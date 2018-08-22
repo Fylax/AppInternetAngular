@@ -19,11 +19,11 @@ L.Marker.prototype.options.icon = myIcon;
 
 
 @Component({
-  selector: 'app-customer-purchase-details',
-  templateUrl: './customer-purchase-details.component.html',
-  styleUrls: ['./customer-purchase-details.component.css']
+  selector: 'app-purchase-details',
+  templateUrl: './purchase-details.component.html',
+  styleUrls: ['./purchase-details.component.css']
 })
-export class CustomerPurchaseDetailsComponent implements OnInit {
+export class PurchaseDetailsComponent implements OnInit {
   displayedColumns = ['date', 'status', 'amount', 'count', 'start', 'end'];
   purchaseDetails: Purchase[];
 
@@ -31,7 +31,7 @@ export class CustomerPurchaseDetailsComponent implements OnInit {
 
   editableLayers = new L.FeatureGroup();
 
-  //leafletDirective: LeafletDirectiveWrapper;
+  // leafletDirective: LeafletDirectiveWrapper;
 
   constructor(private shareInfoService: ShareMapInfoService,
               private purchaseService: PurchaseService,
