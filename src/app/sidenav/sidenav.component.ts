@@ -9,9 +9,7 @@ import {Role, UserService} from "../services/user.service";
 })
 export class SidenavComponent {
 
-  isAdmin: boolean;
-
   constructor(userService: UserService) {
-    this.isAdmin = userService.hasRole(Role.ADMIN);
+
   }
 }
