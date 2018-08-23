@@ -8,8 +8,6 @@ import {Moment} from "moment";
 })
 export class DatesService {
 
-  private hideEvents = new BehaviorSubject<boolean>(false);
-
   private form_ = new FormGroup({
     sdate: new FormControl(),
     edate: new FormControl()

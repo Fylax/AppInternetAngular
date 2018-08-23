@@ -27,8 +27,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
     MatInputModule,
     MatButtonModule,
     MatProgressBarModule,
-      RegisterRoutingModule
-
+    RegisterRoutingModule
   ],
   declarations: [RegisterComponent],
   providers: [RegisterService],
