@@ -12,13 +12,24 @@ import {Point} from '../model/point';
 })
 export class MapComponent implements OnInit, OnDestroy {
 
-  editableLayers = new L.FeatureGroup();
+  options = {
+    zoomControl: true,
+    layers: [
+      L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+      })
+    ],
+    zoom: 15,
+    center: L.latLng(45.06495, 7.66155)
+  };
   private subscription_: Subscription;
-  hidden = false;
-  map: L.Map;
-  markerLayers: L.LayerGroup;
+  private editableLayers = new L.FeatureGroup();
+  private hidden = false;
+  private map: L.Map;
 
   archives: ApproximatedArchive[];
+  private markerLayers: L.LayerGroup;
 
   @Input() set setItems(value: ApproximatedArchive[]) {
     this.markerLayers.remove();
@@ -38,32 +49,6 @@ export class MapComponent implements OnInit, OnDestroy {
 
   @Output() polygonOutput = new EventEmitter();
 
-  constructor(datesService: DatesService) {
-    this.subscription_ = datesService.datesShowed.subscribe(event => {
-      this.hidden = event;
-    });
-    this.markerLayers = new L.LayerGroup();
-  }
-
-  options = {
-    zoomControl: true,
-    layers: [
-      L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-      })
-    ],
-    zoom: 15,
-    center: L.latLng(45.06495, 7.66155)
-  };
-
-  ngOnInit(): void {
-  }
-
-  ngOnDestroy(): void {
-    this.subscription_.unsubscribe();
-  }
-
   static createCircleMarker(colorByArchive: string, pos: Point) {
     const options = {
       radius: 8,
@@ -74,6 +59,20 @@ export class MapComponent implements OnInit, OnDestroy {
       fillOpacity: 0.5
     };
     return L.circleMarker(L.latLng([pos.lat, pos.lon]), options);
+  }
+
+  constructor(datesService: DatesService) {
+    this.subscription_ = datesService.datesShowed.subscribe(event => {
+      this.hidden = event;
+    });
+    this.markerLayers = new L.LayerGroup();
+  }
+
+  ngOnInit(): void {
+  }
+
+  ngOnDestroy(): void {
+    this.subscription_.unsubscribe();
   }
 
   createPolygonFromBounds(latLngBounds) {

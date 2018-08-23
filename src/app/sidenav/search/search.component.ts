@@ -5,6 +5,7 @@ import {ArchiveService} from '../../services/archive.service';
 import {first} from 'rxjs/operators';
 import {ApproximatedArchive} from '../../model/approximated-archive';
 import {ShareMapInfoService} from "../../services/share-map-info.service";
+import {FullScreenSpinnerService} from "../../full-screen-spinner/full-screen-spinner.service";
 
 @Component({
   selector: 'app-search',
@@ -26,7 +27,8 @@ export class SearchComponent implements OnInit {
   approximatedArchiveList: ApproximatedArchive[];
   approximatedArchiveSelectedList: ApproximatedArchive[];
 
-  constructor(private archiveService: ArchiveService, private shareInfoService: ShareMapInfoService) {
+  constructor(private archiveService: ArchiveService, private shareInfoService: ShareMapInfoService,
+              private spinner: FullScreenSpinnerService) {
   }
 
   ngOnInit(): void {
@@ -61,6 +63,7 @@ export class SearchComponent implements OnInit {
         }
       }
     });
+    this.spinner.hideSpinner();
   }
 
   selectAll() {
