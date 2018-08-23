@@ -155,16 +155,4 @@ export class DatesService {
   set end_(value: Moment) {
     this._end_.setFullYear(value.year(), value.month(), value.date());
   }
-
-  showDates() {
-    this.hideEvents.next(false);
-  }
-
-  hideDates() {
-    this.hideEvents.next(true);
-  }
-
-  get datesShowed(): BehaviorSubject<boolean> {
-    return this.hideEvents;
-  }
 }
