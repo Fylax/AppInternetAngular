@@ -84,20 +84,6 @@ export class ShareMapInfoService {
         return (this.polygon_.getValue()) ? this.userSearchRequest_.area : undefined;
     }
 
-    set startDate(date: Moment) {
-        this.userSearchRequest_.start.setFullYear(date.year(), date.month(), date.date());
-        this.userRequest_.start.setFullYear(date.year(), date.month(), date.date());
-        this.startDate_.next(true);
-    }
-    set startHours(hours: number) {
-        if (isNaN(hours)) {
-            this.startHour_.next(false);
-        } else {
-            this.userSearchRequest_.start.setHours(hours);
-            this.userRequest_.start.setHours(hours);
-            this.startHour_.next(true);
-        }
-    }
 
     set startMinutes(minutes: number) {
         if (isNaN(minutes)) {
