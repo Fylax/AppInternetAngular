@@ -12,6 +12,7 @@ export class MapComponent {
 
   options = {
     zoomControl: true,
+    scrollWheelZoom: false,
     layers: [
       L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
@@ -21,8 +22,6 @@ export class MapComponent {
     zoom: 13,
     center: L.latLng(45.06495, 7.66155)
   };
-  private editableLayers = new L.FeatureGroup();
-  private hidden = false;
   private map: L.Map;
 
   archives: ApproximatedArchive[];
@@ -59,6 +58,7 @@ export class MapComponent {
   }
 
   constructor() {
+    this.markerLayers = new L.LayerGroup();
   }
 
   private createPolygonFromBounds(latLngBounds) {
@@ -78,7 +78,6 @@ export class MapComponent {
 
   onMapReady(map: L.Map) {
     this.map = map;
-    // this.map.addLayer(this.editableLayers);
     this.onMapChange();
   }
 

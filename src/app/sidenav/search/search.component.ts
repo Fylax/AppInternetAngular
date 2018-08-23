@@ -24,6 +24,8 @@ export class SearchComponent implements OnInit {
 
   private userMap = new Map();
 
+  counterPositionsSelected: number;
+
   userSearchReq: UserSearchRequest;
   private approximatedArchiveList: ApproximatedArchive[];
   approximatedArchiveSelectedList: ApproximatedArchive[];
@@ -32,6 +34,7 @@ export class SearchComponent implements OnInit {
               private spinner: FullScreenSpinnerService) {
     this.userSearchReq = new UserSearchRequest();
     this.datesValid = true;
+    this.counterPositionsSelected = 0;
   }
 
   ngOnInit(): void {
@@ -81,6 +84,7 @@ export class SearchComponent implements OnInit {
   deselectAll() {
     this.userSelected = [];
     this.setTimeline();
+    this.counterPositionsSelected = 0;
     this.approximatedArchiveSelectedList = [];
   }
 
@@ -170,9 +174,11 @@ export class SearchComponent implements OnInit {
 
 
   private setApproximatedArchives() {
+    this.counterPositionsSelected = 0;
     this.approximatedArchiveSelectedList = [];
     this.approximatedArchiveSelectedList = this.approximatedArchiveList.map(archive => {
       if (this.userSelected.indexOf(archive.username) > -1) {
+        this.counterPositionsSelected = this.counterPositionsSelected + archive.positions.length;
         return archive;
       }
     }).filter(a => {
