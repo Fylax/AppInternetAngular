@@ -18,7 +18,6 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 @NgModule({
   imports: [
     CommonModule,
-    RegisterRoutingModule,
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
@@ -27,7 +26,9 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
     MatCardModule,
     MatInputModule,
     MatButtonModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+      RegisterRoutingModule
+
   ],
   declarations: [RegisterComponent],
   providers: [RegisterService],

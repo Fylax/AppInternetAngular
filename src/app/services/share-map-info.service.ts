@@ -1,14 +1,11 @@
 import {Injectable} from '@angular/core';
 import {UserSearchRequest} from '../model/user-search-request';
-import {Observable} from 'rxjs/internal/Observable';
-import {BehaviorSubject} from 'rxjs/internal/BehaviorSubject';
+import {BehaviorSubject} from 'rxjs';
 import {Moment} from 'moment';
 import {Marker, Polygon} from 'leaflet';
 import {UserRequest} from '../model/user-request';
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class ShareMapInfoService {
 
     private userSearchRequest_: UserSearchRequest;

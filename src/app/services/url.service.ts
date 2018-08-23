@@ -13,17 +13,31 @@ import * as urijs from 'urijs';
 })
 export class UrlService {
 
+  /**
+   * See getter.
+   */
   private onlyOauth_: boolean;
+  /**
+   * Promise containing all REST endpoints fetched from server.
+   */
   private promise_: Promise<Urls>;
 
   constructor(private http: HttpClient) {
     this.refresh();
   }
 
+  /**
+   * Whether only OAuth links are provided (meeaning only login and registration links).
+   */
   get hasOnlyOauth(): boolean {
     return this.onlyOauth_;
   }
 
+  /**
+   * Refetches REST endpoint links from server.
+   *
+   * This may be due to login.
+   */
   refresh(): void {
     this.promise_ = new Promise((resolve) => {
       this.http.get(environment.baseUrl)
@@ -35,6 +49,14 @@ export class UrlService {
     });
   }
 
+  /**
+   * Generic method for performing an HTTP GET.
+   * @param url REST Resource URL mapped name.
+   * @param headers Headers for this request.
+   * @param query Query Params for this request.
+   * @param authenticated Whether the request has credentials.
+   * @param urlTemplate Optional list of URL template resolvers.
+   */
   public get(url: RestResource, headers: HttpHeaders, query: HttpParams,
              authenticated: boolean, urlTemplate?: {}): Observable<any> {
     return from(this.promise_)
@@ -54,6 +76,13 @@ export class UrlService {
         );
   }
 
+  /**
+   * Generic method for performing an HTTP POST.
+   * @param url REST Resource URL mapped name.
+   * @param body Body for this request.
+   * @param headers Headers for this request.
+   * @param authenticated Whether the request has credentials.
+   */
   public post(url: RestResource, body: string, headers: HttpHeaders, authenticated: boolean): Observable<any> {
     return from(this.promise_)
         .pipe(
@@ -69,6 +98,12 @@ export class UrlService {
         );
   }
 
+  /**
+   * Generic method for performing an HTTP DELETE.
+   * @param url REST Resource URL mapped name.
+   * @param authenticated Whether the request has credentials.
+   * @param urlTemplate Optional list of URL template resolvers.
+   */
   public delete(url: RestResource, authenticated: boolean, urlTemplate?: {}): Observable<any> {
     return from(this.promise_)
         .pipe(

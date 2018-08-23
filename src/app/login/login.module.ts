@@ -18,7 +18,6 @@ import {MatButtonModule} from '@angular/material/button';
 @NgModule({
   imports: [
     CommonModule,
-    LoginRoutingModule,
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
@@ -26,7 +25,9 @@ import {MatButtonModule} from '@angular/material/button';
     MatIconModule,
     MatCardModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+      LoginRoutingModule
+
   ],
   declarations: [LoginComponent],
   exports: [LoginComponent],

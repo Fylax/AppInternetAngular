@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, Injector} from '@angular/core';
 import {UserService} from "../services/user.service";
 import {LoginService} from "./login.service";
-import {SpinnerService} from "../services/spinner.service";
+import {FullScreenSpinnerService} from "../full-screen-spinner/full-screen-spinner.service";
 import {ActivatedRoute, Router, RouterStateSnapshot} from "@angular/router";
 import {catchError, first, retry} from "rxjs/operators";
 import {throwError} from "rxjs";
@@ -28,7 +28,7 @@ export class LoginComponent implements AfterViewInit {
 
   constructor(private loginservice: LoginService,
               private user: UserService,
-              private spinner: SpinnerService,
+              private spinner: FullScreenSpinnerService,
               private route: ActivatedRoute,
               private router: Router,
               private injector: Injector) {

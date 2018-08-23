@@ -75,10 +75,8 @@ export class LoginGuard implements CanActivate {
         if (url.hasOnlyOauth) {
           url.refresh();
         }
-        if (this.user.roles.includes(Role.ADMIN)) {
-          router.navigate(['admin']);
-        } else if (this.user.roles.includes(Role.USER)) {
-          router.navigate(['positions', 'user']);
+        if (this.user.roles.includes(Role.USER)) {
+          router.navigate(['search']);
         }
       }
     });
