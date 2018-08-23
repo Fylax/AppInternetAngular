@@ -96,7 +96,7 @@ export class SearchComponent implements OnInit {
         this.userList.push(archive.username);
       }
     }
-    if (this.userSelected.length === 0) {
+    if (this.userSelected.length === 0 || this.userList.length === 0) {
       this.userSelected = this.userList;
     }
     this.setApproximatedArchives();
@@ -133,7 +133,7 @@ export class SearchComponent implements OnInit {
     const r = Math.floor(Math.random() * 255);
     const g = Math.floor(Math.random() * 255);
     const b = Math.floor(Math.random() * 255);
-    color = 'rgb(' + r + ' ,' + g + ',' + b + ', 0.2)';
+    color = 'rgba(' + r + ' ,' + g + ',' + b + ', 0.2)';
     this.colorByUser.set(userId, color);
     return color;
   }

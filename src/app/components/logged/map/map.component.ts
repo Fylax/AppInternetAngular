@@ -33,8 +33,8 @@ export class MapComponent implements OnInit, OnDestroy {
           this.markerLayers.addLayer(currCircleMarker);
         }
       }
+      this.markerLayers.addTo(this.map);
     }
-    this.markerLayers.addTo(this.map);
   }
 
   @Output() polygonOutput = new EventEmitter();
@@ -94,8 +94,13 @@ export class MapComponent implements OnInit, OnDestroy {
 
   onMapReady(map: L.Map) {
     this.map = map;
-    this.map.addLayer(this.editableLayers);
+    // this.map.addLayer(this.editableLayers);
+    this.onMapChange();
+  }
+
+  onMapChange() {
     const polygon = this.createPolygonFromBounds(this.map.getBounds());
+    console.log(polygon);
     this.polygonOutput.emit(polygon);
   }
 }

@@ -3,7 +3,10 @@
         <div style="height: 420px;width: 100%;"
              leaflet
              [leafletOptions]="options"
-             (leafletMapReady)="onMapReady($event)">
+             (leafletMapReady)="onMapReady($event)"
+             (leafletMapMoveEnd)="onMapChange()"
+             (leafletMapZoomEnd)="onMapChange()"
+        >
         </div>
     </mat-card-content>
 </mat-card>
