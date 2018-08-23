@@ -9,10 +9,10 @@ import {MatPaginatorModule, MatProgressSpinnerModule, MatTableModule} from "@ang
 @NgModule({
   imports: [
     CommonModule,
-    UserArchiveRoutingModule,
     MatTableModule,
     MatPaginatorModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    UserArchiveRoutingModule
   ],
   declarations: [UserArchiveComponent],
   exports: [UserArchiveComponent]

@@ -8,8 +8,6 @@ import {Moment} from "moment";
 })
 export class DatesService {
 
-  private hideEvents = new BehaviorSubject<boolean>(false);
-
   private form_ = new FormGroup({
     sdate: new FormControl(),
     edate: new FormControl()
@@ -163,17 +161,5 @@ export class DatesService {
       const valid = this.start_.getDate() === this.end_.getDate() && shour === ehour && sminutes <= eminutes;
       return valid ? null : {'startend': {value: control.value}};
     };
-  }
-
-  showDates() {
-    this.hideEvents.next(false);
-  }
-
-  hideDates() {
-    this.hideEvents.next(true);
-  }
-
-  get datesShowed(): BehaviorSubject<boolean> {
-    return this.hideEvents;
   }
 }

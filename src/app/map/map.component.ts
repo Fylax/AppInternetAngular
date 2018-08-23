@@ -1,7 +1,5 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import * as L from 'leaflet';
-import {Subscription} from 'rxjs';
-import {DatesService} from '../dates/dates.service';
 import {ApproximatedArchive} from '../model/approximated-archive';
 import {Point} from '../model/point';
 
@@ -10,7 +8,7 @@ import {Point} from '../model/point';
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
 })
-export class MapComponent implements OnInit, OnDestroy {
+export class MapComponent {
 
   options = {
     zoomControl: true,
@@ -23,7 +21,6 @@ export class MapComponent implements OnInit, OnDestroy {
     zoom: 15,
     center: L.latLng(45.06495, 7.66155)
   };
-  private subscription_: Subscription;
   private editableLayers = new L.FeatureGroup();
   private hidden = false;
   private map: L.Map;
@@ -61,18 +58,7 @@ export class MapComponent implements OnInit, OnDestroy {
     return L.circleMarker(L.latLng([pos.lat, pos.lon]), options);
   }
 
-  constructor(datesService: DatesService) {
-    this.subscription_ = datesService.datesShowed.subscribe(event => {
-      this.hidden = event;
-    });
-    this.markerLayers = new L.LayerGroup();
-  }
-
-  ngOnInit(): void {
-  }
-
-  ngOnDestroy(): void {
-    this.subscription_.unsubscribe();
+  constructor() {
   }
 
   createPolygonFromBounds(latLngBounds) {

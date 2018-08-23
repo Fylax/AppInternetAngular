@@ -8,7 +8,7 @@ import {PositionsService} from "../../../services/positions.service";
 @NgModule({
   imports: [
     CommonModule,
-    UserRoutingModule,
+    UserRoutingModule
   ],
   declarations: [UserComponent],
   exports: [UserComponent]
