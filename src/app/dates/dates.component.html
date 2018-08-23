@@ -7,7 +7,8 @@
                    [matDatepicker]="startpicker"
                    [matDatepickerFilter]="filterStartDate"
                    (dateChange)="setDate('start', $event)"
-                   placeholder="Capture start date" disabled/>
+                   [value]="startDate"
+                   placeholder="Capture start date"/>
             <mat-datepicker-toggle matSuffix [for]="startpicker"></mat-datepicker-toggle>
             <mat-datepicker #startpicker></mat-datepicker>
         </mat-form-field>
@@ -17,6 +18,7 @@
                    class="time-input no-spin"
                    type="number"
                    min="0" max="23"
+                   [value]="startDate?.getHours()"
                    placeholder="HH"/>
             <mat-error *ngIf="(form.get('shour').hasError('min') || form.get('shour').hasError('max') ||
                                form.get('shour').hasError('startend')) && !form.get('shour').hasError('required')">
@@ -31,6 +33,7 @@
                    type="number"
                    min="0" max="59"
                    placeholder="mm"
+                   [value]="startDate?.getMinutes()"
                    class="no-spin"/>
             <mat-error *ngIf="(form.get('sminutes').hasError('min') || form.get('sminutes').hasError('max') ||
                                form.get('sminutes').hasError('startend')) && !form.get('sminutes').hasError('required')">
@@ -39,7 +42,7 @@
             <mat-error *ngIf="form.get('sminutes').hasError('required')">Ora <strong>richiesta</strong>!</mat-error>
         </mat-form-field>
     </form>
-    <form name="end">
+    <form name="end" [formGroup]="form">
         <mat-form-field>
             <input matInput
                    formControlName="edate"
@@ -48,9 +51,10 @@
                    [matDatepickerFilter]="filterEndDate"
                    (dateChange)="setDate('end', $event)"
                    placeholder="Capture end date"
+                   [value]="endDate"
                    disabled/>
             <mat-datepicker-toggle matSuffix [for]="endpicker"></mat-datepicker-toggle>
-            <mat-datepicker #endpicker></mat-datepicker>
+            <mat-datepicker #endpicker [disabled]="false"></mat-datepicker>
         </mat-form-field>
         <mat-form-field class="time-input hour-input">
             <input matInput
@@ -58,6 +62,7 @@
                    class="time-input no-spin"
                    type="number"
                    min="0" max="23"
+                   [value]="endDate?.getHours()"
                    placeholder="HH"/>
             <mat-error *ngIf="(form.get('ehour').hasError('min') || form.get('ehour').hasError('max') ||
                                form.get('ehour').hasError('startend')) && !form.get('ehour').hasError('required')">
@@ -72,6 +77,7 @@
                    type="number"
                    min="0" max="59"
                    placeholder="mm"
+                   [value]="endDate?.getMinutes()"
                    class="no-spin"/>
             <mat-error *ngIf="(form.get('eminutes').hasError('min') || form.get('eminutes').hasError('max') ||
                                form.get('eminutes').hasError('startend')) && !form.get('eminutes').hasError('required')">

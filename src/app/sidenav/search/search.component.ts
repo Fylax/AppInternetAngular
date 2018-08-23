@@ -4,8 +4,8 @@ import {UserSearchRequest} from '../../model/user-search-request';
 import {ArchiveService} from '../../services/archive.service';
 import {first} from 'rxjs/operators';
 import {ApproximatedArchive} from '../../model/approximated-archive';
-import {ShareMapInfoService} from "../../services/share-map-info.service";
-import {FullScreenSpinnerService} from "../../full-screen-spinner/full-screen-spinner.service";
+import {ShareMapInfoService} from '../../services/share-map-info.service';
+import {FullScreenSpinnerService} from '../../full-screen-spinner/full-screen-spinner.service';
 
 @Component({
   selector: 'app-search',
@@ -18,17 +18,20 @@ export class SearchComponent implements OnInit {
   userList = [];
   userSelected = [];
 
-  colorByUser = new Map();
-  datasets;
+  private colorByUser = new Map();
+  private datasets;
+  private datesValid: boolean;
 
-  userMap = new Map();
+  private userMap = new Map();
 
   userSearchReq: UserSearchRequest;
-  approximatedArchiveList: ApproximatedArchive[];
+  private approximatedArchiveList: ApproximatedArchive[];
   approximatedArchiveSelectedList: ApproximatedArchive[];
 
   constructor(private archiveService: ArchiveService, private shareInfoService: ShareMapInfoService,
               private spinner: FullScreenSpinnerService) {
+    this.userSearchReq = new UserSearchRequest();
+    this.datesValid = true;
   }
 
   ngOnInit(): void {
@@ -48,6 +51,9 @@ export class SearchComponent implements OnInit {
           xAxes: [{
             type: 'time',
             time: {
+              displayFormats: {
+                hour: 'H:MM'
+              },
               min: this.shareInfoService.userSearchRequest.start,
               max: this.shareInfoService.userSearchRequest.end
             },
@@ -84,16 +90,25 @@ export class SearchComponent implements OnInit {
   }
 
   onPolygonReady(p: L.Polygon) {
-    this.shareInfoService.userSearchRequest.area = p;
+    this.userSearchReq.area = p;
     this.getArchives();
+  }
+
+  onDatesChange(date: {start, end}) {
+    this.userSearchReq.start = date.start;
+    this.userSearchReq.end = date.end;
+  }
+
+  onDatesReady(valid: boolean) {
+    this.datesValid = valid;
   }
 
   setUsersMap(archives: ApproximatedArchive[]) {
     this.userMap = new Map();
     this.userList = [];
     for (const archive of archives) {
+      archive.color = this.getColorByUserID(archive.username);
       if (this.userMap.has(archive.username)) {
-        archive.color = this.getColorByUserID(archive.username);
         const timestampList = this.userMap.get(archive.username).concat(archive.timestamps);
         this.userMap.set(archive.username, timestampList);
       } else {
@@ -108,7 +123,7 @@ export class SearchComponent implements OnInit {
     this.setTimeline();
   }
 
-  setTimeline() {
+  private setTimeline() {
     this.datasets = new Map();
     for (const user of this.userSelected) {
       const timeDates = [];
@@ -124,13 +139,13 @@ export class SearchComponent implements OnInit {
       });
     }
     this.chart.data.datasets = Array.from(this.datasets.values());
-    this.chart.options.scales.xAxes[0].time.min = this.shareInfoService.userSearchRequest.start;
-    this.chart.options.scales.xAxes[0].time.max = this.shareInfoService.userSearchRequest.end;
+    this.chart.options.scales.xAxes[0].time.min = this.userSearchReq.start;
+    this.chart.options.scales.xAxes[0].time.max = this.userSearchReq.end;
     this.chart.update();
 
   }
 
-  getColorByUserID(userId) {
+  private getColorByUserID(userId) {
     if (this.colorByUser.has(userId)) {
       return this.colorByUser.get(userId);
     }
@@ -138,29 +153,32 @@ export class SearchComponent implements OnInit {
     const r = Math.floor(Math.random() * 255);
     const g = Math.floor(Math.random() * 255);
     const b = Math.floor(Math.random() * 255);
-    color = 'rgba(' + r + ' ,' + g + ',' + b + ', 0.2)';
+    color = 'rgba(' + r + ' ,' + g + ',' + b + ', 0.5)';
     this.colorByUser.set(userId, color);
     return color;
   }
 
-  getArchives() {
-    this.archiveService.searchArchives(this.shareInfoService.userSearchRequest)
-        .pipe(first()).subscribe(aaList => {
-      this.approximatedArchiveList = aaList;
-      this.setUsersMap(aaList);
-    });
+  private getArchives() {
+    if (this.datesValid) {
+      this.archiveService.searchArchives(this.userSearchReq)
+          .pipe(first()).subscribe(aaList => {
+        this.approximatedArchiveList = aaList;
+        this.setUsersMap(aaList);
+      });
+    }
   }
 
 
-  setApproximatedArchives() {
-    if (this.userSelected.length === 0) {
-      this.approximatedArchiveSelectedList = [];
-    } else {
-      this.approximatedArchiveSelectedList = this.approximatedArchiveList.map(archive => {
-        if (this.userSelected.indexOf(archive.username) > -1) {
-          return archive;
-        }
-      });
-    }
+  private setApproximatedArchives() {
+    this.approximatedArchiveSelectedList = [];
+    this.approximatedArchiveSelectedList = this.approximatedArchiveList.map(archive => {
+      if (this.userSelected.indexOf(archive.username) > -1) {
+        return archive;
+      }
+    }).filter(a => {
+      if (a !== undefined) {
+        return a;
+      }
+    });
   }
 }

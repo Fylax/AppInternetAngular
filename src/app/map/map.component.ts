@@ -20,7 +20,7 @@ export class MapComponent implements OnInit, OnDestroy {
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
       })
     ],
-    zoom: 15,
+    zoom: 13,
     center: L.latLng(45.06495, 7.66155)
   };
   private subscription_: Subscription;
@@ -49,14 +49,14 @@ export class MapComponent implements OnInit, OnDestroy {
 
   @Output() polygonOutput = new EventEmitter();
 
-  static createCircleMarker(colorByArchive: string, pos: Point) {
+  private static createCircleMarker(colorByArchive: string, pos: Point) {
     const options = {
       radius: 8,
       fillColor: colorByArchive,
       color: colorByArchive,
       weight: 1,
-      opacity: 0.5,
-      fillOpacity: 0.5
+      opacity: 2,
+      fillOpacity: 2
     };
     return L.circleMarker(L.latLng([pos.lat, pos.lon]), options);
   }
@@ -75,7 +75,7 @@ export class MapComponent implements OnInit, OnDestroy {
     this.subscription_.unsubscribe();
   }
 
-  createPolygonFromBounds(latLngBounds) {
+  private createPolygonFromBounds(latLngBounds) {
     const center = latLngBounds.getCenter();
     const latlngs = [];
 
@@ -98,7 +98,6 @@ export class MapComponent implements OnInit, OnDestroy {
 
   onMapChange() {
     const polygon = this.createPolygonFromBounds(this.map.getBounds());
-    console.log(polygon);
     this.polygonOutput.emit(polygon);
   }
 }

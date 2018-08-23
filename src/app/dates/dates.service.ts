@@ -14,84 +14,76 @@ export class DatesService {
     sdate: new FormControl(),
     edate: new FormControl()
   });
-  private readonly start_: Date;
-  private readonly end_: Date;
-
-  private startDateChange_ = new BehaviorSubject<Moment>(null);
-  private endDateChange_ = new BehaviorSubject<Moment>(null);
+  private readonly _start_: Date;
+  private readonly _end_: Date;
 
   private dateChange_ = new EventEmitter<{ start: Date, end: Date }>();
   private valid_ = new EventEmitter<boolean>();
 
   constructor() {
-    this.start_ = new Date();
-    this.start_.setDate(this.start_.getDate() - 2);
-    this.end_ = new Date();
+    this._start_ = new Date();
+    this._start_.setDate(this._start_.getDate() - 2);
+    this._end_ = new Date();
     this.form_.addControl('shour', new FormControl('', {
-          updateOn: 'blur',
-          validators: [
-            Validators.required,
-            Validators.min(0),
-            Validators.max(23),
-            this.startHourValidator()
-          ]
+          updateOn: 'blur'
         })
     );
     this.form_.addControl('sminutes', new FormControl('', {
-          updateOn: 'blur',
-          validators: [
-            Validators.required,
-            Validators.min(0),
-            Validators.max(59),
-            this.startMinuteValidator()
-          ]
+          updateOn: 'blur'
         })
     );
     this.form_.addControl('ehour', new FormControl('', {
-          updateOn: 'blur',
-          validators: [
-            Validators.required,
-            Validators.min(0),
-            Validators.max(23),
-            this.endHourValidator()
-          ]
+          updateOn: 'blur'
         })
     );
     this.form_.addControl('eminutes', new FormControl('', {
-          updateOn: 'blur',
-          validators: [
-            Validators.required,
-            Validators.min(0),
-            Validators.max(59),
-            this.endMinuteValidator()
-          ]
+          updateOn: 'blur'
         })
     );
+
+    this.form_.get('shour').setValidators([
+      Validators.required,
+      Validators.min(0),
+      Validators.max(23),
+      this.startHourValidator()
+    ]);
+    this.form_.get('sminutes').setValidators([
+      Validators.required,
+      Validators.min(0),
+      Validators.max(59),
+      this.startMinuteValidator()
+    ]);
+    this.form_.get('ehour').setValidators([
+      Validators.required,
+      Validators.min(0),
+      Validators.max(23),
+      this.endHourValidator()
+    ]);
+    this.form_.get('eminutes').setValidators([
+      Validators.required,
+      Validators.min(0),
+      Validators.max(59),
+      this.endMinuteValidator()
+    ]);
 
     this.form_.statusChanges.subscribe((val: string) => {
       const valid = val === 'VALID';
       this.valid_.emit(valid);
       if (valid) {
-        this.dateChange_.emit({start: this.start_, end: this.end_});
+        this.dateChange_.emit({start: this._start_, end: this._end_});
       }
     });
-    this.startDateChange_.subscribe((date: Moment) => {
-      this.start_.setFullYear(date.year(), date.month(), date.date());
-    });
-    this.endDateChange_.subscribe((date: Moment) => {
-      this.end_.setFullYear(date.year(), date.month(), date.date());
-    });
     this.form_.get('shour').valueChanges.subscribe((val: string) => {
-      this.start_.setHours(parseInt(val, 10));
+      this._start_.setHours(parseInt(val, 10));
     });
     this.form_.get('ehour').valueChanges.subscribe((val: string) => {
-      this.end_.setHours(parseInt(val, 10));
+      this._end_.setHours(parseInt(val, 10));
     });
     this.form_.get('sminutes').valueChanges.subscribe((val: string) => {
-      this.start_.setMinutes(parseInt(val, 10));
+      this._start_.setMinutes(parseInt(val, 10));
     });
     this.form_.get('eminutes').valueChanges.subscribe((val: string) => {
-      this.end_.setMinutes(parseInt(val, 10));
+      this._end_.setMinutes(parseInt(val, 10));
     });
   }
 
@@ -107,21 +99,13 @@ export class DatesService {
     return this.dateChange_;
   }
 
-  public get startChange(): BehaviorSubject<Moment> {
-    return this.startDateChange_;
-  }
-
-  public get endChange(): BehaviorSubject<Moment> {
-    return this.endDateChange_;
-  }
-
   public filterStartDate(d: Moment): boolean {
-    return d.toDate() <= this.end_;
+    return d.toDate() <= this._end_;
   }
 
   public filterEndDate(d: Moment): boolean {
-    const newDate = new Date(this.start_);
-    newDate.setDate(this.start_.getDate() - 1);
+    const newDate = new Date(this._start_);
+    newDate.setDate(this._start_.getDate() - 1);
     return d.toDate() >= newDate && d.toDate() <= new Date();
   }
 
@@ -129,7 +113,7 @@ export class DatesService {
     return (control: FormControl): { [key: string]: any } | null => {
       const shour = parseInt(control.value, 10);
       const ehour = parseInt(this.form.get('ehour').value, 10);
-      const valid = this.start_.getDate() === this.end_.getDate() && shour <= ehour;
+      const valid = this._start_.getDate() === this._end_.getDate() && shour <= ehour;
       return valid ? null : {'startend': {value: control.value}};
     };
   }
@@ -138,7 +122,7 @@ export class DatesService {
     return (control: FormControl): { [key: string]: any } | null => {
       const shour = parseInt(this.form.get('shour').value, 10);
       const ehour = parseInt(control.value, 10);
-      const valid = this.start_.getDate() === this.end_.getDate() && shour <= ehour;
+      const valid = this._start_.getDate() === this._end_.getDate() && shour <= ehour;
       return valid ? null : {'startend': {value: control.value}};
     };
   }
@@ -149,7 +133,7 @@ export class DatesService {
       const ehour = parseInt(this.form.get('ehour').value, 10);
       const sminutes = parseInt(control.value, 10);
       const eminutes = parseInt(this.form.get('eminutes').value, 10);
-      const valid = this.start_.getDate() === this.end_.getDate() && shour === ehour && sminutes <= eminutes;
+      const valid = this._start_.getDate() === this._end_.getDate() && shour === ehour && sminutes <= eminutes;
       return valid ? null : {'startend': {value: control.value}};
     };
   }
@@ -160,9 +144,18 @@ export class DatesService {
       const ehour = parseInt(this.form.get('ehour').value, 10);
       const sminutes = parseInt(this.form.get('sminutes').value, 10);
       const eminutes = parseInt(control.value, 10);
-      const valid = this.start_.getDate() === this.end_.getDate() && shour === ehour && sminutes <= eminutes;
+      const valid = this._start_.getDate() === this._end_.getDate() && shour === ehour && sminutes <= eminutes;
       return valid ? null : {'startend': {value: control.value}};
     };
+  }
+
+
+  set start_(value: Moment) {
+    this._start_.setFullYear(value.year(), value.month(), value.date());
+  }
+
+  set end_(value: Moment) {
+    this._end_.setFullYear(value.year(), value.month(), value.date());
   }
 
   showDates() {
