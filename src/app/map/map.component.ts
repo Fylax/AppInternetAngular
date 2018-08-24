@@ -87,6 +87,7 @@ export class MapComponent implements OnInit {
                 if (e.type !== 'draw:created' && e.layerType !== 'polygon') {
                     return;
                 }
+                this.editableLayers.addLayer(e.layer);
                 this.currPolygon = (e.layer as L.Polygon);
                 const controls = document.getElementsByClassName('leaflet-draw-toolbar');
                 (controls[0] as HTMLDivElement).style.display = 'none';
@@ -123,7 +124,7 @@ export class MapComponent implements OnInit {
   }
 
   onMapReady(map: L.Map) {
-    // this.map = map;
+     this.map = map;
     // this.map.addLayer(this.editableLayers);
     this.onMapChange();
   }
