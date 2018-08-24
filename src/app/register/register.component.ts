@@ -28,9 +28,8 @@ export class RegisterComponent implements AfterViewInit {
    * * `primary`: [80-100]%
    */
   progressCol = 'warn';
-  form = this.registerService.form;
 
-  constructor(private registerService: RegisterService,
+  constructor(public service: RegisterService,
               private router: Router) {
   }
 
@@ -67,8 +66,8 @@ export class RegisterComponent implements AfterViewInit {
    * the same value).
    */
   updateConfirmation() {
-    if (this.form.get('password').valid) {
-      const confirm = this.form.get('confirm');
+    if (this.service.form.get('password').valid) {
+      const confirm = this.service.form.get('confirm');
       if (!confirm.hasError('required')) {
         confirm.updateValueAndValidity({onlySelf: true});
       }
@@ -79,8 +78,8 @@ export class RegisterComponent implements AfterViewInit {
    * Tries registration. In case of success it redirects to login homepage, otherwise it shows an error message.
    */
   register() {
-    this.registerService.register(this.form.get('username').value,
-        this.form.get('email').value, this.form.get('password').value)
+    this.service.register(this.service.form.get('username').value,
+        this.service.form.get('email').value, this.service.form.get('password').value)
         .pipe(
             first(),
             retry(3),
