@@ -60,7 +60,7 @@ export class MapComponent implements OnInit {
   }
 
   constructor() {
-     this.drawable = true;
+     // this.drawable = true;
   }
 
     ngOnInit() {
