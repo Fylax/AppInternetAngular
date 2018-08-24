@@ -7,9 +7,10 @@ import * as moment from 'moment';
   templateUrl: './dates.component.html',
   styleUrls: ['./dates.component.css']
 })
-export class DatesComponent implements OnInit{
+export class DatesComponent implements OnInit {
 
-  @Output() dateChange: EventEmitter<{ start: Date, end: Date }> = this.service.dateChange;
+  @Output() startChange: EventEmitter<Date> = this.service.startChange;
+  @Output() endChange: EventEmitter<Date> = this.service.endChange;
   @Output() valid: EventEmitter<boolean> = this.service.valid;
 
   @Input() startDate: Date;

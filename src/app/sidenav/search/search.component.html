@@ -21,8 +21,9 @@
       <button mat-raised-button id="noneButton" (click)="deselectAll()">Deseleziona tutti</button>
     </div>
     <mat-divider></mat-divider>
-    <dates (dateChange)="onDatesChange($event)"
-           (valid)="onDatesReady($event)"
+    <dates (startChange)="userSearchReq.start = $event"
+           (endChange)="userSearchReq.end = $event"
+           (valid)="datesValid = $event"
            [startDate]="userSearchReq.start"
            [endDate]="userSearchReq.end">
     </dates>

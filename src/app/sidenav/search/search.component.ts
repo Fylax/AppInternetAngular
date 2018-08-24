@@ -20,7 +20,7 @@ export class SearchComponent implements OnInit {
 
   private colorByUser = new Map();
   private datasets;
-  private datesValid: boolean;
+  datesValid: boolean;
 
   private userMap = new Map();
 
@@ -92,15 +92,6 @@ export class SearchComponent implements OnInit {
   onPolygonReady(p: L.Polygon) {
     this.userSearchReq.area = p;
     this.getArchives();
-  }
-
-  onDatesChange(date: {start, end}) {
-    this.userSearchReq.start = date.start;
-    this.userSearchReq.end = date.end;
-  }
-
-  onDatesReady(valid: boolean) {
-    this.datesValid = valid;
   }
 
   setUsersMap(archives: ApproximatedArchive[]) {

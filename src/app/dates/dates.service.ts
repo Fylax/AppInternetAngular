@@ -5,7 +5,10 @@ import {Moment} from "moment";
 @Injectable()
 export class DatesService {
 
-  private form_ = new FormGroup({
+  /**
+   * See getter.
+   */
+  private readonly form_ = new FormGroup({
     start: new FormGroup({
       date: new FormControl({disabled: true}, {updateOn: 'change'}),
       hours: new FormControl('', {updateOn: 'blur'}),
@@ -17,44 +20,31 @@ export class DatesService {
       minutes: new FormControl('', {updateOn: 'blur'})
     })
   });
+  /**
+   * Start capture date.
+   */
   private readonly start_: Date;
+  /**
+   * End capture date.
+   */
   private readonly end_: Date;
-
-  private dateChange_ = new EventEmitter<{ start: Date, end: Date }>();
-  private valid_ = new EventEmitter<boolean>();
-
-  public filterStartDate = (d: Moment): boolean => {
-    return d.toDate() <= this.end_;
-  }
-
-  public get form(): FormGroup {
-    return this.form_;
-  }
-
-  public get valid(): EventEmitter<boolean> {
-    return this.valid_;
-  }
-
-  public get dateChange(): EventEmitter<{ start: Date, end: Date }> {
-    return this.dateChange_;
-  }
-
-  set start(value: Moment) {
-    this.start_.setFullYear(value.year(), value.month(), value.date());
-  }
-
-  set end(value: Moment) {
-    this.end_.setFullYear(value.year(), value.month(), value.date());
-  }
-  public filterEndDate = (d: Moment): boolean => {
-    const newDate = new Date(this.start_);
-    newDate.setDate(this.start_.getDate() - 1);
-    return d.toDate() >= newDate && d.toDate() <= new Date();
-  }
-
+  /**
+   * See getter.
+   */
+  private readonly startChange_ = new EventEmitter<Date>();
+  /**
+   * See getter.
+   */
+  private readonly endChange_ = new EventEmitter<Date>();
+  /**
+   * See getter.
+   */
+  private readonly valid_ = new EventEmitter<boolean>();
   constructor() {
+    // Set start and and date to two dummy values to avoid null references.
     this.start_ = new Date(0);
     this.end_ = new Date();
+    // Sets validator. Not set in constructor due to circular dependencies.
     this.form_.get('start.hours').setValidators([
       Validators.required,
       Validators.min(0),
@@ -79,14 +69,21 @@ export class DatesService {
       Validators.max(59),
       this.endMinuteValidator()
     ]);
-
+    // Subscribe to form changes to emit outputs
     this.form_.statusChanges.subscribe((val: string) => {
-      const valid = val === 'VALID';
-      this.valid_.emit(valid);
-      if (valid) {
-        this.dateChange_.emit({start: this.start_, end: this.end_});
+      this.valid_.emit(val === 'VALID');
+    });
+    this.form_.get('start').valueChanges.subscribe(() => {
+      if (this.form_.valid) {
+        this.startChange_.emit(this.start_);
       }
     });
+    this.form_.get('end').valueChanges.subscribe(() => {
+      if (this.form_.valid) {
+        this.endChange_.emit(this.end_);
+      }
+    });
+    // Subscribe to input changes to update dates
     this.form_.get('start.hours').valueChanges.subscribe((val: string) => {
       this.start_.setHours(parseInt(val, 10));
     });
@@ -101,6 +98,81 @@ export class DatesService {
     });
   }
 
+  /**
+   * Reactive form containing, in turn, start and end reactive forms.
+   * It is in charge of validating all fields and preserve input state.
+   */
+  public get form(): FormGroup {
+    return this.form_;
+  }
+
+  /**
+   * Emitted when the form changes in a valid status.
+   */
+  public get valid(): EventEmitter<boolean> {
+    return this.valid_;
+  }
+
+  /**
+   * Emitted when start form content changes but still passes all validators.
+   * This means that passing from `INVALID` to `VALID` or from `VALID` to `VALID`
+   * emits the event. All other cases do not.
+   */
+  public get startChange(): EventEmitter<Date> {
+    return this.startChange_;
+  }
+
+  /**
+   * Emitted when end form content changes but still passes all validators.
+   * This means that passing from `INVALID` to `VALID` or from `VALID` to `VALID`
+   * emits the event. All other cases do not.
+   */
+  public get endChange(): EventEmitter<Date> {
+    return this.endChange_;
+  }
+
+  /**
+   * Sets start date value (date means only day, month and year).
+   * @param value New date value.
+   */
+  set start(value: Moment) {
+    this.start_.setFullYear(value.year(), value.month(), value.date());
+  }
+
+  /**
+   * Sets end date value (date means only day, month and year).
+   * @param value New date value.
+   */
+  set end(value: Moment) {
+    this.end_.setFullYear(value.year(), value.month(), value.date());
+  }
+
+  /**
+   * Filter used by the start ddatepicker to disable all dates in
+   * after the selected end date, as choosing a beginning after
+   * the end makes no sense.
+   * @param d Date exposes by the datepicker.
+   */
+  public filterStartDate = (d: Moment): boolean => {
+    return d.toDate() <= this.end_;
+  }
+
+  /**
+   * Filter used by the end datepicker to disable all dates in the
+   * future and prior to the start date, as both cases makes
+   * no sense.
+   * @param d Date exposes by the datepicker.
+   */
+  public filterEndDate = (d: Moment): boolean => {
+    const newDate = new Date(this.start_);
+    newDate.setDate(this.start_.getDate() - 1);
+    return d.toDate() >= newDate && d.toDate() <= new Date();
+  }
+
+  /**
+   * Validator for the start hour. It gives an error if the same day for
+   * start and end is selected and start hour is greater then the ending one.
+   */
   private startHourValidator(): ValidatorFn {
     return (control: FormControl): { [key: string]: any } | null => {
       const shour = parseInt(control.value, 10);
@@ -112,6 +184,10 @@ export class DatesService {
     };
   }
 
+  /**
+   * Validator for the end hour. It gives an error if the same day for
+   * start and end is selected and start hour is greater then the ending one.
+   */
   private endHourValidator(): ValidatorFn {
     return (control: FormControl): { [key: string]: any } | null => {
       const shour = parseInt(this.form.get('start.hours').value, 10);
@@ -123,6 +199,11 @@ export class DatesService {
     };
   }
 
+  /**
+   * Validator for the start minutes. It gives an error if the same day and
+   * the same hour for start and end is selected but start minute is greater
+   * then the ending one.
+   */
   private startMinuteValidator(): ValidatorFn {
     return (control: FormControl): { [key: string]: any } | null => {
       const shour = parseInt(this.form.get('start.hours').value, 10);
@@ -136,6 +217,11 @@ export class DatesService {
     };
   }
 
+  /**
+   * Validator for the start minutes. It gives an error if the same day and
+   * the same hour for start and end is selected but start minute is greater
+   * then the ending one.
+   */
   private endMinuteValidator(): ValidatorFn {
     return (control: FormControl): { [key: string]: any } | null => {
       const shour = parseInt(this.form.get('start.hours').value, 10);
