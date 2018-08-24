@@ -1,11 +1,13 @@
 import {NgModule} from "@angular/core";
 import {RouterModule, Routes} from "@angular/router";
 import {PurchasesComponent} from "./purchases.component";
+import {AuthenticationGuard} from "../../app-routing/guards/authentication.guard";
 
 const routes: Routes = [
   {
     path: 'purchases',
-    component: PurchasesComponent
+    component: PurchasesComponent,
+    canActivate: [AuthenticationGuard]
   }
 ];
 

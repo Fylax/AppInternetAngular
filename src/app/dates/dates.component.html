@@ -1,89 +1,88 @@
 <div id="dates-container" class="enabled">
-    <form name="start" [formGroup]="form">
+    <form name="start" [formGroup]="start">
         <mat-form-field>
             <input matInput
-                   formControlName="sdate"
-                   class="enabled"
+                   formControlName="date"
                    [matDatepicker]="startpicker"
                    [matDatepickerFilter]="filterStartDate"
                    (dateChange)="setDate('start', $event)"
                    [value]="startDate"
-                   placeholder="Capture start date"/>
+                   placeholder="Data inizio"
+                   />
             <mat-datepicker-toggle matSuffix [for]="startpicker"></mat-datepicker-toggle>
-            <mat-datepicker #startpicker></mat-datepicker>
+            <mat-datepicker #startpicker [disabled]="false"></mat-datepicker>
         </mat-form-field>
         <mat-form-field class="time-input hour-input">
             <input matInput
-                   formControlName="shour"
+                   formControlName="hours"
                    class="time-input no-spin"
                    type="number"
                    min="0" max="23"
                    [value]="startDate?.getHours()"
                    placeholder="HH"/>
-            <mat-error *ngIf="(form.get('shour').hasError('min') || form.get('shour').hasError('max') ||
-                               form.get('shour').hasError('startend')) && !form.get('shour').hasError('required')">
+            <mat-error *ngIf="(start.get('hours').hasError('min') || start.get('hours').hasError('max') ||
+                               start.get('hours').hasError('startend')) && !start.get('hours').hasError('required')">
                 Ora <strong>invalida</strong>!
             </mat-error>
-            <mat-error *ngIf="form.get('shour').hasError('required')">Ora <strong>richiesta</strong>!</mat-error>
+            <mat-error *ngIf="start.get('hours').hasError('required')">Ora <strong>richiesta</strong>!</mat-error>
         </mat-form-field>
         :
         <mat-form-field class="time-input">
             <input matInput
-                   formControlName="sminutes"
+                   formControlName="minutes"
                    type="number"
                    min="0" max="59"
                    placeholder="mm"
                    [value]="startDate?.getMinutes()"
                    class="no-spin"/>
-            <mat-error *ngIf="(form.get('sminutes').hasError('min') || form.get('sminutes').hasError('max') ||
-                               form.get('sminutes').hasError('startend')) && !form.get('sminutes').hasError('required')">
+            <mat-error *ngIf="(start.get('minutes').hasError('min') || start.get('minutes').hasError('max') ||
+                               start.get('minutes').hasError('startend')) && !start.get('minutes').hasError('required')">
                 Ora <strong>invalida</strong>!
             </mat-error>
-            <mat-error *ngIf="form.get('sminutes').hasError('required')">Ora <strong>richiesta</strong>!</mat-error>
+            <mat-error *ngIf="start.get('minutes').hasError('required')">Ora <strong>richiesta</strong>!</mat-error>
         </mat-form-field>
     </form>
-    <form name="end" [formGroup]="form">
+    <form name="end" [formGroup]="end">
         <mat-form-field>
             <input matInput
-                   formControlName="edate"
+                   formControlName="date"
                    class="enabled"
                    [matDatepicker]="endpicker"
                    [matDatepickerFilter]="filterEndDate"
                    (dateChange)="setDate('end', $event)"
-                   placeholder="Capture end date"
-                   [value]="endDate"
-                   disabled/>
+                   placeholder="Data fine"
+                   [value]="endDate"/>
             <mat-datepicker-toggle matSuffix [for]="endpicker"></mat-datepicker-toggle>
             <mat-datepicker #endpicker [disabled]="false"></mat-datepicker>
         </mat-form-field>
         <mat-form-field class="time-input hour-input">
             <input matInput
-                   formControlName="ehour"
+                   formControlName="hours"
                    class="time-input no-spin"
                    type="number"
                    min="0" max="23"
                    [value]="endDate?.getHours()"
                    placeholder="HH"/>
-            <mat-error *ngIf="(form.get('ehour').hasError('min') || form.get('ehour').hasError('max') ||
-                               form.get('ehour').hasError('startend')) && !form.get('ehour').hasError('required')">
+            <mat-error *ngIf="(end.get('hours').hasError('min') || end.get('hours').hasError('max') ||
+                               end.get('hours').hasError('startend')) && !end.get('hours').hasError('required')">
                 Ora <strong>invalida</strong>!
             </mat-error>
-            <mat-error *ngIf="form.get('ehour').hasError('required')">Ora <strong>richiesta</strong>!</mat-error>
+            <mat-error *ngIf="end.get('hours').hasError('required')">Ora <strong>richiesta</strong>!</mat-error>
         </mat-form-field>
         :
         <mat-form-field class="time-input">
             <input matInput
-                   formControlName="eminutes"
+                   formControlName="minutes"
                    type="number"
                    min="0" max="59"
                    placeholder="mm"
                    [value]="endDate?.getMinutes()"
                    class="no-spin"/>
-            <mat-error *ngIf="(form.get('eminutes').hasError('min') || form.get('eminutes').hasError('max') ||
-                               form.get('eminutes').hasError('startend')) && !form.get('eminutes').hasError('required')">
+            <mat-error *ngIf="(end.get('minutes').hasError('min') || end.get('minutes').hasError('max') ||
+                               end.get('minutes').hasError('startend')) && !end.get('minutes').hasError('required')">
                 Ora <strong>invalida</strong>!
             </mat-error>
-            <mat-error *ngIf="form.get('eminutes').hasError('required')">Ora <strong>richiesta</strong>!</mat-error>
+            <mat-error *ngIf="end.get('minutes').hasError('required')">Ora <strong>richiesta</strong>!</mat-error>
         </mat-form-field>
     </form>
 </div>

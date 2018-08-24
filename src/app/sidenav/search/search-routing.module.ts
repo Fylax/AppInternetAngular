@@ -1,11 +1,14 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 import {SearchComponent} from "./search.component";
+import {PurchasesComponent} from "../purchases/purchases.component";
+import {AuthenticationGuard} from "../../app-routing/guards/authentication.guard";
 
 const routes: Routes = [
   {
     path: 'search',
     component: SearchComponent,
+    canActivate: [AuthenticationGuard],
     children: [
       {
         path: 'user',

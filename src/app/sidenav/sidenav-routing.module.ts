@@ -1,14 +1,14 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 import {SidenavComponent} from "./sidenav.component";
-import {AuthenticationGuard} from "../app-routing/guards/authentication.guard";
+import {AuthenticationGuard, LoginGuard} from "../app-routing/guards/authentication.guard";
 import {UnreachableGuard} from "../app-routing/guards/unreachable.guard";
 
 const routes: Routes = [
   {
     path: '',
     component: SidenavComponent,
-    canActivate: [AuthenticationGuard, UnreachableGuard],
+    canActivate: [LoginGuard, UnreachableGuard],
     children: [
       {
         path: 'search',
