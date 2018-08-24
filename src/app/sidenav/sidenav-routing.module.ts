@@ -8,7 +8,7 @@ const routes: Routes = [
   {
     path: '',
     component: SidenavComponent,
-    canActivate: [LoginGuard, UnreachableGuard],
+    canActivate: [LoginGuard, AuthenticationGuard, UnreachableGuard],
     children: [
       {
         path: 'search',
