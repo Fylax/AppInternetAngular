@@ -20,29 +20,31 @@
             <p *ngIf="error" fxFlexAlign="center">Si è verificato un errore</p>
             <form fxLayout="column"
                   fxFlexAlign="center"
-                  [formGroup]="form"
+                  [formGroup]="service.form"
                   (ngSubmit)="register()">
                 <mat-form-field>
                     <input matInput formControlName="username" placeholder="Username"
                            autocomplete="username"/>
-                    <mat-error *ngIf="form.get('username').hasError('required')">
+                    <mat-error *ngIf="service.form.get('username').hasError('required')">
                         Username <strong>obbligatorio</strong>!
                     </mat-error>
-                    <mat-error *ngIf="form.get('username').hasError('exists')">
+                    <mat-error *ngIf="service.form.get('username').hasError('exists')">
                         Username <strong>non disponibile</strong>!
                     </mat-error>
                 </mat-form-field>
 
                 <mat-form-field>
                     <input matInput formControlName="email" placeholder="Email" autocomplete="email"/>
-                    <mat-error *ngIf="form.get('email').hasError('email') || form.get('email').hasError('pattern')">
+                    <mat-error *ngIf="service.form.get('email').hasError('email') ||
+                                      service.form.get('email').hasError('pattern')">
                         Email <strong>invalida</strong>!
                     </mat-error>
-                    <mat-error *ngIf="!form.get('email').hasError('email') && !form.get('email').hasError('pattern') &&
-                    form.get('email').hasError('required')">
+                    <mat-error *ngIf="!service.form.get('email').hasError('email') &&
+                                      !service.form.get('email').hasError('pattern') &&
+                                       service.form.get('email').hasError('required')">
                         Email <strong>obbligatoria</strong>!
                     </mat-error>
-                    <mat-error *ngIf="form.get('email').hasError('exists')">
+                    <mat-error *ngIf="service.form.get('email').hasError('exists')">
                         Email <strong>non disponibile</strong>!
                     </mat-error>
                 </mat-form-field>
@@ -54,15 +56,18 @@
                            (keyup)="strength($event)"
                            (blur)="updateConfirmation()"
                            autocomplete="current-password"/>
-                    <mat-error *ngIf="form.get('password').hasError('required')">
+                    <mat-error *ngIf="service.form.get('password').hasError('required')">
                         Password <strong>obbligatoria</strong>!
                     </mat-error>
                     <mat-error
-                            *ngIf="!form.get('password').hasError('required') && form.get('password').hasError('minlength')">
+                            *ngIf="!service.form.get('password').hasError('required') &&
+                                    service.form.get('password').hasError('minlength')">
                         La password deve essere di <strong>almeno 8 caratteri</strong>!
                     </mat-error>
                     <mat-error
-                            *ngIf="!form.get('password').hasError('required') && !form.get('password').hasError('minlength') && form.get('password').hasError('symbols')">
+                            *ngIf="!service.form.get('password').hasError('required') &&
+                                   !service.form.get('password').hasError('minlength') &&
+                                    service.form.get('password').hasError('symbols')">
                         La password deve contenere almeno tre tra lettere maiuscole, minuscole, numeri e simboli!
                     </mat-error>
                 </mat-form-field>
@@ -76,10 +81,10 @@
                            formControlName="confirm"
                            placeholder="Conferma password"
                            type="password"/>
-                    <mat-error *ngIf="form.get('confirm').hasError('required')">
+                    <mat-error *ngIf="service.form.get('confirm').hasError('required')">
                         Conferma <strong>obbligatoria</strong>!
                     </mat-error>
-                    <mat-error *ngIf="form.get('confirm').hasError('matching')">
+                    <mat-error *ngIf="service.form.get('confirm').hasError('matching')">
                         Password <strong>non coincidenti</strong>!
                     </mat-error>
                 </mat-form-field>
@@ -88,7 +93,7 @@
                     <button mat-raised-button
                             color="primary"
                             type="submit"
-                            [disabled]="!form.valid">Registrati
+                            [disabled]="!service.form.valid">Registrati
                     </button>
                     <span>o</span>
                     <button mat-raised-button

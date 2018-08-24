@@ -18,15 +18,13 @@ export class LoginComponent implements AfterViewInit {
    */
   valid = true;
 
-  form = this.loginservice.form;
-
   /**
    * Whether the session has expired (meaning that refresh token is out of life).
    * This value is derived from query param.
    */
   expired: boolean;
 
-  constructor(private loginservice: LoginService,
+  constructor(public service: LoginService,
               private user: UserService,
               private spinner: FullScreenSpinnerService,
               private route: ActivatedRoute,
@@ -44,7 +42,7 @@ export class LoginComponent implements AfterViewInit {
   login() {
     this.spinner.showSpinner();
     // Tries login for tree times, managing errors.
-    this.loginservice.login(this.form.get('username').value, this.form.get('password').value)
+    this.service.login(this.service.form.get('username').value, this.service.form.get('password').value)
         .pipe(
             first(),
             retry(3),

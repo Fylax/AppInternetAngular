@@ -1,42 +1,32 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {MatDatepickerInputEvent} from '@angular/material';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {DatesService} from './dates.service';
-import {Moment} from 'moment';
+import * as moment from 'moment';
 
 @Component({
   selector: 'dates',
   templateUrl: './dates.component.html',
   styleUrls: ['./dates.component.css']
 })
-export class DatesComponent {
+export class DatesComponent implements OnInit {
 
-  form = this.datesService.form;
-
-  @Output() dateChange: EventEmitter<{ start: Date, end: Date }> = this.datesService.dateChange;
-  @Output() valid: EventEmitter<boolean> = this.datesService.valid;
+  @Output() startChange: EventEmitter<Date> = this.service.startChange;
+  @Output() endChange: EventEmitter<Date> = this.service.endChange;
+  @Output() valid: EventEmitter<boolean> = this.service.valid;
 
   @Input() startDate: Date;
   @Input() endDate: Date;
 
-  constructor(private datesService: DatesService) {
+  constructor(public service: DatesService) {
   }
 
-  setDate(type: string, event: MatDatepickerInputEvent<Moment>) {
-    const d = event.value;
-    switch (type) {
-      case 'start':
-        this.datesService.start_ = d;
-        break;
-      case 'end':
-        this.datesService.end_ = d;
-    }
-  }
-
-  filterStartDate(d: Moment): boolean {
-    return this.datesService.filterStartDate(d);
-  }
-
-  filterEndDate(d: Moment): boolean {
-    return this.datesService.filterEndDate(d);
+  ngOnInit(): void {
+    this.service.form.get('start.date').setValue(this.startDate);
+    this.service.start = moment(this.startDate);
+    this.service.form.get('start.hours').setValue(this.startDate.getHours());
+    this.service.end = moment(this.endDate);
+    this.service.form.get('start.minutes').setValue(this.startDate.getMinutes());
+    this.service.form.get('end.date').setValue(this.endDate);
+    this.service.form.get('end.hours').setValue(this.endDate.getHours());
+    this.service.form.get('end.minutes').setValue(this.endDate.getMinutes());
   }
 }
