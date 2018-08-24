@@ -10,20 +10,8 @@ import {Point} from '../model/point';
 })
 export class MapComponent implements OnInit {
 
-  options = {
-    zoomControl: true,
-    layers: [
-      L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-      })
-    ],
-    zoom: 13,
-    center: L.latLng(45.06495, 7.66155)
-  };
-
   private editableLayers = new L.FeatureGroup();
-  private map: L.Map;
+  private map;
 
   private currPolygon;
   archives: ApproximatedArchive[];
@@ -60,10 +48,15 @@ export class MapComponent implements OnInit {
   }
 
   constructor() {
-      this.drawable = true;
+     this.drawable = true;
   }
 
     ngOnInit() {
+        this.map = L.map('map').setView([45.06495, 7.66155], 13);
+            L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(this.map);
         this.map.addLayer(this.editableLayers);
 
         if (this.drawable) {
@@ -79,9 +72,9 @@ export class MapComponent implements OnInit {
                     polyline: false,
                     circle: false,
                     polygon: {
-                        allowIntersection: false, // Restricts shapes to simple polygons
+                        allowIntersection: false,
                         drawError: {
-                            color: 'red', // Color the shape will turn when intersects
+                            color: 'red',
                             message: '<strong>Non consentito!<strong>'
                         },
                     },
@@ -130,7 +123,7 @@ export class MapComponent implements OnInit {
   }
 
   onMapReady(map: L.Map) {
-    this.map = map;
+    // this.map = map;
     // this.map.addLayer(this.editableLayers);
     this.onMapChange();
   }
