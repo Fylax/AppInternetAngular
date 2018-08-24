@@ -17,6 +17,18 @@ export class MapComponent implements OnInit {
   archives: ApproximatedArchive[];
   private markerLayers: L.LayerGroup;
 
+  options = {
+    zoomControl: true,
+    layers: [
+      L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+      })
+    ],
+    zoom: 13,
+    center: L.latLng(45.06495, 7.66155)
+  };
+
     @Input() drawable: boolean;
     @Input() set setItems(value: ApproximatedArchive[]) {
     this.markerLayers = new L.LayerGroup();
@@ -52,60 +64,60 @@ export class MapComponent implements OnInit {
   }
 
     ngOnInit() {
-        this.map = L.map('map').setView([45.06495, 7.66155], 13);
-            L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(this.map);
-        this.map.addLayer(this.editableLayers);
-
-        if (this.drawable) {
-            const drawControl = new L.Control.Draw({
-                edit: {
-                    featureGroup: this.editableLayers
-                },
-                position: 'topright',
-                draw: {
-                    marker: false,
-                    circlemarker: false,
-                    rectangle: false,
-                    polyline: false,
-                    circle: false,
-                    polygon: {
-                        allowIntersection: false,
-                        drawError: {
-                            color: 'red',
-                            message: '<strong>Non consentito!<strong>'
-                        },
-                    },
-                }
-            });
-          this.map.addControl(drawControl);
-        }
-        this.map
-            .on(L.Draw.Event.CREATED, (e: L.DrawEvents.Created) => {
-                if (e.type !== 'draw:created' && e.layerType !== 'polygon') {
-                    return;
-                }
-                this.editableLayers.addLayer(e.layer);
-                this.currPolygon = (e.layer as L.Polygon);
-                const controls = document.getElementsByClassName('leaflet-draw-toolbar');
-                (controls[0] as HTMLDivElement).style.display = 'none';
-                (controls[1] as HTMLDivElement).style.display = 'block';
-            })
-            .on(L.Draw.Event.DELETED, (e: L.DrawEvents.Deleted) => {
-                if (e.layers.getLayers().length !== 0) {
-                    const controls = document.getElementsByClassName('leaflet-draw-toolbar');
-                    (controls[0] as HTMLDivElement).style.display = 'block';
-                    (controls[1] as HTMLDivElement).style.display = 'none';
-                }
-            })
-            .on(L.Draw.Event.EDITED, (e: L.DrawEvents.Edited) => {
-                const poly = (e.layers.getLayers()[0] as L.Polygon);
-                if (poly !== undefined) {
-                    this.currPolygon = poly;
-                }
-            });
+        // this.map = L.map('map').setView([45.06495, 7.66155], 13);
+        // L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        //     maxZoom: 19,
+        //     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        // }).addTo(this.map);
+        // this.map.addLayer(this.editableLayers);
+        //
+        // if (this.drawable) {
+        //     const drawControl = new L.Control.Draw({
+        //         edit: {
+        //             featureGroup: this.editableLayers
+        //         },
+        //         position: 'topright',
+        //         draw: {
+        //             marker: false,
+        //             circlemarker: false,
+        //             rectangle: false,
+        //             polyline: false,
+        //             circle: false,
+        //             polygon: {
+        //                 allowIntersection: false,
+        //                 drawError: {
+        //                     color: 'red',
+        //                     message: '<strong>Non consentito!<strong>'
+        //                 },
+        //             },
+        //         }
+        //     });
+        //   this.map.addControl(drawControl);
+        // }
+        // this.map
+        //     .on(L.Draw.Event.CREATED, (e: L.DrawEvents.Created) => {
+        //         if (e.type !== 'draw:created' && e.layerType !== 'polygon') {
+        //             return;
+        //         }
+        //         this.editableLayers.addLayer(e.layer);
+        //         this.currPolygon = (e.layer as L.Polygon);
+        //         const controls = document.getElementsByClassName('leaflet-draw-toolbar');
+        //         (controls[0] as HTMLDivElement).style.display = 'none';
+        //         (controls[1] as HTMLDivElement).style.display = 'block';
+        //     })
+        //     .on(L.Draw.Event.DELETED, (e: L.DrawEvents.Deleted) => {
+        //         if (e.layers.getLayers().length !== 0) {
+        //             const controls = document.getElementsByClassName('leaflet-draw-toolbar');
+        //             (controls[0] as HTMLDivElement).style.display = 'block';
+        //             (controls[1] as HTMLDivElement).style.display = 'none';
+        //         }
+        //     })
+        //     .on(L.Draw.Event.EDITED, (e: L.DrawEvents.Edited) => {
+        //         const poly = (e.layers.getLayers()[0] as L.Polygon);
+        //         if (poly !== undefined) {
+        //             this.currPolygon = poly;
+        //         }
+        //     });
     }
 
   private createPolygonFromBounds(latLngBounds) {
@@ -126,6 +138,55 @@ export class MapComponent implements OnInit {
   onMapReady(map: L.Map) {
      this.map = map;
     // this.map.addLayer(this.editableLayers);
+    this.map.addLayer(this.editableLayers);
+
+    if (this.drawable) {
+      const drawControl = new L.Control.Draw({
+        edit: {
+          featureGroup: this.editableLayers
+        },
+        position: 'topright',
+        draw: {
+          marker: false,
+          circlemarker: false,
+          rectangle: false,
+          polyline: false,
+          circle: false,
+          polygon: {
+            allowIntersection: false,
+            drawError: {
+              color: 'red',
+              message: '<strong>Non consentito!<strong>'
+            },
+          },
+        }
+      });
+      this.map.addControl(drawControl);
+    }
+    this.map
+        .on(L.Draw.Event.CREATED, (e: L.DrawEvents.Created) => {
+          if (e.type !== 'draw:created' && e.layerType !== 'polygon') {
+            return;
+          }
+          this.editableLayers.addLayer(e.layer);
+          this.currPolygon = (e.layer as L.Polygon);
+          const controls = document.getElementsByClassName('leaflet-draw-toolbar');
+          (controls[0] as HTMLDivElement).style.display = 'none';
+          (controls[1] as HTMLDivElement).style.display = 'block';
+        })
+        .on(L.Draw.Event.DELETED, (e: L.DrawEvents.Deleted) => {
+          if (e.layers.getLayers().length !== 0) {
+            const controls = document.getElementsByClassName('leaflet-draw-toolbar');
+            (controls[0] as HTMLDivElement).style.display = 'block';
+            (controls[1] as HTMLDivElement).style.display = 'none';
+          }
+        })
+        .on(L.Draw.Event.EDITED, (e: L.DrawEvents.Edited) => {
+          const poly = (e.layers.getLayers()[0] as L.Polygon);
+          if (poly !== undefined) {
+            this.currPolygon = poly;
+          }
+        });
     this.onMapChange();
   }
 
