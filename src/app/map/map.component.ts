@@ -81,12 +81,15 @@ export class MapComponent implements OnInit {
     return L.polygon(latlngs);
   }
 
+    /**
+     * Controlla se 'drawable' e setta le drawOptions
+     */
   onMapReady(map: L.Map) {
      this.map = map;
     // this.map.addLayer(this.editableLayers);
     this.map.addLayer(this.editableLayers);
 
-    if (this.drawable) {
+    if (this.drawable !== undefined && this.drawable) {
       const drawControl = new L.Control.Draw({
         edit: {
           featureGroup: this.editableLayers
@@ -136,10 +139,14 @@ export class MapComponent implements OnInit {
     this.onMapChange();
   }
 
+    /**
+     * Ad ogni cambiamento della mappa 'emetto' in output il
+     * polygon (disegnato o rappresentante i bounds della vista corrente)
+     */
   onMapChange() {
     if (this.editableLayers.getLayers().length === 0) {
         this.currPolygon = this.createPolygonFromBounds(this.map.getBounds());
-        this.polygonOutput.emit(this.currPolygon);
     }
+    this.polygonOutput.emit(this.currPolygon);
   }
 }
