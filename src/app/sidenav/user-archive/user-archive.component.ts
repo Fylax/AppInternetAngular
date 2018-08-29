@@ -32,7 +32,7 @@ export class UserArchiveComponent implements OnInit, AfterViewInit, OnDestroy {
       this.dataSource = new ArchiveDataSource(this.archiveService);
       this.subscription = this.dataSource.resultLength
           .subscribe(totals => this.resultsLength = totals);
-      this.dataSource.loadArchive(1, 3, this.userId);
+      this.dataSource.loadArchive(1, 10, this.userId);
   }
 
   ngAfterViewInit(): void {

@@ -5,7 +5,7 @@ import {AuthenticationGuard} from "../../app-routing/guards/authentication.guard
 
 const routes: Routes = [
   {
-    path: 'user',
+    path: 'u',
     component: UserArchiveComponent,
     canActivate: [AuthenticationGuard]
   }

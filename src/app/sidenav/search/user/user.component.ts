@@ -36,18 +36,16 @@ export class UserComponent implements OnInit, AfterViewInit, OnDestroy {
                 private positionsService: PositionsService,
                 private http: HttpClient,
                 private spinner: FullScreenSpinnerService,
-                leafletDirective: LeafletDirective,
                 route: ActivatedRoute) {
         spinner.hideSpinner();
         route.queryParams.pipe(first()).subscribe((param) => {
             this.userId = param.user;
         });
-        this.leafletDirective = new LeafletDirectiveWrapper(leafletDirective);
     }
 
     ngOnInit() {
-        this.leafletDirective.init();
-        this.leafletDirective.getMap().addLayer(this.editableLayers);
+        // this.leafletDirective.init();
+        // this.leafletDirective.getMap().addLayer(this.editableLayers);
 
         // this.spinner.showSpinner();
         // this.positionsService.getPositions()

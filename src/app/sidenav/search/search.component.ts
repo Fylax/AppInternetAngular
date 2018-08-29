@@ -2,10 +2,11 @@ import {Component, OnInit} from '@angular/core';
 import {Chart} from 'chart.js';
 import {UserSearchRequest} from '../../model/user-search-request';
 import {ArchiveService} from '../../services/archive.service';
-import {first} from 'rxjs/operators';
+import {finalize, first} from 'rxjs/operators';
 import {ApproximatedArchive} from '../../model/approximated-archive';
 import {ShareMapInfoService} from '../../services/share-map-info.service';
 import {FullScreenSpinnerService} from '../../full-screen-spinner/full-screen-spinner.service';
+import {BehaviorSubject} from 'rxjs';
 
 @Component({
   selector: 'app-search',
@@ -21,6 +22,8 @@ export class SearchComponent implements OnInit {
   private colorByUser = new Map();
   private datasets;
   datesValid: boolean;
+
+  loading: boolean;
 
   private userMap = new Map();
 
@@ -72,6 +75,7 @@ export class SearchComponent implements OnInit {
         }
       }
     });
+    this.loading = true;
     this.spinner.hideSpinner();
   }
 
@@ -111,7 +115,9 @@ export class SearchComponent implements OnInit {
         this.userList.push(archive.username);
       }
     }
-    if (this.userSelected.length === 0 || this.userList.length === 0) {
+    if (this.userSelected.length === 0
+        || this.userList.length === 0
+        || this.userSelected.length > this.userList.length) {
       this.userSelected = this.userList;
     }
     this.setApproximatedArchives();
@@ -155,10 +161,12 @@ export class SearchComponent implements OnInit {
 
   private getArchives() {
     if (this.datesValid) {
+      this.loading = true;
       this.archiveService.searchArchives(this.userSearchReq)
-          .pipe(first()).subscribe(aaList => {
+          .subscribe(aaList => {
         this.approximatedArchiveList = aaList;
         this.setUsersMap(aaList);
+        this.loading = false;
       });
     }
   }
@@ -166,16 +174,17 @@ export class SearchComponent implements OnInit {
 
   private setApproximatedArchives() {
     this.counterPositionsSelected = 0;
-    this.approximatedArchiveSelectedList = [];
-    this.approximatedArchiveSelectedList = this.approximatedArchiveList.map(archive => {
+    this.approximatedArchiveSelectedList = this.approximatedArchiveList;
+    this.approximatedArchiveSelectedList.filter(archive => {
       if (this.userSelected.indexOf(archive.username) > -1) {
         this.counterPositionsSelected = this.counterPositionsSelected + archive.positions.length;
         return archive;
       }
-    }).filter(a => {
-      if (a !== undefined) {
-        return a;
-      }
     });
+    // (a => {
+    //   if (a !== undefined) {
+    //     return a;
+    //   }
+    // });
   }
 }

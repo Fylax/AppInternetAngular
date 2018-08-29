@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, Output, OnInit, OnChanges, SimpleChanges} from '@angular/core';
 import * as L from 'leaflet';
 import {ApproximatedArchive} from '../model/approximated-archive';
 import {Point} from '../model/point';
@@ -8,7 +8,7 @@ import {Point} from '../model/point';
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
 })
-export class MapComponent implements OnInit {
+export class MapComponent implements OnInit, OnChanges {
 
   private editableLayers = new L.FeatureGroup();
   private map;
@@ -26,12 +26,14 @@ export class MapComponent implements OnInit {
       })
     ],
     zoom: 13,
+    scrollWheelZoom: false,
     center: L.latLng(45.06495, 7.66155)
   };
 
-    @Input() drawable: boolean;
-    @Input() set setItems(value: ApproximatedArchive[]) {
-    this.markerLayers = new L.LayerGroup();
+  @Input() drawable: boolean;
+
+  @Input() set setItems(value: ApproximatedArchive[]) {
+    this.markerLayers.clearLayers();
     this.archives = value;
     if (this.archives !== undefined) {
       for (let i = 0; i < this.archives.length; i++) {
@@ -60,11 +62,12 @@ export class MapComponent implements OnInit {
   }
 
   constructor() {
-     // this.drawable = true;
+    this.drawable = true;
+    this.markerLayers = new L.LayerGroup();
   }
 
-    ngOnInit() {
-    }
+  ngOnInit() {
+  }
 
   private createPolygonFromBounds(latLngBounds) {
     const center = latLngBounds.getCenter();
@@ -81,11 +84,11 @@ export class MapComponent implements OnInit {
     return L.polygon(latlngs);
   }
 
-    /**
-     * Controlla se 'drawable' e setta le drawOptions
-     */
+  /**
+   * Controlla se 'drawable' e setta le drawOptions
+   */
   onMapReady(map: L.Map) {
-     this.map = map;
+    this.map = map;
     // this.map.addLayer(this.editableLayers);
     this.map.addLayer(this.editableLayers);
 
@@ -122,31 +125,38 @@ export class MapComponent implements OnInit {
           const controls = document.getElementsByClassName('leaflet-draw-toolbar');
           (controls[0] as HTMLDivElement).style.display = 'none';
           (controls[1] as HTMLDivElement).style.display = 'block';
+          this.onMapChange();
         })
         .on(L.Draw.Event.DELETED, (e: L.DrawEvents.Deleted) => {
           if (e.layers.getLayers().length !== 0) {
             const controls = document.getElementsByClassName('leaflet-draw-toolbar');
             (controls[0] as HTMLDivElement).style.display = 'block';
             (controls[1] as HTMLDivElement).style.display = 'none';
+            this.onMapChange();
           }
         })
         .on(L.Draw.Event.EDITED, (e: L.DrawEvents.Edited) => {
           const poly = (e.layers.getLayers()[0] as L.Polygon);
           if (poly !== undefined) {
             this.currPolygon = poly;
+            this.onMapChange();
           }
         });
     this.onMapChange();
   }
 
-    /**
-     * Ad ogni cambiamento della mappa 'emetto' in output il
-     * polygon (disegnato o rappresentante i bounds della vista corrente)
-     */
+  /**
+   * Ad ogni cambiamento della mappa 'emetto' in output il
+   * polygon (disegnato o rappresentante i bounds della vista corrente)
+   */
   onMapChange() {
     if (this.editableLayers.getLayers().length === 0) {
-        this.currPolygon = this.createPolygonFromBounds(this.map.getBounds());
+      this.currPolygon = this.createPolygonFromBounds(this.map.getBounds());
     }
     this.polygonOutput.emit(this.currPolygon);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes);
   }
 }

@@ -2,22 +2,34 @@
   position: absolute;
   left: 30%;
   width: 70%;
+  overflow: hidden;
 }
+
 
 #filters{
   position: absolute;
-  right: 70%;
-  width: 30%;
+  right: 72.5%;
+  width: 22%;
   align-content: center;
   text-align: center;
+  overflow: visible;
 }
 
 #allButton{
+  margin-top: 10px;
   margin-right: 5px;
 }
 
 #noneButton{
+  margin-top: 10px;
   margin-left: 5px;
+}
+
+#confirmationButton{
+  background-color: red;
+  color: white;
+  margin-bottom: 10px;
+  width: 60%;
 }
 
 
@@ -27,8 +39,29 @@ mat-card-title{
 
 mat-selection-list{
   margin-top: 2px;
+  text-align: left;
   flex-grow: 1;
-  height: 250px;
-  border: 1px solid rgba(0,0,0,0.3);
+  height: 150px;
   overflow: auto;
+}
+
+mat-expansion-panel{
+  margin:0;
+}
+
+mat-expansion-panel-header{
+  font-weight: bold;
+}
+
+.map-loading-shade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

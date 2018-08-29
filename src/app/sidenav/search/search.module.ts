@@ -3,10 +3,15 @@ import {CommonModule} from '@angular/common';
 import {SearchRoutingModule} from "./search-routing.module";
 import {SearchComponent} from "./search.component";
 import {ArchiveService} from "../../services/archive.service";
-import {DatesComponent} from "../../dates/dates.component";
-import {MapComponent} from "../../map/map.component";
 import {UserModule} from "./user/user.module";
-import {MatButtonModule, MatCardModule, MatDividerModule, MatListModule} from "@angular/material";
+import {
+  MatButtonModule,
+  MatCardModule,
+  MatDividerModule,
+  MatExpansionModule,
+  MatListModule,
+  MatProgressSpinnerModule
+} from '@angular/material';
 import {FormsModule} from "@angular/forms";
 import {LeafletModule} from "@asymmetrik/ngx-leaflet";
 import {LeafletDrawModule} from "@asymmetrik/ngx-leaflet-draw";
@@ -26,7 +31,9 @@ import {DatesModule} from "../../dates/dates.module";
     MatButtonModule,
     MatListModule,
     MatDividerModule,
-    SearchRoutingModule
+    SearchRoutingModule,
+    MatExpansionModule,
+    MatProgressSpinnerModule
   ],
   declarations: [
     SearchComponent
