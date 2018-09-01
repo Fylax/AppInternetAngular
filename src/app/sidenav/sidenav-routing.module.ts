@@ -19,7 +19,7 @@ const routes: Routes = [
         loadChildren: './purchases/purchases.module#PurchasesModule'
       },
       {
-        path: 'user',
+        path: 'u',
         loadChildren: './user-archive/user-archive.module#UserArchiveModule'
       }
     ]

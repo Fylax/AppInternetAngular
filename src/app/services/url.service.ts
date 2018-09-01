@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpEventType, HttpHeaders, HttpRequest, HttpResponse} from '@angular/common/http';
 import {environment} from '../../environments/environment';
-import {first, switchMap} from 'rxjs/operators';
-import {from, Observable} from "rxjs";
-import {HttpParams} from "@angular/common/http";
-import {Urls} from "../model/urls";
-import {RestResource} from "../model/rest-resource.enum";
+import {catchError, first, switchMap} from 'rxjs/operators';
+import {from, Observable, Subject} from 'rxjs';
+import {HttpParams} from '@angular/common/http';
+import {Urls} from '../model/urls';
+import {RestResource} from '../model/rest-resource.enum';
 import * as urijs from 'urijs';
 
 @Injectable({
@@ -83,7 +83,7 @@ export class UrlService {
    * @param headers Headers for this request.
    * @param authenticated Whether the request has credentials.
    */
-  public post(url: RestResource, body: string, headers: HttpHeaders, authenticated: boolean): Observable<any> {
+  public post(url: RestResource, body: any, headers: HttpHeaders, authenticated: boolean): Observable<any> {
     return from(this.promise_)
         .pipe(
             switchMap((urls: Urls) => {
@@ -94,6 +94,24 @@ export class UrlService {
                     responseType: 'json',
                     withCredentials: authenticated
                   });
+            })
+        );
+  }
+  /**
+   * Generic method for performing an HTTP POST and reporting progress.
+   * @param url REST Resource URL mapped name.
+   * @param body Body for this request.
+   * @param headers Headers for this request.
+   * @param authenticated Whether the request has credentials.
+   */
+  public postProgress(url: RestResource, body: any, headers: HttpHeaders, authenticated: boolean): Observable<any> {
+    return from(this.promise_)
+        .pipe(
+            switchMap((urls: Urls) => {
+              const req = new HttpRequest('POST', urls[url].href, body, {
+                reportProgress: true
+              });
+              return this.http.request(req);
             })
         );
   }
