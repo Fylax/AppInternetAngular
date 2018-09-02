@@ -14,7 +14,7 @@ export class PurchaseService {
   constructor(private http: HttpClient, private baseService: UrlService) { }
 
   buyPositions(cr: UserSearchRequest): Observable<{}> {
-    return this.baseService.post(RestResource.Positions, cr.toJSON().toString(), new HttpHeaders(), true);
+    return this.baseService.post(RestResource.PurchasedArchives, cr.toJSON().toString(), new HttpHeaders(), true);
   }
 
   getPurchaseList(pageIndex = 1, pageSize = 3, customerId?: string): Observable<PurchasesPaginationSupport> {
@@ -25,9 +25,9 @@ export class PurchaseService {
       const expand = {
         id: customerId
       };
-      return this.baseService.get(RestResource.AdminCustomerPurchases, new HttpHeaders(), params, true, expand);
+      return this.baseService.get(RestResource.AdminUserPurchasedArchives, new HttpHeaders(), params, true, expand);
     }
-    return this.baseService.get(RestResource.Purchases, new HttpHeaders(), params, true);
+    return this.baseService.get(RestResource.PurchasedArchives, new HttpHeaders(), params, true);
   }
 
   getPurchaseDetails(purchaseId: string, customerId?: string): Observable<Purchase> {
@@ -36,9 +36,9 @@ export class PurchaseService {
     };
     if (customerId) {
       expand['id'] = customerId;
-      return this.baseService.get(RestResource.PurchaseDetails, new HttpHeaders(), new HttpParams(), true, expand);
+      return this.baseService.get(RestResource.PurchasedArchive, new HttpHeaders(), new HttpParams(), true, expand);
     }
-    return this.baseService.get(RestResource.AdminCustomerPurchase, new HttpHeaders(), new HttpParams(), true, expand);
+    return this.baseService.get(RestResource.AdminUserPurchasedArchive, new HttpHeaders(), new HttpParams(), true, expand);
   }
 
 }

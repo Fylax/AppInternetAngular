@@ -1,31 +1,31 @@
 [
   {
-    "timestamp": 190430000,
+    "timestamp": 1535923097,
     "position": {
       "type": "Point",
       "coordinates": [
-        7.6624810695,
-        45.062059711
+        7.65155,
+        45.06495
       ]
     }
   },
   {
-    "timestamp": 190440000,
+    "timestamp": 1535923098,
     "position": {
       "type": "Point",
       "coordinates": [
-        7.6654810695,
-        45.042059711
+        7.65155,
+        45.06495
       ]
     }
   },
   {
-    "timestamp": 190450000,
+    "timestamp": 1535923099,
     "position": {
       "type": "Point",
       "coordinates": [
-        7.670774459838867,
-        45.065488749118984
+        7.65155,
+        45.06495
       ]
     }
   }

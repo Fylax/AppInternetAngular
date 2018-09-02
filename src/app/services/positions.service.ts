@@ -16,7 +16,7 @@ export class PositionsService {
 
   getPositionCount(cr: UserSearchRequest): Observable<number> {
     const params = new HttpParams().set('request', btoa(JSON.stringify(cr)));
-    return this.baseService.get(RestResource.Positions, new HttpHeaders(), params, true);
+    return this.baseService.get(RestResource.PurchasedArchives, new HttpHeaders(), params, true);
   }
 
   getPositions(): Observable<string> {
@@ -24,7 +24,7 @@ export class PositionsService {
   }
 
   postPositions(body: string): Observable<Response> {
-    return this.baseService.post(RestResource.Positions, body, new HttpHeaders(), true);
+    return this.baseService.post(RestResource.PurchasedArchives, body, new HttpHeaders(), true);
   }
 
   getPositionsFromServer(ur: UserRequest, userId?: string): Observable<any> {
@@ -34,7 +34,7 @@ export class PositionsService {
     };
     if (userId) {
       expand['id'] = userId;
-      return this.baseService.get(RestResource.AdminUserPositions, new HttpHeaders(), new HttpParams(), true, expand);
+      return this.baseService.get(RestResource.AdminUserArchive, new HttpHeaders(), new HttpParams(), true, expand);
     } else {
       return this.baseService.get(RestResource.Archives, new HttpHeaders(), new HttpParams(), true, expand);
     }

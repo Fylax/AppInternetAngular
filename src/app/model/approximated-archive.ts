@@ -7,6 +7,9 @@ export class ApproximatedArchive {
     private _color: string;
     private _timestamps: Array<number>;
     private _positions: Array<Point>;
+    private _countPositionArchive: number;
+    private _purchased: boolean;
+    private _amount: number;
 
   get archiveId(): number {
     return this._archiveId;
@@ -46,5 +49,29 @@ export class ApproximatedArchive {
 
   set positions(value: Array<Point>) {
     this._positions = value;
+  }
+
+  get countPositionArchive(): number {
+    return this._countPositionArchive;
+  }
+
+  set countPositionArchive(value: number) {
+    this._countPositionArchive = value;
+  }
+
+  get purchased(): boolean {
+    return this._purchased;
+  }
+
+  set purchased(value: boolean) {
+    this._purchased = value;
+  }
+
+  get amount(): number {
+    return this._amount;
+  }
+
+  set amount(value: number) {
+    this._amount = value;
   }
 }

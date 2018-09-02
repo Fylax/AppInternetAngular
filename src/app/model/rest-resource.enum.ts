@@ -4,12 +4,11 @@ export enum RestResource {
   Archives = 'userArchives',
   Archive = 'userArchive',
   ArchiveSearch = 'userArchiveSearch',
-  Positions = 'customerPositions',
-  Purchases = 'customerPurchases',
-  PurchaseDetails = 'customerPurchaseDetails',
+  PurchasedArchives = 'userPurchasedArchives',
+  PurchasedArchive = 'userPurchaseArchive',
   AdminUsers = 'adminUsers',
-  AdminCustomers = 'adminCustomers',
-  AdminCustomerPurchases = 'adminCustomerPurchases',
-  AdminCustomerPurchase = 'adminCustomerPurchase',
-  AdminUserPositions = 'adminUserPositions'
+  AdminUserPurchasedArchives = 'adminUserPurchasedArchives',
+  AdminUserPurchasedArchive = 'adminUserPurchasedArchive',
+  AdminUserArchive = 'adminUserArchive',
+  AdminUserArchives = 'adminUserArchives'
 }

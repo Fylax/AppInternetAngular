@@ -27,7 +27,7 @@ export class ArchiveService {
         .set('limit', pageSize.toString());
     if (userId) {
       const expand = {id: userId};
-      return this.baseService.get(RestResource.AdminCustomerPurchases, new HttpHeaders(), params, true, expand);
+      return this.baseService.get(RestResource.AdminUserPurchasedArchives, new HttpHeaders(), params, true, expand);
     }
     return this.baseService.get(RestResource.Archives, new HttpHeaders(), params, true);
   }
