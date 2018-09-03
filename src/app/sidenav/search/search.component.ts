@@ -174,17 +174,11 @@ export class SearchComponent implements OnInit {
 
   private setApproximatedArchives() {
     this.counterPositionsSelected = 0;
-    this.approximatedArchiveSelectedList = this.approximatedArchiveList;
-    this.approximatedArchiveSelectedList.filter(archive => {
+    this.approximatedArchiveSelectedList = this.approximatedArchiveList.filter(archive => {
       if (this.userSelected.indexOf(archive.username) > -1) {
         this.counterPositionsSelected = this.counterPositionsSelected + archive.positions.length;
         return archive;
       }
     });
-    // (a => {
-    //   if (a !== undefined) {
-    //     return a;
-    //   }
-    // });
   }
 }
