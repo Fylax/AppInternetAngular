@@ -10,11 +10,16 @@ import {
   MatPaginatorModule,
   MatProgressBarModule,
   MatProgressSpinnerModule,
-  MatTableModule
+  MatTableModule,
+  MatIconModule, MatSnackBarModule
 } from '@angular/material';
-import {DialogComponent} from '../user-archive/dialog/dialog.component';
+
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {HttpClientModule} from '@angular/common/http';
+import {DialogComponent} from './dialog/dialog.component';
+import {DeleteDialogComponent} from '../../dialogs/delete-dialog/delete-dialog.component';
+import {DialogModule} from '../../dialogs/dialog.module';
+import {FullScreenSpinnerModule} from '../../full-screen-spinner/full-screen-spinner.module';
 
 @NgModule({
   imports: [
@@ -24,12 +29,13 @@ import {HttpClientModule} from '@angular/common/http';
     MatButtonModule, MatProgressBarModule,
     MatDialogModule, MatListModule,
     FlexLayoutModule, HttpClientModule,
-    MatProgressSpinnerModule,
-    UserArchiveRoutingModule
+    MatProgressSpinnerModule, MatIconModule,
+    UserArchiveRoutingModule,
+    DialogModule, MatSnackBarModule,
   ],
   declarations: [UserArchiveComponent, DialogComponent],
   exports: [UserArchiveComponent],
-  entryComponents: [DialogComponent],
+  entryComponents: [DialogComponent, DeleteDialogComponent],
 })
 export class UserArchiveModule {
   static forRoot(): ModuleWithProviders {

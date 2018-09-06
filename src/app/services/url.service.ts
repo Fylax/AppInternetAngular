@@ -133,7 +133,8 @@ export class UrlService {
               return this.http.delete(
                   href,
                   {
-                    withCredentials: authenticated
+                    withCredentials: authenticated,
+                    observe: 'response'
                   }
               );
             })

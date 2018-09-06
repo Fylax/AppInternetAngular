@@ -53,3 +53,21 @@ th.mat-header-cell{
     text-align: center;
 }
 
+.archives-container{
+    box-shadow: none;
+    margin: 0 3vw;
+}
+
+#upload_container{
+    text-align: center;
+    margin-top: 8vh;
+    margin-right: 2vh;
+    margin-left: 2vh;
+}
+
+#no_data{
+    text-align: center;
+    min-height: 100vh
+}
+
+

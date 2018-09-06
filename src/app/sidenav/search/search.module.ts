@@ -17,6 +17,7 @@ import {LeafletModule} from "@asymmetrik/ngx-leaflet";
 import {LeafletDrawModule} from "@asymmetrik/ngx-leaflet-draw";
 import {MapModule} from "../../map/map.module";
 import {DatesModule} from "../../dates/dates.module";
+import {FlexLayoutModule} from '@angular/flex-layout';
 
 @NgModule({
   imports: [
@@ -33,7 +34,8 @@ import {DatesModule} from "../../dates/dates.module";
     MatDividerModule,
     SearchRoutingModule,
     MatExpansionModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    FlexLayoutModule
   ],
   declarations: [
     SearchComponent

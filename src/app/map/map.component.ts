@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output, OnInit, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, Output, OnInit, OnChanges, SimpleChanges, HostListener} from '@angular/core';
 import * as L from 'leaflet';
 import {ApproximatedArchive} from '../model/approximated-archive';
 import {Point} from '../model/point';
@@ -16,6 +16,7 @@ export class MapComponent implements OnInit, OnChanges {
   private currPolygon;
   archives: ApproximatedArchive[];
   private markerLayers: L.LayerGroup;
+  private screen_height: string;
 
   options = {
     zoomControl: true,
@@ -67,6 +68,12 @@ export class MapComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    this.screen_height = (window.innerHeight - 145).toLocaleString() + 'px';
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.screen_height = (event.target.innerHeight - 145).toLocaleString() + 'px';
   }
 
   private createPolygonFromBounds(latLngBounds) {

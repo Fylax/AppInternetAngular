@@ -4,9 +4,10 @@ import {first, tap} from 'rxjs/operators';
 import {ActivatedRoute} from '@angular/router';
 import {ArchiveService} from '../../services/archive.service';
 import {Subscription} from 'rxjs';
-import {MatDialog, MatPaginator} from '@angular/material';
-import {DialogComponent} from '../user-archive/dialog/dialog.component';
+import {MatDialog, MatPaginator, MatSnackBar} from '@angular/material';
+import {DialogComponent} from './dialog/dialog.component';
 import {saveAs} from 'file-saver';
+import {DeleteDialogComponent} from '../../dialogs/delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'app-user-archive',
@@ -18,14 +19,15 @@ export class UserArchiveComponent implements OnInit, AfterViewInit, OnDestroy {
   dataSource: ArchiveDataSource;
 
   private subscription: Subscription;
-  resultsLength = 0;
+  resultsLength = -1;
 
   userId: string;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(private archiveService: ArchiveService,
               route: ActivatedRoute,
-              private dialog: MatDialog) {
+              private dialog: MatDialog,
+              private snackBar: MatSnackBar) {
     route.queryParams.pipe(first()).subscribe((param) => {
       this.userId = param.customer;
     });
@@ -59,7 +61,20 @@ export class UserArchiveComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   deleteArchive(archiveId: string): void {
-    this.archiveService.deleteArchive(archiveId).subscribe();
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+      width: '50%', height: '25%',
+      data: {
+        archiveId: archiveId,
+      }
+    });
+    dialogRef.componentInstance.responseStatus.subscribe(status => {
+      let message = 'Archivio eliminato con successo';
+      if (status !== 200) {
+        message = 'Impossibile eliminare l\'archivio, prova di nuovo';
+      }
+      this.openSnackBar(message);
+      this.loadArchivesPage();
+    });
   }
 
   downloadArchive(archiveId: string): void {
@@ -72,5 +87,11 @@ export class UserArchiveComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public openUploadDialog() {
     this.dialog.open(DialogComponent, {width: '50%', height: '25%'});
+  }
+
+  openSnackBar(message: string) {
+    this.snackBar.open(message, '', {
+      duration: 2000,
+    });
   }
 }

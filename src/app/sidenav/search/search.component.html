@@ -1,54 +1,69 @@
-<div id="timeline-map">
-  <div class="map-loading-shade"
-       *ngIf="loading">
-    <mat-spinner></mat-spinner>
+<div id="container">
+  <div fxLayout fxLayoutGap="15px">
+    <mat-card id="confirmation-timeline-container">
+      <div id="timeline-container" fxFlex="75%" fxShow.lt-md="false">
+        <mat-card-title>Timeline</mat-card-title>
+        <!--<mat-card-subtitle>Qui puoi vedere la disposizione temporale delle posizioni selezionate</mat-card-subtitle>-->
+        <canvas id="canvas" height="6vh" width="100%">{{ chart }}</canvas>
+      </div>
+      <div id="confirmation-container" fxFlex="25%" fxFlex.lt-md="100%">
+        <mat-card-title>record selezionati: {{counterPositionsSelected}}</mat-card-title>
+        <button mat-raised-button id="confirmationButton">Acquista</button>
+      </div>
+    </mat-card>
   </div>
-  <mat-card>
-    <mat-card-title>Timeline</mat-card-title>
-    <canvas id="canvas" height="6px" width="100%">{{ chart }}</canvas>
-    <map [setItems]="approximatedArchiveSelectedList" (polygonOutput)="onPolygonReady($event)"></map>
-  </mat-card>
+  <div fxLayout class="body-container">
+    <div id="filters" fxFlex="23%" fxShow.lt-md="false">
+      <mat-card style="padding: 5px 0 0 0;margin-top: 5%;">
+        <mat-card-title>Filtri</mat-card-title>
+        <mat-accordion [multi]="true">
+          <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header>
+              Cambia date
+            </mat-expansion-panel-header>
+
+            <dates (startChange)="userSearchReq.start = $event"
+                   (endChange)="userSearchReq.end = $event"
+                   (valid)="datesValid = $event"
+                   [startDate]="userSearchReq.start"
+                   [endDate]="userSearchReq.end">
+            </dates>
+            <button mat-raised-button id="dateButton" (click)="getArchives()">Cambia date</button>
+          </mat-expansion-panel>
+
+          <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header>
+              Utenti selezionati: {{userSelected?.length}}
+            </mat-expansion-panel-header>
+            <div *ngIf="userList.length != 0" style="margin: 10px;text-align: center">
+              <button mat-raised-button id="allButton" (click)="selectAll()">Tutti</button>
+              <button mat-raised-button id="noneButton" (click)="deselectAll()">Nessuno</button>
+              <mat-selection-list [(ngModel)]="userSelected" (selectionChange)="onSelectionChange()">
+                <mat-list-option *ngFor="let user of userList" [value]="user" [checkboxPosition]="'before'">
+                  {{user}}
+                </mat-list-option>
+              </mat-selection-list>
+
+
+            </div>
+            <div *ngIf="userList.length == 0" style="margin: 10px;text-align: center">
+              Nessun utente
+            </div>
+          </mat-expansion-panel>
+
+
+        </mat-accordion>
+      </mat-card>
+    </div>
+    <div id="map-container">
+      <div class="map-loading-shade"
+           *ngIf="loading">
+        <mat-spinner></mat-spinner>
+      </div>
+      <map [setItems]="approximatedArchiveSelectedList" (polygonOutput)="onPolygonReady($event)" fxFlex="77%"
+           fxFlex.lt-md="100%"></map>
+    </div>
+  </div>
 </div>
-<div id="filters">
-  <mat-card style="padding: 5px 0 0 0;margin-top: 5%;">
-    <mat-card-title>record selezionati: {{counterPositionsSelected}}</mat-card-title>
-    <button mat-raised-button id="confirmationButton">Acquista</button>
-    <mat-divider></mat-divider>
 
-    <mat-accordion [multi]="true">
-      <mat-expansion-panel [expanded]="true">
-        <mat-expansion-panel-header>
-          Utenti selezionati: {{userSelected?.length}}
-        </mat-expansion-panel-header>
-        <div *ngIf="userList.length != 0" style="margin: 10px;text-align: center">
-          <mat-selection-list [(ngModel)]="userSelected" (selectionChange)="onSelectionChange()">
-            <mat-list-option *ngFor="let user of userList" [value]="user" [checkboxPosition]="'before'">
-              {{user}}
-            </mat-list-option>
-          </mat-selection-list>
 
-          <button mat-raised-button id="allButton" (click)="selectAll()">Tutti</button>
-          <button mat-raised-button id="noneButton" (click)="deselectAll()">Nessuno</button>
-        </div>
-        <div *ngIf="userList.length == 0" style="margin: 10px;text-align: center">
-          Nessun utente
-        </div>
-      </mat-expansion-panel>
-
-      <mat-expansion-panel [expanded]="true">
-        <mat-expansion-panel-header>
-          Cambia date
-        </mat-expansion-panel-header>
-
-        <dates (startChange)="userSearchReq.start = $event"
-               (endChange)="userSearchReq.end = $event"
-               (valid)="datesValid = $event"
-               [startDate]="userSearchReq.start"
-               [endDate]="userSearchReq.end">
-        </dates>
-        <button mat-raised-button id="dateButton" (click)="getArchives()">Cambia date</button>
-      </mat-expansion-panel>
-
-    </mat-accordion>
-  </mat-card>
-</div>

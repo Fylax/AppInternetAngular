@@ -1,0 +1,10 @@
+<div class="container" fxLayout="column" fxLayoutAlign="space-evenly stretch">
+  <h1 mat-dialog-title>Eliminare l'archivio?</h1>
+  <mat-dialog-content  fxFlex>
+    Vuoi eliminare l'archivio <b>{{archiveId}}</b> dai tuoi archivi personali?
+  </mat-dialog-content>
+  <mat-dialog-actions class="actions">
+    <button mat-button mat-dialog-close>Annulla</button>
+    <button mat-raised-button color="primary" [mat-dialog-close]="true" (click)="deleteArchive()">Elimina</button>
+  </mat-dialog-actions>
+</div>

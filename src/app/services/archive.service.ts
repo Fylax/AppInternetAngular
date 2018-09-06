@@ -32,7 +32,7 @@ export class ArchiveService {
     return this.baseService.get(RestResource.Archives, new HttpHeaders(), params, true);
   }
 
-  deleteArchive(archiveId: string): Observable<{}> {
+  deleteArchive(archiveId: string): Observable<any> {
     const expand = {archiveId: archiveId};
     return this.baseService.delete(RestResource.Archive, true, expand);
   }
