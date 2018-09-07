@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {Chart} from 'chart.js';
 import {UserSearchRequest} from '../../model/user-search-request';
 import {ArchiveService} from '../../services/archive.service';
@@ -24,6 +24,7 @@ export class SearchComponent implements OnInit {
   datesValid: boolean;
 
   loading: boolean;
+  map_height: string;
 
   private userMap = new Map();
 
@@ -41,6 +42,7 @@ export class SearchComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.map_height = (window.innerHeight - 145).toLocaleString() + 'px';
     this.chart = new Chart('canvas', {
       type: 'scatter',
       data: {
@@ -78,6 +80,12 @@ export class SearchComponent implements OnInit {
     this.loading = true;
     this.spinner.hideSpinner();
   }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.map_height = (event.target.innerHeight - 145).toLocaleString() + 'px';
+  }
+
 
   selectAll() {
     this.userSelected = this.userList;
@@ -164,10 +172,10 @@ export class SearchComponent implements OnInit {
       this.loading = true;
       this.archiveService.searchArchives(this.userSearchReq)
           .subscribe(aaList => {
-        this.approximatedArchiveList = aaList;
-        this.setUsersMap(aaList);
-        this.loading = false;
-      });
+            this.approximatedArchiveList = aaList;
+            this.setUsersMap(aaList);
+            this.loading = false;
+          });
     }
   }
 

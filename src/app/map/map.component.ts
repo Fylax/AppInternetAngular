@@ -33,6 +33,12 @@ export class MapComponent implements OnInit, OnChanges {
 
   @Input() drawable: boolean;
 
+  map_height: string;
+
+  @Input() set mapHeight(value: string) {
+    this.map_height = value;
+  }
+
   @Input() set setItems(value: ApproximatedArchive[]) {
     this.markerLayers.clearLayers();
     this.archives = value;
