@@ -5,7 +5,6 @@ import {ActivatedRoute} from '@angular/router';
 import {ArchiveService} from '../../services/archive.service';
 import {Subscription} from 'rxjs';
 import {MatDialog, MatPaginator, MatSnackBar} from '@angular/material';
-import {DialogComponent} from './dialog/dialog.component';
 import {saveAs} from 'file-saver';
 import {DeleteDialogComponent} from '../../dialogs/delete-dialog/delete-dialog.component';
 
@@ -19,9 +18,11 @@ export class UserArchiveComponent implements OnInit, AfterViewInit, OnDestroy {
   dataSource: ArchiveDataSource;
 
   private subscription: Subscription;
-  resultsLength = -1;
+  resultsLength: number;
+  countArchiveToUpload: number;
 
   userId: string;
+  @ViewChild('file') file;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(private archiveService: ArchiveService,
@@ -37,21 +38,31 @@ export class UserArchiveComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dataSource = new ArchiveDataSource(this.archiveService);
     this.subscription = this.dataSource.resultLength
         .subscribe(totals => this.resultsLength = totals);
+    this.resultsLength = -1;
+    this.countArchiveToUpload = 0;
     this.dataSource.loadArchive(1, 10, this.userId);
   }
 
   ngAfterViewInit(): void {
-    this.paginator.page
-        .pipe(
-            tap(() => this.loadArchivesPage())
-        )
-        .subscribe();
+    if (this.paginator !== undefined) {
+      this.paginator.page
+          .pipe(
+              tap(() => this.loadArchivesPage())
+          )
+          .subscribe();
+    }
   }
 
   loadArchivesPage() {
+    let index = 1;
+    let size = 10;
+    if (this.paginator !== undefined) {
+      index = this.paginator.pageIndex + 1;
+      size = this.paginator.pageSize;
+    }
     this.dataSource.loadArchive(
-        this.paginator.pageIndex + 1,
-        this.paginator.pageSize,
+        index,
+        size,
         this.userId);
   }
 
@@ -68,12 +79,12 @@ export class UserArchiveComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
     dialogRef.componentInstance.responseStatus.subscribe(status => {
-      let message = 'Archivio eliminato con successo';
-      if (status !== 200) {
-        message = 'Impossibile eliminare l\'archivio, prova di nuovo';
+      let message = 'Impossibile eliminare l\'archivio, prova di nuovo';
+      if (status === 200) {
+        message = 'Archivio eliminato con successo';
+        this.loadArchivesPage();
       }
       this.openSnackBar(message);
-      this.loadArchivesPage();
     });
   }
 
@@ -85,8 +96,28 @@ export class UserArchiveComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  public openUploadDialog() {
-    this.dialog.open(DialogComponent, {width: '50%', height: '25%'});
+  openUpload() {
+    this.file.nativeElement.click();
+  }
+
+  onFileUpload() {
+    this.countArchiveToUpload = this.countArchiveToUpload + 1;
+    this.archiveService.upload(this.file.nativeElement.files[0]).subscribe(
+        response => {
+          this.countArchiveToUpload = this.countArchiveToUpload - 1;
+          if (this.countArchiveToUpload === 0) {
+            this.openSnackBar('Nessun archivio pendente!');
+          }
+          this.loadArchivesPage();
+        },
+        error => {
+          this.countArchiveToUpload = this.countArchiveToUpload - 1;
+          let message = 'Errore nel caricamento dell\'archivio';
+          if (error.status === 400) {
+            message = 'L\'archivio è già presente o non rispetta la sintassi';
+          }
+          this.openSnackBar(message);
+        });
   }
 
   openSnackBar(message: string) {

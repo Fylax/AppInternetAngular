@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpEventType, HttpHeaders, HttpRequest, HttpResponse} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../environments/environment';
-import {catchError, first, switchMap} from 'rxjs/operators';
-import {from, Observable, Subject} from 'rxjs';
+import {first, switchMap} from 'rxjs/operators';
+import {from, Observable} from 'rxjs';
 import {HttpParams} from '@angular/common/http';
 import {Urls} from '../model/urls';
 import {RestResource} from '../model/rest-resource.enum';
@@ -90,8 +90,8 @@ export class UrlService {
               return this.http.post(
                   urls[url].href,
                   body, {
+                    observe: 'response',
                     headers: headers,
-                    responseType: 'json',
                     withCredentials: authenticated
                   });
             })
@@ -104,7 +104,7 @@ export class UrlService {
    * @param headers Headers for this request.
    * @param authenticated Whether the request has credentials.
    */
-  public postProgress(url: RestResource, body: any, headers: HttpHeaders, authenticated: boolean): Observable<any> {
+ /* public postProgress(url: RestResource, body: any, headers: HttpHeaders, authenticated: boolean): Observable<any> {
     return from(this.promise_)
         .pipe(
             switchMap((urls: Urls) => {
@@ -114,7 +114,7 @@ export class UrlService {
               return this.http.request(req);
             })
         );
-  }
+  }*/
 
   /**
    * Generic method for performing an HTTP DELETE.

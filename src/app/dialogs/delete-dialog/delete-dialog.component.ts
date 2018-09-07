@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Inject, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {ArchiveService} from '../../services/archive.service';
 
@@ -12,7 +12,7 @@ export class DeleteDialogComponent implements OnInit {
   archiveId;
   responseStatus = new EventEmitter();
 
-  constructor(public dialogRef: MatDialogRef<DeleteDialogComponent>,
+  constructor(private dialogRef: MatDialogRef<DeleteDialogComponent>,
               private archiveService: ArchiveService,
               @Inject(MAT_DIALOG_DATA) public data: any) {
     this.archiveId = data.archiveId;
@@ -22,9 +22,13 @@ export class DeleteDialogComponent implements OnInit {
   }
 
   deleteArchive() {
-    this.archiveService.deleteArchive(this.archiveId).subscribe(response => {
-      this.responseStatus.emit(response.status);
-    });
+    this.archiveService.deleteArchive(this.archiveId).subscribe(
+        response => {
+          this.responseStatus.emit(response.status);
+        },
+        error => {
+          this.responseStatus.emit(error.status);
+        });
   }
 
 }

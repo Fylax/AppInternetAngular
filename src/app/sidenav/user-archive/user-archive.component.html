@@ -2,7 +2,7 @@
 
   <div class="archives-container" fxFlex="80%" fxFlexOrder.lt-md="2">
     <div class="title">
-      <h1>I miei archivi</h1>
+      <h1 style="margin-left: 2vw">I miei archivi</h1>
     </div>
     <div class="archives-loading-shade"
          *ngIf="dataSource.loading$ | async">
@@ -60,17 +60,21 @@
     <div class="title">
       <h4>Clicca qui per caricare un nuovo archivio</h4>
     </div>
+    <input type="file" #file style="display: none" (change)="onFileUpload()" onclick="this.value=null;"/>
     <button mat-raised-button color="primary"
-            (click)="openUploadDialog()" style="width: 100%" [ngStyle.lt-md]="{'width':'50%'}">Carica
+            (click)="openUpload()" style="width: 100%" [ngStyle.lt-md]="{'width':'50%'}">Carica
     </button>
+    <h4 *ngIf="countArchiveToUpload != 0">Archivi in caricamento: {{countArchiveToUpload}}</h4>
+    <!--<mat-progress-bar *ngIf="progress" mode="determinate" [value]="progress"></mat-progress-bar>-->
   </div>
 </div>
 
 <div *ngIf="resultsLength === 0" fxLayout fxLayoutAlign="center center" id="no_data">
   <div fxFlex="50%">
     <h1 style="margin-bottom: 5vh">Nessun archivio nella tua lista. Clicca sotto per caricare un nuovo archivio</h1>
+    <input type="file" #file style="display: none" (change)="onFileUpload()" onclick="this.value=null;"/>
     <button mat-raised-button color="primary"
-            (click)="openUploadDialog()" style="width: 75%">Carica
+            (click)="openUpload()" style="width: 75%">Carica
     </button>
   </div>
 </div>
