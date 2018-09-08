@@ -90,7 +90,6 @@ export class UrlService {
               return this.http.post(
                   urls[url].href,
                   body, {
-                    observe: 'response',
                     headers: headers,
                     withCredentials: authenticated
                   });
