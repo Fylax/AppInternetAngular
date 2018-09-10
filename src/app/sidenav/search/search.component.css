@@ -9,7 +9,7 @@
   margin-top: 120px;
 }
 
-#filters{
+#filters-large{
   overflow: visible;
   height: auto;
   padding: .5rem;
@@ -18,10 +18,24 @@
   -ms-overflow-style: none;
 }
 
+#filters-small{
+  z-index: 900;
+  text-align: center;
+  width: 100vw;
+  padding: 10px;
+}
+
+#small-mat-selection-list{
+  text-align: left;
+  flex-grow: 1;
+  max-height: 90px;
+  overflow: auto;
+}
+
 #confirmation-timeline-container{
   width: 100%;
   position: fixed;
-  z-index: 9990;
+  z-index: 999;
   text-align: center;
   height: 120px;
 }
@@ -32,11 +46,11 @@ map{
   padding: 5px;
 }
 
-#allButton{
+.allButton{
   margin-right: 5px;
 }
 
-#noneButton{
+.noneButton{
   margin-left: 5px;
 }
 

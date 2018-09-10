@@ -12,8 +12,50 @@
       </div>
     </mat-card>
   </div>
-  <div fxLayout class="body-container">
-    <div id="filters" fxFlex="23%" fxShow.lt-md="false">
+  <div fxLayout class="body-container" fxLayout.lt-md="column">
+    <mat-card id="filters-small" fxFlex="100%" fxShow.gt-sm="false" fxLayout="row">
+      <mat-accordion [multi]="true" style="width: 100%;">
+        <div fxFlex="50%">
+          <mat-expansion-panel [expanded]="false">
+            <mat-expansion-panel-header>
+              Cambia date
+            </mat-expansion-panel-header>
+
+            <dates (startChange)="userSearchReq.start = $event"
+                   (endChange)="userSearchReq.end = $event"
+                   (valid)="datesValid = $event"
+                   [startDate]="userSearchReq.start"
+                   [endDate]="userSearchReq.end">
+            </dates>
+            <button mat-raised-button class="dateButton" (click)="getArchives()">Cambia date</button>
+          </mat-expansion-panel>
+        </div>
+
+        <div fxFlex="50%">
+          <mat-expansion-panel [expanded]="false">
+            <mat-expansion-panel-header>
+              Utenti selezionati: {{userSelected?.length}}
+            </mat-expansion-panel-header>
+            <div *ngIf="userList.length != 0" style="margin: 10px;text-align: center">
+              <button mat-raised-button class="allButton" (click)="selectAll()">Tutti</button>
+              <button mat-raised-button class="noneButton" (click)="deselectAll()">Nessuno</button>
+              <mat-selection-list id="small-mat-selection-list" [(ngModel)]="userSelected" (selectionChange)="onSelectionChange()">
+                <mat-list-option *ngFor="let user of userList" [value]="user" [checkboxPosition]="'before'">
+                  {{user}}
+                </mat-list-option>
+              </mat-selection-list>
+
+
+            </div>
+            <div *ngIf="userList.length == 0" style="margin: 10px;text-align: center">
+              Nessun utente
+            </div>
+          </mat-expansion-panel>
+        </div>
+
+      </mat-accordion>
+    </mat-card>
+    <div id="filters-large" fxFlex="24%" fxShow.lt-md="false">
       <mat-card style="padding: 5px 0 0 0;margin-top: 5%;">
         <mat-card-title>Filtri</mat-card-title>
         <mat-accordion [multi]="true">
@@ -28,7 +70,7 @@
                    [startDate]="userSearchReq.start"
                    [endDate]="userSearchReq.end">
             </dates>
-            <button mat-raised-button id="dateButton" (click)="getArchives()">Cambia date</button>
+            <button mat-raised-button class="dateButton" (click)="getArchives()">Cambia date</button>
           </mat-expansion-panel>
 
           <mat-expansion-panel [expanded]="true">
@@ -36,8 +78,10 @@
               Utenti selezionati: {{userSelected?.length}}
             </mat-expansion-panel-header>
             <div *ngIf="userList.length != 0" style="margin: 10px;text-align: center">
-              <button mat-raised-button id="allButton" (click)="selectAll()">Tutti</button>
-              <button mat-raised-button id="noneButton" (click)="deselectAll()">Nessuno</button>
+              <div fxLayout fxLayoutAlign="center">
+                <button fxFlex="25%" mat-raised-button  (click)="selectAll()">Tutti</button>
+                <button fxFlex="25%" mat-raised-button  (click)="deselectAll()">Nessuno</button>
+              </div>
               <mat-selection-list [(ngModel)]="userSelected" (selectionChange)="onSelectionChange()">
                 <mat-list-option *ngFor="let user of userList" [value]="user" [checkboxPosition]="'before'">
                   {{user}}
@@ -63,7 +107,8 @@
       <map [setItems]="approximatedArchiveSelectedList"
            [mapHeight]="map_height"
            (polygonOutput)="onPolygonReady($event)"
-           fxFlex="77%" fxFlex.lt-md="100%"></map>
+           fxFlex="76%" fxFlex.lt-md="100%"
+           [ngStyle.lt-md]="{'position':'relative'}"></map>
     </div>
   </div>
 </div>

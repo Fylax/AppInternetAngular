@@ -42,7 +42,11 @@ export class SearchComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.map_height = (window.innerHeight - 145).toLocaleString() + 'px';
+    let topHeight = 130;
+    if (window.innerWidth < 959) {
+      topHeight = 200;
+    }
+    this.map_height = (window.innerHeight - topHeight).toLocaleString() + 'px';
     this.chart = new Chart('canvas', {
       type: 'scatter',
       data: {
@@ -83,7 +87,11 @@ export class SearchComponent implements OnInit {
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
-    this.map_height = (event.target.innerHeight - 145).toLocaleString() + 'px';
+    let topHeight = 130;
+    if (event.target.innerWidth < 959) {
+      topHeight = 200;
+    }
+    this.map_height = (event.target.innerHeight - topHeight).toLocaleString() + 'px';
   }
 
 

@@ -6,10 +6,10 @@
                    [matDatepicker]="startpicker"
                    [matDatepickerFilter]="service.filterStartDate"
                    (dateChange)="service.start = $event.value"
-                   placeholder="Data inizio"
+                   placeholder="Inizio"
                    />
             <mat-datepicker-toggle matSuffix [for]="startpicker"></mat-datepicker-toggle>
-            <mat-datepicker #startpicker [disabled]="false"></mat-datepicker>
+            <mat-datepicker #startpicker touchUi [disabled]="false"></mat-datepicker>
         </mat-form-field>
         <mat-form-field class="time-input hour-input">
             <input matInput
@@ -55,9 +55,9 @@
                    [matDatepicker]="endpicker"
                    [matDatepickerFilter]="service.filterEndDate"
                    (dateChange)="service.end = $event.value"
-                   placeholder="Data fine" />
+                   placeholder="Fine" />
             <mat-datepicker-toggle matSuffix [for]="endpicker"></mat-datepicker-toggle>
-            <mat-datepicker #endpicker [disabled]="false"></mat-datepicker>
+            <mat-datepicker #endpicker touchUi [disabled]="false"></mat-datepicker>
         </mat-form-field>
         <mat-form-field class="time-input hour-input">
             <input matInput
