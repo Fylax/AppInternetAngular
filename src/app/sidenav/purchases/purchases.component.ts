@@ -1,10 +1,10 @@
 import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator} from '@angular/material';
-import {PurchaseService} from './purchase.service';
+import {PurchaseService} from '../../services/purchase.service';
 import {PurchaseDataSource} from './purchase-data-source';
-import {first, tap} from 'rxjs/operators';
+import {tap} from 'rxjs/operators';
 import {Subscription} from 'rxjs';
-import {ActivatedRoute} from '@angular/router';
+import {saveAs} from 'file-saver';
 
 @Component({
   selector: 'app-purchases',
@@ -12,47 +12,52 @@ import {ActivatedRoute} from '@angular/router';
   styleUrls: ['./purchases.component.css']
 })
 export class PurchasesComponent implements OnInit, AfterViewInit, OnDestroy {
-  displayedColumns = ['date', 'status', 'amount', 'count', 'start', 'end', 'details'];
+  displayedColumns = ['archiveId', 'timestamp', 'amount', 'download'];
   dataSource: PurchaseDataSource;
 
   private subscription: Subscription;
   resultsLength = 0;
 
-  customerId: string;
-
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private purchaseService: PurchaseService,
-              route: ActivatedRoute) {
-    route.queryParams.pipe(first()).subscribe((param) => {
-      this.customerId = param.customer;
-    });
+  constructor(private purchaseService: PurchaseService) {
   }
 
   ngOnInit() {
     this.dataSource = new PurchaseDataSource(this.purchaseService);
     this.subscription = this.dataSource.resultLength
         .subscribe(totals => this.resultsLength = totals);
-    this.dataSource.loadPurchases(1, 3, this.customerId);
+    this.dataSource.loadPurchases(1, 3);
   }
 
   ngAfterViewInit(): void {
-    this.paginator.page
-        .pipe(
-            tap(() => this.loadPurchasesPage())
-        )
-        .subscribe();
+    let index = 1;
+    let size = 10;
+    if (this.paginator !== undefined) {
+      index = this.paginator.pageIndex + 1;
+      size = this.paginator.pageSize;
+    }
+    this.dataSource.loadPurchases(
+        index,
+        size);
   }
 
   loadPurchasesPage() {
     this.dataSource.loadPurchases(
         this.paginator.pageIndex + 1,
-        this.paginator.pageSize,
-        this.customerId);
+        this.paginator.pageSize);
   }
 
   ngOnDestroy(): void {
     this.paginator.page.unsubscribe();
     this.subscription.unsubscribe();
+  }
+
+  downloadArchive(archiveId: string) {
+    this.purchaseService.downloadPurchasedArchive(archiveId).subscribe(data => {
+      data = JSON.stringify(data.positionList, undefined, 2);
+      const blob = new Blob([data], {type: 'application/json'});
+      saveAs(blob, archiveId);
+    });
   }
 }

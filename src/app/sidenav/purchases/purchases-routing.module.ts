@@ -7,7 +7,7 @@ const routes: Routes = [
   {
     path: 'purchases',
     component: PurchasesComponent,
-    canActivate: [AuthenticationGuard]
+    canActivate: [AuthenticationGuard],
   }
 ];
 

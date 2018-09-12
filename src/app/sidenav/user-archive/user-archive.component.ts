@@ -21,17 +21,12 @@ export class UserArchiveComponent implements OnInit, AfterViewInit, OnDestroy {
   resultsLength: number;
   countArchiveToUpload: number;
 
-  userId: string;
   @ViewChild('file') file;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(private archiveService: ArchiveService,
-              route: ActivatedRoute,
               private dialog: MatDialog,
               private snackBar: MatSnackBar) {
-    route.queryParams.pipe(first()).subscribe((param) => {
-      this.userId = param.customer;
-    });
   }
 
   ngOnInit() {
@@ -40,7 +35,7 @@ export class UserArchiveComponent implements OnInit, AfterViewInit, OnDestroy {
         .subscribe(totals => this.resultsLength = totals);
     this.resultsLength = -1;
     this.countArchiveToUpload = 0;
-    this.dataSource.loadArchive(1, 10, this.userId);
+    this.dataSource.loadArchive(1, 10);
   }
 
   ngAfterViewInit(): void {
@@ -62,8 +57,7 @@ export class UserArchiveComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     this.dataSource.loadArchive(
         index,
-        size,
-        this.userId);
+        size);
   }
 
   ngOnDestroy(): void {

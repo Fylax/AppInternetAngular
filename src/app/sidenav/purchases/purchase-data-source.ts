@@ -1,13 +1,13 @@
 import {CollectionViewer, DataSource} from '@angular/cdk/collections';
-import {Purchase} from '../../model/purchase';
 import {BehaviorSubject, Observable, of} from 'rxjs';
-import {PurchaseService} from './purchase.service';
+import {PurchaseService} from '../../services/purchase.service';
 import {catchError, finalize} from 'rxjs/operators';
-import {PurchasesPaginationSupport} from '../../model/purchases-pagination-support';
+import {ArchivesPaginationSupport} from '../../model/archives-pagination-support';
+import {Archive} from '../../model/archive';
 
-export class PurchaseDataSource implements DataSource<Purchase> {
+export class PurchaseDataSource implements DataSource<Archive> {
 
-  private purchasesSubject = new BehaviorSubject<Purchase[]>([]);
+  private purchasesSubject = new BehaviorSubject<Archive[]>([]);
   private loadingSubject = new BehaviorSubject<boolean>(false);
   private total = new BehaviorSubject<number>(0);
 
@@ -16,7 +16,7 @@ export class PurchaseDataSource implements DataSource<Purchase> {
   constructor(private purchaseService: PurchaseService) {
   }
 
-  connect(collectionViewer: CollectionViewer): Observable<Purchase[]> {
+  connect(collectionViewer: CollectionViewer): Observable<Archive[]> {
     return this.purchasesSubject.asObservable();
   }
 
@@ -25,15 +25,15 @@ export class PurchaseDataSource implements DataSource<Purchase> {
     this.purchasesSubject.complete();
   }
 
-  loadPurchases(pageIndex = 1, pageSize = 3, customerId?: string) {
+  loadPurchases(pageIndex = 1, pageSize = 3, userId?: string) {
     this.loadingSubject.next(true);
 
-    this.purchaseService.getPurchaseList(pageIndex, pageSize, customerId)
+    this.purchaseService.getPurchasedArchives(pageIndex, pageSize, userId)
         .pipe(
             catchError(() => of([])),
             finalize(() => this.loadingSubject.next(false))
         )
-        .subscribe((response: PurchasesPaginationSupport) => {
+        .subscribe((response: ArchivesPaginationSupport) => {
           this.purchasesSubject.next(response.items); // these properties exist
           this.total.next(response.totalElements);
         });
