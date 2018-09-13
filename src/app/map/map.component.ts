@@ -8,7 +8,7 @@ import {Point} from '../model/point';
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
 })
-export class MapComponent implements OnInit, OnChanges {
+export class MapComponent implements OnInit {
 
   private editableLayers = new L.FeatureGroup();
   private map;
@@ -167,9 +167,5 @@ export class MapComponent implements OnInit, OnChanges {
       this.currPolygon = this.createPolygonFromBounds(this.map.getBounds());
     }
     this.polygonOutput.emit(this.currPolygon);
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
   }
 }

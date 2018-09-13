@@ -2,11 +2,9 @@ import {Component, HostListener, OnInit} from '@angular/core';
 import {Chart} from 'chart.js';
 import {UserSearchRequest} from '../../model/user-search-request';
 import {ArchiveService} from '../../services/archive.service';
-import {finalize, first} from 'rxjs/operators';
 import {ApproximatedArchive} from '../../model/approximated-archive';
 import {ShareMapInfoService} from '../../services/share-map-info.service';
 import {FullScreenSpinnerService} from '../../full-screen-spinner/full-screen-spinner.service';
-import {BehaviorSubject} from 'rxjs';
 
 @Component({
   selector: 'app-search',
@@ -36,7 +34,7 @@ export class SearchComponent implements OnInit {
 
   constructor(private archiveService: ArchiveService, private shareInfoService: ShareMapInfoService,
               private spinner: FullScreenSpinnerService) {
-    this.userSearchReq = new UserSearchRequest();
+    this.userSearchReq = this.shareInfoService.userSearchRequest;
     this.datesValid = true;
     this.counterPositionsSelected = 0;
   }
@@ -114,7 +112,7 @@ export class SearchComponent implements OnInit {
   }
 
   onPolygonReady(p: L.Polygon) {
-    this.userSearchReq.area = p;
+    this.shareInfoService.userSearchRequest.area = p;
     this.getArchives();
   }
 
@@ -156,8 +154,8 @@ export class SearchComponent implements OnInit {
       });
     }
     this.chart.data.datasets = Array.from(this.datasets.values());
-    this.chart.options.scales.xAxes[0].time.min = this.userSearchReq.start;
-    this.chart.options.scales.xAxes[0].time.max = this.userSearchReq.end;
+    this.chart.options.scales.xAxes[0].time.min = this.shareInfoService.userSearchRequest.start;
+    this.chart.options.scales.xAxes[0].time.max = this.shareInfoService.userSearchRequest.end;
     this.chart.update();
   }
 
@@ -177,7 +175,7 @@ export class SearchComponent implements OnInit {
   private getArchives() {
     if (this.datesValid) {
       this.loading = true;
-      this.archiveService.searchArchives(this.userSearchReq)
+      this.archiveService.searchArchives(this.shareInfoService.userSearchRequest)
           .subscribe(aaList => {
             this.approximatedArchiveList = aaList;
             this.setUsersMap(aaList);
