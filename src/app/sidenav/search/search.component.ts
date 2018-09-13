@@ -159,7 +159,6 @@ export class SearchComponent implements OnInit {
     this.chart.options.scales.xAxes[0].time.min = this.userSearchReq.start;
     this.chart.options.scales.xAxes[0].time.max = this.userSearchReq.end;
     this.chart.update();
-
   }
 
   private getColorByUserID(userId) {
@@ -187,7 +186,6 @@ export class SearchComponent implements OnInit {
     }
   }
 
-
   private setApproximatedArchives() {
     this.counterPositionsSelected = 0;
     this.approximatedArchiveSelectedList = this.approximatedArchiveList.filter(archive => {
@@ -196,5 +194,6 @@ export class SearchComponent implements OnInit {
         return archive;
       }
     });
+    this.archiveService.approximatedArchiveSelectedList = this.approximatedArchiveSelectedList;
   }
 }

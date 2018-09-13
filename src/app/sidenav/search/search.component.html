@@ -8,9 +8,13 @@
       </div>
       <div id="confirmation-container" fxFlex="25%" fxFlex.lt-md="100%">
         <mat-card-title>record selezionati: {{counterPositionsSelected}}</mat-card-title>
-        <button mat-raised-button id="confirmationButton">Acquista</button>
+        <button *ngIf="counterPositionsSelected > 0"
+                mat-raised-button id="confirmationButton"
+                [routerLink]="['/confirmation']">Acquista</button>
       </div>
     </mat-card>
+
+
   </div>
   <div fxLayout class="body-container" fxLayout.lt-md="column">
     <mat-card id="filters-small" fxFlex="100%" fxShow.gt-sm="false" fxLayout="row">
@@ -94,6 +98,9 @@
               Nessun utente
             </div>
           </mat-expansion-panel>
+
+
+
 
 
         </mat-accordion>

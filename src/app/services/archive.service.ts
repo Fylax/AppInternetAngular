@@ -6,12 +6,13 @@ import {UserSearchRequest} from '../model/user-search-request';
 import {Observable} from 'rxjs';
 import {ApproximatedArchive} from '../model/approximated-archive';
 import {RestResource} from '../model/rest-resource.enum';
-import {catchError, finalize} from 'rxjs/operators';
 
 @Injectable()
 export class ArchiveService {
 
-  constructor(private http: HttpClient, private baseService: UrlService) {
+    approximatedArchiveSelectedList: ApproximatedArchive[];
+
+    constructor(private http: HttpClient, private baseService: UrlService) {
   }
 
   searchArchives(usr: UserSearchRequest): Observable<ApproximatedArchive[]> {
@@ -44,5 +45,10 @@ export class ArchiveService {
 
   upload(file: File): Observable<any> {
     return this.baseService.post(RestResource.Archives, file, new HttpHeaders(), true);
+  }
+
+  confirmPurchaseArchives(currArchiveList: ApproximatedArchive[]): Observable<Response> {
+        const body = JSON.stringify(currArchiveList);
+        return this.baseService.post(RestResource.UserPurchasedArchives, body.toString(), new HttpHeaders(), true);
   }
 }

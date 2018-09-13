@@ -21,6 +21,10 @@ const routes: Routes = [
       {
         path: 'mypage',
         loadChildren: './user-archive/user-archive.module#UserArchiveModule'
+      },
+      {
+        path: 'confirmation',
+        loadChildren: './confirmation/confirmation.module#ConfirmationModule'
       }
     ]
   }
