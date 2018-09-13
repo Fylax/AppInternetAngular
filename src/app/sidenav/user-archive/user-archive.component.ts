@@ -32,32 +32,34 @@ export class UserArchiveComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit() {
     this.dataSource = new ArchiveDataSource(this.archiveService);
     this.subscription = this.dataSource.resultLength
-        .subscribe(totals => this.resultsLength = totals);
+        .subscribe(totals => {
+          this.resultsLength = totals;
+        });
     this.resultsLength = -1;
     this.countArchiveToUpload = 0;
-    this.dataSource.loadArchive(1, 10);
+    this.dataSource.loadArchive(1, 1);
+  }
+
+  displayPaginator() {
+    if (this.resultsLength > 10) {
+      return 'block';
+    } else {
+      return 'none';
+    }
   }
 
   ngAfterViewInit(): void {
-    if (this.paginator !== undefined) {
-      this.paginator.page
-          .pipe(
-              tap(() => this.loadArchivesPage())
-          )
-          .subscribe();
-    }
+    this.paginator.page
+        .pipe(
+            tap(() => this.loadArchivesPage())
+        )
+        .subscribe();
   }
 
   loadArchivesPage() {
-    let index = 1;
-    let size = 10;
-    if (this.paginator !== undefined) {
-      index = this.paginator.pageIndex + 1;
-      size = this.paginator.pageSize;
-    }
     this.dataSource.loadArchive(
-        index,
-        size);
+        this.paginator.pageIndex + 1,
+        this.paginator.pageSize);
   }
 
   ngOnDestroy(): void {
@@ -100,7 +102,7 @@ export class UserArchiveComponent implements OnInit, AfterViewInit, OnDestroy {
         response => {
           this.countArchiveToUpload = this.countArchiveToUpload - 1;
           if (this.countArchiveToUpload === 0) {
-            this.openSnackBar('Nessun archivio pendente!');
+            this.openSnackBar('Operazione di caricamento terminata con successo!');
           }
           this.loadArchivesPage();
         },

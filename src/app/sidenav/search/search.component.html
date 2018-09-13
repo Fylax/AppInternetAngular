@@ -2,12 +2,11 @@
   <div fxLayout fxLayoutGap="15px">
     <mat-card id="confirmation-timeline-container">
       <div id="timeline-container" fxFlex="75%" fxShow.lt-md="false">
-        <mat-card-title>Timeline</mat-card-title>
-        <!--<mat-card-subtitle>Qui puoi vedere la disposizione temporale delle posizioni selezionate</mat-card-subtitle>-->
+        <mat-card-title>Timeline posizioni</mat-card-title>
         <canvas id="canvas" height="6vh" width="100%">{{ chart }}</canvas>
       </div>
       <div id="confirmation-container" fxFlex="25%" fxFlex.lt-md="100%">
-        <mat-card-title>record selezionati: {{counterPositionsSelected}}</mat-card-title>
+        <mat-card-title>Archivi selezionati: {{counterPositionsSelected}}</mat-card-title>
         <button *ngIf="counterPositionsSelected > 0"
                 mat-raised-button id="confirmationButton"
                 [routerLink]="['/confirmation']">Acquista</button>

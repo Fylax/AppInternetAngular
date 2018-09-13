@@ -120,7 +120,7 @@ export class SearchComponent implements OnInit {
 
   setUsersMap(archives: ApproximatedArchive[]) {
     this.userMap = new Map();
-    // this.userList = [];
+    this.userList = [];
     for (const archive of archives) {
       archive.color = this.getColorByUserID(archive.username);
       if (this.userMap.has(archive.username)) {

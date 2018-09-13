@@ -18,8 +18,5 @@ export class UserSearchRequest {
       end: Math.trunc(this.end.getTime() / 1000)
     };
   }
-  getEstimate() {
-    // eventualmente se vogliamo adattare l'are del cerchio a quella del poligono contenitore...
-  }
 
 }

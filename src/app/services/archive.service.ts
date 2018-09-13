@@ -15,6 +15,10 @@ export class ArchiveService {
     constructor(private http: HttpClient, private baseService: UrlService) {
   }
 
+  /**
+   * Method for retrieving all the approximated archives satisfying the constraints (polygon, dates)
+   * @param usr: UserSearchRequest object containing polygon area and time interval
+   */
   searchArchives(usr: UserSearchRequest): Observable<ApproximatedArchive[]> {
     const headers = new HttpHeaders({'Accept': 'application/json'});
     const expand = {request: btoa(JSON.stringify(usr))};
@@ -22,6 +26,12 @@ export class ArchiveService {
         true, expand);
   }
 
+  /**
+   * Method for retrieving the list of personal archives per user
+   * @param pageIndex: page number
+   * @param pageSize: number of archives per page
+   * @param userId: optional, used in case of admin request
+   */
   getArchiveList(pageIndex = 1, pageSize = 3, userId?: string): Observable<ArchivesPaginationSupport> {
     const params = new HttpParams()
         .set('page', pageIndex.toString())
@@ -33,22 +43,34 @@ export class ArchiveService {
     return this.baseService.get(RestResource.Archives, new HttpHeaders(), params, true);
   }
 
+  /**
+   * Method to delete one archive
+   * @param archiveId: the Id of archive to be removed
+   */
   deleteArchive(archiveId: string): Observable<any> {
     const expand = {archiveId: archiveId};
     return this.baseService.delete(RestResource.Archive, true, expand);
   }
 
+  /**
+   * Method to download one archive
+   * @param archiveId: the Id of archive to be downloaded
+   */
   downloadArchive(archiveId: string): Observable<any> {
     const expand = {archiveId: archiveId};
     return this.baseService.get(RestResource.Archive, new HttpHeaders(), new HttpParams(), true, expand);
   }
 
+  /**
+   * Method to upload one archive
+   * @param file: the archive to be uploaded
+   */
   upload(file: File): Observable<any> {
     return this.baseService.post(RestResource.Archives, file, new HttpHeaders(), true);
   }
 
   confirmPurchaseArchives(currArchiveList: ApproximatedArchive[]): Observable<Response> {
         const body = JSON.stringify(currArchiveList);
-        return this.baseService.post(RestResource.UserPurchasedArchives, body.toString(), new HttpHeaders(), true);
+        return this.baseService.post(RestResource.PurchasedArchives, body.toString(), new HttpHeaders(), true);
   }
 }

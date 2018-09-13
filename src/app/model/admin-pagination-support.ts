@@ -1,6 +1,6 @@
 import {Link} from './link';
 
-export class AdminPaginatorSupport {
+export class AdminPaginationSupport {
   private _items: Link[];
   private _totalElements: number;
 
