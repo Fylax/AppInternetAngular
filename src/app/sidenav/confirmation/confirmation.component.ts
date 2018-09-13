@@ -9,7 +9,7 @@ import {ArchiveService} from '../../services/archive.service';
   styleUrls: ['./confirmation.component.css']
 })
 export class ConfirmationComponent {
-    displayedColumns = ['countPositions', 'purchased'];
+    displayedColumns = ['archiveID', 'countPositions', 'amount', 'purchased'];
 
     archiveList = [];
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -34,7 +34,13 @@ export class ConfirmationComponent {
         }
         );
     }
-
+    getAmount() {
+        let total = 0;
+        for (const ar of this.archiveList) {
+            total += ar.amount;
+        }
+        return total.toFixed(2);
+    }
     openSnackBar(message: string) {
         this.snackBar.open(message, '', {
             duration: 2000,

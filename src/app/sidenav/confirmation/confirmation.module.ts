@@ -2,7 +2,14 @@ import {ModuleWithProviders, NgModule} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {ConfirmationRoutingModule} from './confirmation-routing.module';
 import {ConfirmationComponent} from './confirmation.component';
-import {MatButtonModule, MatPaginatorModule, MatProgressSpinnerModule, MatSnackBarModule, MatTableModule} from '@angular/material';
+import {
+    MatButtonModule,
+    MatCardModule,
+    MatPaginatorModule,
+    MatProgressSpinnerModule,
+    MatSnackBarModule,
+    MatTableModule
+} from '@angular/material';
 import {RegisterRoutingModule} from '../../register/register-routing.module';
 import {DialogModule} from '../../dialogs/dialog.module';
 
@@ -12,6 +19,7 @@ import {DialogModule} from '../../dialogs/dialog.module';
       MatTableModule,
       MatPaginatorModule,
       MatButtonModule,
+      MatCardModule,
       MatProgressSpinnerModule,
     ConfirmationRoutingModule,
       RegisterRoutingModule,

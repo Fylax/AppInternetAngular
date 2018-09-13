@@ -74,4 +74,5 @@ export class ApproximatedArchive {
   set amount(value: number) {
     this._amount = value;
   }
+
 }

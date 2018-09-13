@@ -1,13 +1,20 @@
+<div id="container">
 
-<div class="archives-container mat-elevation-z8">
+    <div fxLayout fxLayoutGap="15px">
 
-        <div class="archives-table-container">
-
+        <div id="timeline-container" fxFlex="70%" fxShow.lt-md="false">
             <table mat-table [dataSource]="archiveList" class="archives-table">
-
+                <ng-container matColumnDef="archiveID">
+                    <th mat-header-cell *matHeaderCellDef>Archivio ID</th>
+                    <td mat-cell *matCellDef="let row">{{row.archiveId}}</td>
+                </ng-container>
                 <ng-container matColumnDef="countPositions">
                     <th mat-header-cell *matHeaderCellDef>Numero posizioni</th>
                     <td mat-cell *matCellDef="let row">{{row.countPositionArchive}}</td>
+                </ng-container>
+                <ng-container matColumnDef="amount">
+                    <th mat-header-cell *matHeaderCellDef>Costo</th>
+                    <td mat-cell *matCellDef="let row">{{row.amount}}</td>
                 </ng-container>
                 <ng-container matColumnDef="purchased">
                     <th mat-header-cell *matHeaderCellDef>Acquistato</th>
@@ -21,12 +28,17 @@
             </table>
         </div>
 
-        <mat-paginator [length]="0" [pageSize]="3"></mat-paginator>
-
+        <div id="confirmation-container" fxFlex="25%" fxFlex.lt-md="100%">
+            <mat-card-title>Ammontare totale: {{getAmount()}}</mat-card-title>
+            <button mat-raised-button id="confirmButton"
+                    [routerLink]="['/search']">CANCELLA</button>
+            <button mat-raised-button id="cancelButton"
+                    (click)="sendConfirmation()">CONFERMA
+            </button>
+        </div>
     </div>
 
-<div id="confirmation-container" fxLayoutGap="16px" fxLayoutAlign="center">
-    <button mat-raised-button id="confirmButton"
-            (click)="sendConfirmation()">CONFERMA
-    </button>
 </div>
+
+
+
