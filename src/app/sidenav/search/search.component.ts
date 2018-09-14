@@ -148,7 +148,7 @@ export class SearchComponent implements OnInit {
       const color = this.getColorByUserID(user);
       this.datasets.set(user, {
         data: timeDates,
-        pointRadius: 5,
+        pointRadius: 8,
         pointBorderColor: color,
         pointBackgroundColor: color
       });

@@ -5,7 +5,7 @@ export enum RestResource {
   Archive = 'userArchive',
   ArchiveSearch = 'userArchiveSearch',
   PurchasedArchives = 'userPurchasedArchives',
-  PurchasedArchive = 'userPurchaseArchive',
+  PurchasedArchive = 'userPurchasedArchive',
   AdminUsers = 'adminUsers',
   AdminUserPurchasedArchives = 'adminUserPurchasedArchives',
   AdminUserPurchasedArchive = 'adminUserPurchasedArchive',

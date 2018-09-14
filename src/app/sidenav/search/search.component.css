@@ -32,6 +32,10 @@
   overflow: auto;
 }
 
+#dateButton{
+  margin-top: 5px;
+}
+
 #confirmation-timeline-container{
   width: 100%;
   position: fixed;
@@ -68,9 +72,6 @@ mat-card-title{
 mat-selection-list{
   margin-top: 2px;
   text-align: left;
-  /*flex-grow: 1;*/
-  /*height: 150px;*/
-  /*overflow: auto;*/
 }
 
 mat-expansion-panel{
@@ -92,4 +93,8 @@ mat-expansion-panel-header{
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+::ng-deep .mat-pseudo-checkbox-checked{
+  background-color: #3f51b5!important;
 }

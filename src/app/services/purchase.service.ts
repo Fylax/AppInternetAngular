@@ -40,9 +40,9 @@ export class PurchaseService {
     };
     if (userId) {
       expand['id'] = userId;
-      return this.baseService.get(RestResource.PurchasedArchive, new HttpHeaders(), new HttpParams(), true, expand);
+      return this.baseService.get(RestResource.AdminUserPurchasedArchive, new HttpHeaders(), new HttpParams(), true, expand);
     }
-    return this.baseService.get(RestResource.AdminUserPurchasedArchive, new HttpHeaders(), new HttpParams(), true, expand);
+    return this.baseService.get(RestResource.PurchasedArchive, new HttpHeaders(), new HttpParams(), true, expand);
   }
 
 }

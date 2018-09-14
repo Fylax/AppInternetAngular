@@ -34,3 +34,7 @@ form:last-child {
 mat-form-field{
     width: 35%;
 }
+
+.date-form{
+    margin-bottom: 10px;
+}

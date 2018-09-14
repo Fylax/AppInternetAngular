@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, MatSnackBar} from '@angular/material';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ArchiveService} from '../../services/archive.service';
+import {PurchaseService} from '../../services/purchase.service';
 
 @Component({
   selector: 'app-confirmation',
@@ -15,6 +16,7 @@ export class ConfirmationComponent {
 
   constructor(private router: Router,
               private archiveService: ArchiveService,
+              private purchaseService: PurchaseService,
               private snackBar: MatSnackBar) {
     this.archiveList = this.archiveService.approximatedArchiveSelectedList;
   }
@@ -22,15 +24,17 @@ export class ConfirmationComponent {
   sendConfirmation() {
     this.archiveService.confirmPurchaseArchives(this.archiveList).subscribe(
         response => {
-          this.router.navigate(['search']);
+          this.router.navigate(['purchases']);
         },
         error => {
-          let message = 'Errore nel caricamento dell\'archivio';
+          let message = 'Errore nell\'operazione di acquisto';
           if (error.status === 500) {
             message = 'Internal Server Error';
           }
           this.openSnackBar(message);
+          this.router.navigate(['search']);
         }
+
     );
   }
 

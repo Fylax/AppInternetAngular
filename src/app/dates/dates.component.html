@@ -1,5 +1,5 @@
 <div id="dates-container" class="enabled">
-    <form name="start" [formGroup]="service.form.get('start')">
+    <form name="start" class="date-form" [formGroup]="service.form.get('start')">
         <mat-form-field>
             <input matInput
                    formControlName="date"
@@ -9,7 +9,7 @@
                    placeholder="Inizio"
                    />
             <mat-datepicker-toggle matSuffix [for]="startpicker"></mat-datepicker-toggle>
-            <mat-datepicker #startpicker touchUi [disabled]="false"></mat-datepicker>
+            <mat-datepicker #startpicker touchUi disabled="false"></mat-datepicker>
         </mat-form-field>
         <mat-form-field class="time-input hour-input">
             <input matInput
@@ -47,7 +47,7 @@
             </mat-error>
         </mat-form-field>
     </form>
-    <form name="end" [formGroup]="service.form.get('end')">
+    <form name="end" class="date-form" [formGroup]="service.form.get('end')">
         <mat-form-field>
             <input matInput
                    formControlName="date"
@@ -55,9 +55,9 @@
                    [matDatepicker]="endpicker"
                    [matDatepickerFilter]="service.filterEndDate"
                    (dateChange)="service.end = $event.value"
-                   placeholder="Fine" />
+                   placeholder="Fine"/>
             <mat-datepicker-toggle matSuffix [for]="endpicker"></mat-datepicker-toggle>
-            <mat-datepicker #endpicker touchUi [disabled]="false"></mat-datepicker>
+            <mat-datepicker #endpicker touchUi disabled="false"></mat-datepicker>
         </mat-form-field>
         <mat-form-field class="time-input hour-input">
             <input matInput

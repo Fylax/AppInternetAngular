@@ -1,6 +1,6 @@
-import {EventEmitter, Injectable} from "@angular/core";
-import {FormControl, FormGroup, ValidatorFn, Validators} from "@angular/forms";
-import {Moment} from "moment";
+import {EventEmitter, Injectable} from '@angular/core';
+import {FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
+import {Moment} from 'moment';
 
 @Injectable()
 export class DatesService {
@@ -10,12 +10,12 @@ export class DatesService {
    */
   private readonly form_ = new FormGroup({
     start: new FormGroup({
-      date: new FormControl({disabled: true}, {updateOn: 'change'}),
+      date: new FormControl({disabled: false}, {updateOn: 'change'}),
       hours: new FormControl('', {updateOn: 'blur'}),
       minutes: new FormControl('', {updateOn: 'blur'})
     }),
     end: new FormGroup({
-      date: new FormControl({disabled: true}, {updateOn: 'change'}),
+      date: new FormControl({disabled: false}, {updateOn: 'change'}),
       hours: new FormControl('', {updateOn: 'blur'}),
       minutes: new FormControl('', {updateOn: 'blur'})
     })
@@ -40,6 +40,7 @@ export class DatesService {
    * See getter.
    */
   private readonly valid_ = new EventEmitter<boolean>();
+
   constructor() {
     // Set start and and date to two dummy values to avoid null references.
     this.start_ = new Date(0);
@@ -87,13 +88,13 @@ export class DatesService {
     this.form_.get('start.hours').valueChanges.subscribe((val: string) => {
       this.start_.setHours(parseInt(val, 10));
     });
-    this.form_.get('start.hours').valueChanges.subscribe((val: string) => {
+    this.form_.get('end.hours').valueChanges.subscribe((val: string) => {
       this.end_.setHours(parseInt(val, 10));
     });
     this.form_.get('start.minutes').valueChanges.subscribe((val: string) => {
       this.start_.setMinutes(parseInt(val, 10));
     });
-    this.form_.get('start.minutes').valueChanges.subscribe((val: string) => {
+    this.form_.get('end.minutes').valueChanges.subscribe((val: string) => {
       this.end_.setMinutes(parseInt(val, 10));
     });
   }
@@ -154,7 +155,14 @@ export class DatesService {
    * @param d Date exposes by the datepicker.
    */
   public filterStartDate = (d: Moment): boolean => {
-    return d.toDate() <= this.end_;
+    if (this.form.get('start.hours').value > this.form.get('end.hours').value) {
+      return d.toDate().getDate() < this.end_.getDate();
+    }
+    if (this.form.get('start.hours').value === this.form.get('end.hours').value &&
+        this.form.get('start.minutes').value > this.form.get('end.minutes').value) {
+      return d.toDate().getDate() < this.end_.getDate();
+    }
+    return d.toDate().getDate() <= this.end_.getDate();
   }
 
   /**
@@ -164,10 +172,15 @@ export class DatesService {
    * @param d Date exposes by the datepicker.
    */
   public filterEndDate = (d: Moment): boolean => {
-    const newDate = new Date(this.start_);
-    newDate.setDate(this.start_.getDate() - 1);
-    return d.toDate() >= newDate && d.toDate() <= new Date();
-  }
+    if (this.form.get('end.hours').value < this.form.get('start.hours').value) {
+      return d.toDate().getDate() > this.start_.getDate() && d.toDate() <= new Date();
+    }
+    if (this.form.get('end.hours').value === this.form.get('start.hours').value &&
+        this.form.get('end.minutes').value < this.form.get('start.minutes').value) {
+      return d.toDate().getDate() > this.start_.getDate() && d.toDate() <= new Date();
+    }
+    return d.toDate().getDate() >= this.start_.getDate() && d.toDate() <= new Date();
+  };
 
   /**
    * Validator for the start hour. It gives an error if the same day for
