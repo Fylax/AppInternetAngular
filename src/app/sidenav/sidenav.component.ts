@@ -1,6 +1,4 @@
 import {Component} from '@angular/core';
-import {Role, UserService} from "../services/user.service";
-
 
 @Component({
   selector: 'logged',
@@ -9,7 +7,6 @@ import {Role, UserService} from "../services/user.service";
 })
 export class SidenavComponent {
 
-  constructor(userService: UserService) {
-
+  constructor() {
   }
 }

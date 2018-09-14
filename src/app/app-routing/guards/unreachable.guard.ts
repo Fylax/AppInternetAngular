@@ -1,15 +1,17 @@
 import {Injectable} from "@angular/core";
-import {ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot} from "@angular/router";
-import {Observable} from "rxjs/index";
+import {CanActivate, Route, Router} from "@angular/router";
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UnreachableGuard implements CanActivate {
 
-  canActivate(
-      next: ActivatedRouteSnapshot,
-      state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    return next.routeConfig.path !== state.url.substr(state.url.lastIndexOf('/') + 1);
+  constructor(private router: Router) {
+  }
+
+  canActivate(): Observable<boolean> | Promise<boolean> | boolean {
+    this.router.navigate(['search']);
+    return true;
   }
 }

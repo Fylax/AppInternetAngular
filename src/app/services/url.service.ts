@@ -1,9 +1,8 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {first, switchMap} from 'rxjs/operators';
 import {from, Observable} from 'rxjs';
-import {HttpParams} from '@angular/common/http';
 import {Urls} from '../model/urls';
 import {RestResource} from '../model/rest-resource.enum';
 import * as urijs from 'urijs';

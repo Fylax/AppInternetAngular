@@ -1,4 +1,4 @@
-import {ModuleWithProviders, NgModule} from '@angular/core';
+import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
@@ -30,14 +30,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
     RegisterRoutingModule
   ],
   declarations: [RegisterComponent],
-  providers: [RegisterService],
-  exports: [RegisterComponent]
+  providers: [RegisterService]
 })
 export class RegisterModule {
-  static forRoot(): ModuleWithProviders {
-    return {
-      ngModule: RegisterModule,
-      providers: [RegisterService]
-    };
-  }
 }

@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, OnInit} from "@angular/core";
 import {ActivatedRoute, ParamMap} from "@angular/router";
-import {first, tap} from "rxjs/operators";
+import {first} from "rxjs/operators";
 
 @Component({
   selector: 'error',

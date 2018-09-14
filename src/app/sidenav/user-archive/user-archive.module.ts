@@ -1,4 +1,4 @@
-import {ModuleWithProviders, NgModule} from '@angular/core';
+import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
 import {UserArchiveRoutingModule} from './user-archive-routing.module';
@@ -6,11 +6,13 @@ import {UserArchiveComponent} from './user-archive.component';
 import {ArchiveService} from '../../services/archive.service';
 import {
   MatButtonModule,
-  MatDialogModule, MatListModule,
+  MatDialogModule,
+  MatIconModule,
+  MatListModule,
   MatPaginatorModule,
   MatProgressSpinnerModule,
-  MatTableModule,
-  MatIconModule, MatSnackBarModule
+  MatSnackBarModule,
+  MatTableModule
 } from '@angular/material';
 
 import {FlexLayoutModule} from '@angular/flex-layout';
@@ -30,17 +32,9 @@ import {DialogModule} from '../../dialogs/dialog.module';
     UserArchiveRoutingModule,
     DialogModule, MatSnackBarModule,
   ],
+  providers: [ArchiveService],
   declarations: [UserArchiveComponent],
-  exports: [UserArchiveComponent],
   entryComponents: [DeleteDialogComponent],
 })
 export class UserArchiveModule {
-  static forRoot(): ModuleWithProviders {
-    return {
-      ngModule: UserArchiveModule,
-      providers: [
-        ArchiveService
-      ]
-    };
-  }
 }

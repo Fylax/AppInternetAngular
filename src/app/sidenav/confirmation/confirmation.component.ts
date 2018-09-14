@@ -1,6 +1,6 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatPaginator, MatSnackBar} from '@angular/material';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Component} from '@angular/core';
+import {MatSnackBar} from '@angular/material';
+import {Router} from '@angular/router';
 import {ArchiveService} from '../../services/archive.service';
 import {PurchaseService} from '../../services/purchase.service';
 

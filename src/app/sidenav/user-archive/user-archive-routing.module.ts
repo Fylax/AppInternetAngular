@@ -1,13 +1,11 @@
 import {NgModule} from '@angular/core';
-import {Routes, RouterModule} from '@angular/router';
+import {RouterModule, Routes} from '@angular/router';
 import {UserArchiveComponent} from "./user-archive.component";
-import {AuthenticationGuard} from "../../app-routing/guards/authentication.guard";
 
 const routes: Routes = [
   {
-    path: 'mypage',
-    component: UserArchiveComponent,
-    canActivate: [AuthenticationGuard]
+    path: '',
+    component: UserArchiveComponent
   }
 ];
 

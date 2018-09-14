@@ -1,7 +1,6 @@
 import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ArchiveDataSource} from './archive-data-source';
-import {first, tap} from 'rxjs/operators';
-import {ActivatedRoute} from '@angular/router';
+import {tap} from 'rxjs/operators';
 import {ArchiveService} from '../../services/archive.service';
 import {Subscription} from 'rxjs';
 import {MatDialog, MatPaginator, MatSnackBar} from '@angular/material';

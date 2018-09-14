@@ -1,4 +1,4 @@
-import {ModuleWithProviders, NgModule} from '@angular/core';
+import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
@@ -14,7 +14,6 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from '@angular/material/button';
 
-
 @NgModule({
   imports: [
     CommonModule,
@@ -28,14 +27,7 @@ import {MatButtonModule} from '@angular/material/button';
     MatButtonModule,
     LoginRoutingModule
   ],
-  declarations: [LoginComponent],
-  exports: [LoginComponent],
+  declarations: [LoginComponent]
 })
 export class LoginModule {
-  static forRoot(): ModuleWithProviders {
-    return {
-      ngModule: LoginModule,
-      providers: [LoginService]
-    };
-  }
 }

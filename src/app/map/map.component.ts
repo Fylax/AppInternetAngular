@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output, OnInit, OnChanges, SimpleChanges, HostListener} from '@angular/core';
+import {Component, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
 import * as L from 'leaflet';
 import {ApproximatedArchive} from '../model/approximated-archive';
 import {Point} from '../model/point';

@@ -1,16 +1,16 @@
-import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from "@angular/router";
+import {CanLoad, Router} from "@angular/router";
 import {Injectable} from "@angular/core";
 import {Role, UserService} from '../../services/user.service';
 import {LoginService} from "../../login/login.service";
 import {catchError, first, map} from "rxjs/operators";
-import {Observable, BehaviorSubject, Subject} from "rxjs";
+import {BehaviorSubject, Observable, Subject} from "rxjs";
 import {UrlService} from "../../services/url.service";
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthenticationGuard implements CanActivate {
+export class AuthenticationGuard implements CanLoad {
 
   private loggedEvent_ = new BehaviorSubject<boolean>(true);
   private tokenEvent_ = new Subject();
@@ -28,9 +28,7 @@ export class AuthenticationGuard implements CanActivate {
     });
   }
 
-  canActivate(
-      route: ActivatedRouteSnapshot,
-      state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+  canLoad(): Observable<boolean> | Promise<boolean> | boolean {
     if (!this.user.isLogged) {
       const token = UserService.refreshToken;
       if (token !== null) {
@@ -62,7 +60,7 @@ export class AuthenticationGuard implements CanActivate {
 @Injectable({
   providedIn: 'root'
 })
-export class LoginGuard implements CanActivate {
+export class LoginGuard implements CanLoad {
 
   private event_ = new BehaviorSubject<boolean>(false);
 
@@ -82,9 +80,7 @@ export class LoginGuard implements CanActivate {
     });
   }
 
-  canActivate(
-      route: ActivatedRouteSnapshot,
-      state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+  canLoad(): Observable<boolean> | Promise<boolean> | boolean {
     if (!this.user.isLogged) {
       const token = UserService.refreshToken;
       if (token !== null) {

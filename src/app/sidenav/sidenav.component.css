@@ -5,3 +5,11 @@ mat-sidenav-container {
     left: 0;
     right: 0;
 }
+
+mat-sidenav {
+    padding-top: 20px;
+}
+
+button[mat-button] {
+    width: 100%;
+}

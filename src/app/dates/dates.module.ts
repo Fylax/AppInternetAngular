@@ -3,7 +3,13 @@ import {CommonModule} from '@angular/common';
 import {DatesComponent} from "./dates.component";
 import {DatesService} from "./dates.service";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {MAT_DATE_LOCALE, MatDatepickerModule, MatFormFieldModule, MatInputModule, MatNativeDateModule} from '@angular/material';
+import {
+  MAT_DATE_LOCALE,
+  MatDatepickerModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatNativeDateModule
+} from '@angular/material';
 import {MatMomentDateModule} from '@angular/material-moment-adapter';
 
 @NgModule({
@@ -21,7 +27,7 @@ import {MatMomentDateModule} from '@angular/material-moment-adapter';
   exports: [DatesComponent]
 })
 export class DatesModule {
-  static forRoot(): ModuleWithProviders {
+  static forChild(): ModuleWithProviders {
     return {
       ngModule: DatesModule,
       providers: [

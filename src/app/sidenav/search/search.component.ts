@@ -172,7 +172,7 @@ export class SearchComponent implements OnInit {
     return color;
   }
 
-  private getArchives() {
+  getArchives() {
     if (this.datesValid) {
       this.loading = true;
       this.archiveService.searchArchives(this.shareInfoService.userSearchRequest)

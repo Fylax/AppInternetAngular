@@ -5,6 +5,7 @@ import {FullScreenSpinnerService} from "../full-screen-spinner/full-screen-spinn
 import {ActivatedRoute, Router, RouterStateSnapshot} from "@angular/router";
 import {catchError, first, retry} from "rxjs/operators";
 import {throwError} from "rxjs";
+import {LoginGuard} from "../app-routing/guards/authentication.guard";
 
 @Component({
   selector: 'login',
@@ -29,7 +30,7 @@ export class LoginComponent implements AfterViewInit {
               private spinner: FullScreenSpinnerService,
               private route: ActivatedRoute,
               private router: Router,
-              private injector: Injector) {
+              private guard: LoginGuard) {
     this.route.params.pipe(first())
         .subscribe((params) => {
           this.expired = params.session !== undefined;
@@ -56,12 +57,7 @@ export class LoginComponent implements AfterViewInit {
         )
         .subscribe((data) => {
           this.user.setTokens(data.access_token, data.refresh_token);
-          // Loads from injector the Authentication Guard and reexecutes it, so that it redirects to correct user
-          // homepage without requiring to code here (again) what homepage for each user is.
-          const AuthGuard = this.route.snapshot.routeConfig.canActivate['0'];
-          const authGuard = this.injector.get(AuthGuard);
-          const routerStateSnapshot: RouterStateSnapshot = Object.assign({}, this.route.snapshot, {url: this.router.url});
-          authGuard.canActivate(this.route.snapshot, routerStateSnapshot);
+          this.guard.canLoad();
         });
   }
 

@@ -6,7 +6,9 @@ import {UrlService} from '../services/url.service';
 import {RestResource} from "../model/rest-resource.enum";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class LoginService {
 
   /**

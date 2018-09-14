@@ -1,6 +1,6 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {DeleteDialogComponent} from './delete-dialog/delete-dialog.component';
 import {MatButtonModule, MatDialogModule, MatProgressBarModule} from '@angular/material';
 import {FlexLayoutModule} from '@angular/flex-layout';
 
