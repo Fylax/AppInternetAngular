@@ -55,8 +55,6 @@ map{
 }
 
 #confirmationButton{
-  background-color: red;
-  color: white;
   width: 60%;
   size: auto;
 }
