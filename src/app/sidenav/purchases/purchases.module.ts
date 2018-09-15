@@ -11,7 +11,6 @@ import {
   MatTableModule
 } from '@angular/material';
 import {FlexLayoutModule} from '@angular/flex-layout';
-import {SearchModule} from '../search/search.module';
 
 @NgModule({
   imports: [
@@ -22,7 +21,6 @@ import {SearchModule} from '../search/search.module';
     MatPaginatorModule,
     MatIconModule,
     FlexLayoutModule,
-    SearchModule,
     PurchasesRoutingModule
   ],
   declarations: [PurchasesComponent],
