@@ -7,8 +7,7 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    component: PurchasesComponent,
-    outlet: 'content'
+    component: PurchasesComponent
   }
 ];
 

@@ -20,7 +20,4 @@ export class SidenavComponent {
     this.router.navigateByUrl('/login');
   }
 
-  navigate(url: string) {
-    location.href = '/' + url;
-  }
 }

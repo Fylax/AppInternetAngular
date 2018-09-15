@@ -6,8 +6,7 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    component: SearchComponent,
-    outlet: 'content'
+    component: SearchComponent
   }
 ];
 

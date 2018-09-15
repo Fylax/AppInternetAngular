@@ -6,8 +6,7 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    component: UserArchiveComponent,
-    outlet: 'content'
+    component: UserArchiveComponent
   }
 ];
 
