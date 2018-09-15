@@ -9,7 +9,13 @@ import {ArchiveService} from '../../services/archive.service';
 })
 export class DeleteDialogComponent implements OnInit {
 
+  /**
+   * Specify which archive will be deleted
+   */
   archiveId;
+  /**
+   * emits the status of the delete response
+   */
   responseStatus = new EventEmitter();
 
   constructor(private dialogRef: MatDialogRef<DeleteDialogComponent>,
@@ -21,6 +27,9 @@ export class DeleteDialogComponent implements OnInit {
   ngOnInit() {
   }
 
+  /**
+   * send the delete request to backend and emitsthe response status
+   */
   deleteArchive() {
     this.archiveService.deleteArchive(this.archiveId).subscribe(
         response => {

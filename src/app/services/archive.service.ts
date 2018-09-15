@@ -9,11 +9,24 @@ import {RestResource} from '../model/rest-resource.enum';
 
 @Injectable()
 export class ArchiveService {
+  readonly userSearchRequest_: UserSearchRequest;
+  private _approximatedArchiveSelectedList: ApproximatedArchive[];
 
-    approximatedArchiveSelectedList: ApproximatedArchive[];
+  constructor(private http: HttpClient, private baseService: UrlService) {
+    this._approximatedArchiveSelectedList = [];
+    this.userSearchRequest_ = new UserSearchRequest();
+  }
 
-    constructor(private http: HttpClient, private baseService: UrlService) {
-      this.approximatedArchiveSelectedList = [];
+  get userSearchRequest() {
+    return this.userSearchRequest_;
+  }
+
+  get approximatedArchiveSelectedList(): ApproximatedArchive[] {
+    return this._approximatedArchiveSelectedList;
+  }
+
+  set approximatedArchiveSelectedList(value: ApproximatedArchive[]) {
+    this._approximatedArchiveSelectedList = value;
   }
 
   /**
@@ -70,8 +83,12 @@ export class ArchiveService {
     return this.baseService.post(RestResource.Archives, file, new HttpHeaders(), true);
   }
 
+  /**
+   * Send the list of archive to book
+   * @param currArchiveList: list of approximated archive selected
+   */
   confirmPurchaseArchives(currArchiveList: ApproximatedArchive[]): Observable<Response> {
-        const body = JSON.stringify(currArchiveList);
-        return this.baseService.post(RestResource.PurchasedArchives, body.toString(), new HttpHeaders(), true);
+    const body = JSON.stringify(currArchiveList);
+    return this.baseService.post(RestResource.PurchasedArchives, body.toString(), new HttpHeaders(), true);
   }
 }

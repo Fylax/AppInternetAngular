@@ -77,6 +77,10 @@ export class MapComponent implements OnInit {
     this.screen_height = (window.innerHeight - 145).toLocaleString() + 'px';
   }
 
+  /**
+   * Create polygon from map bounds
+   * @param latLngBounds
+   */
   private createPolygonFromBounds(latLngBounds) {
     const center = latLngBounds.getCenter();
     const latlngs = [];
@@ -93,11 +97,10 @@ export class MapComponent implements OnInit {
   }
 
   /**
-   * Controlla se 'drawable' e setta le drawOptions
+   * If drawable is true or undefined set the draw options
    */
   onMapReady(map: L.Map) {
     this.map = map;
-    // this.map.addLayer(this.editableLayers);
     this.map.addLayer(this.editableLayers);
 
     if (this.drawable !== undefined && this.drawable) {
@@ -154,8 +157,7 @@ export class MapComponent implements OnInit {
   }
 
   /**
-   * Ad ogni cambiamento della mappa 'emetto' in output il
-   * polygon (disegnato o rappresentante i bounds della vista corrente)
+   * For each map change emits the polygon in output
    */
   onMapChange() {
     if (this.editableLayers.getLayers().length === 0) {
