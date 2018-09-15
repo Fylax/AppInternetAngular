@@ -7,6 +7,7 @@ import {PurchasesModule} from "./purchases/purchases.module";
 import {UserArchiveModule} from "./user-archive/user-archive.module";
 import {MatButtonModule, MatIconModule, MatSidenavModule, MatToolbarModule, MatDividerModule} from "@angular/material";
 import {ConfirmationModule} from './confirmation/confirmation.module';
+import {ArchiveService} from '../services/archive.service';
 
 @NgModule({
   imports: [
@@ -22,6 +23,7 @@ import {ConfirmationModule} from './confirmation/confirmation.module';
     ConfirmationModule,
     SidenavRoutingModule
   ],
+  providers: [ArchiveService],
   declarations: [SidenavComponent]
 })
 export class SidenavModule  {

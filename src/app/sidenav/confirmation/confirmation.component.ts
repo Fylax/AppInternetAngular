@@ -18,10 +18,14 @@ export class ConfirmationComponent {
               private archiveService: ArchiveService,
               private purchaseService: PurchaseService,
               private snackBar: MatSnackBar) {
+    if (this.archiveService.approximatedArchiveSelectedList.length === 0) {
+      this.router.navigate(['/search']);
+    }
     this.archiveList = this.archiveService.approximatedArchiveSelectedList;
   }
 
   sendConfirmation() {
+    this.archiveService.approximatedArchiveSelectedList = [];
     this.archiveService.confirmPurchaseArchives(this.archiveList).subscribe(
         response => {
           this.router.navigateByUrl('purchases');

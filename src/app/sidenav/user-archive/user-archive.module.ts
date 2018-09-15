@@ -32,7 +32,6 @@ import {DialogModule} from '../../dialogs/dialog.module';
     UserArchiveRoutingModule,
     DialogModule, MatSnackBarModule,
   ],
-  providers: [ArchiveService],
   declarations: [UserArchiveComponent],
   entryComponents: [DeleteDialogComponent],
 })

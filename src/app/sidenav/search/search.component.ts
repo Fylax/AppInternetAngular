@@ -104,6 +104,7 @@ export class SearchComponent implements OnInit {
     this.setTimeline();
     this.counterPositionsSelected = 0;
     this.approximatedArchiveSelectedList = [];
+    this.archiveService.approximatedArchiveSelectedList = [];
   }
 
   onSelectionChange() {

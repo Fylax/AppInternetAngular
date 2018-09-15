@@ -37,7 +37,6 @@ import {ShareMapInfoService} from "../../services/share-map-info.service";
     FlexLayoutModule
   ],
   providers: [
-    ArchiveService,
     ShareMapInfoService
   ],
   declarations: [SearchComponent]
