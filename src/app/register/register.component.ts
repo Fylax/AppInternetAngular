@@ -89,7 +89,7 @@ export class RegisterComponent implements AfterViewInit {
             })
         )
         .subscribe(() => {
-          this.router.navigate(['login']);
+          this.router.navigateByUrl('login');
         });
   }
 

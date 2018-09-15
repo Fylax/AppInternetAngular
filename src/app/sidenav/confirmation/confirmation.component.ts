@@ -24,7 +24,7 @@ export class ConfirmationComponent {
   sendConfirmation() {
     this.archiveService.confirmPurchaseArchives(this.archiveList).subscribe(
         response => {
-          this.router.navigate(['purchases']);
+          this.router.navigateByUrl('purchases');
         },
         error => {
           let message = 'Errore nell\'operazione di acquisto';
@@ -32,7 +32,7 @@ export class ConfirmationComponent {
             message = 'Internal Server Error';
           }
           this.openSnackBar(message);
-          this.router.navigate(['search']);
+          this.router.navigateByUrl('search');
         }
 
     );

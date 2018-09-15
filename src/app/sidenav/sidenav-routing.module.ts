@@ -9,6 +9,11 @@ const routes: Routes = [
     component: SidenavComponent,
     children: [
       {
+        path: '',
+        canLoad: [AuthenticationGuard],
+        loadChildren: './search/search.module#SearchModule',
+      },
+      {
         path: 'search',
         canLoad: [AuthenticationGuard],
         loadChildren: './search/search.module#SearchModule',

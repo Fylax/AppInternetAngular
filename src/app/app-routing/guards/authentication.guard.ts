@@ -20,11 +20,11 @@ export class AuthenticationGuard implements CanLoad {
               private router: Router) {
     this.loggedEvent_.subscribe((logged) => {
       if (!logged) {
-        this.router.navigate(['login']);
+        this.router.navigateByUrl('login');
       }
     });
     this.tokenEvent_.subscribe(() => {
-      this.router.navigate(['login', {session: 'expired'}]);
+      this.router.navigateByUrl('login;session:expired');
     });
   }
 
@@ -74,7 +74,7 @@ export class LoginGuard implements CanLoad {
           url.refresh();
         }
         if (this.user.roles.includes(Role.USER)) {
-          router.navigate(['search']);
+          router.navigateByUrl('search');
         }
       }
     });
