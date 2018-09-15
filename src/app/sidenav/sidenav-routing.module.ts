@@ -7,8 +7,8 @@ import {SearchComponent} from "./search/search.component";
 const routes: Routes = [
   {
     path: '',
-    component: SidenavComponent,
     outlet: 'primary',
+    component: SidenavComponent,
     children: [
       {
         path: '',

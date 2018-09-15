@@ -7,8 +7,7 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    component: ConfirmationComponent,
-    outlet: 'content'
+    component: ConfirmationComponent
   }
 ];
 
