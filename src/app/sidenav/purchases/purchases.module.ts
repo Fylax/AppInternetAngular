@@ -25,8 +25,8 @@ import {SearchModule} from '../search/search.module';
     SearchModule,
     PurchasesRoutingModule
   ],
-  providers: [PurchaseService],
-  declarations: [PurchasesComponent]
+  declarations: [PurchasesComponent],
+  providers: [PurchaseService]
 })
 export class PurchasesModule {
 }

@@ -16,7 +16,7 @@ const routes: Routes = [
   {
     path: '',
     canLoad: [AuthenticationGuard],
-    loadChildren: '../sidenav/sidenav.module#SidenavModule'
+    loadChildren: '../sidenav/sidenav.module#SidenavModule',
   },
   {path: 'error/:id', loadChildren: '../error/error.module#ErrorModule'},
   {path: '**', redirectTo: '/error/404'}
@@ -24,7 +24,7 @@ const routes: Routes = [
 
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { enableTracing: true })],
   exports: [RouterModule]
 })
 

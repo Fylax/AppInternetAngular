@@ -1,8 +1,8 @@
 <mat-sidenav-container>
     <mat-sidenav #sidenav mode="over">
-        <button mat-button routerLink="/search">Acquista</button>
-        <button mat-button routerLink="/archives">I miei archivi</button>
-        <button mat-button routerLink="/purchases">I miei acquisti</button>
+        <button mat-button (click)="navigate('search')">Acquista</button>
+        <button mat-button (click)="navigate('archives')">I miei archivi</button>
+        <button mat-button (click)="navigate('purchases')">I miei acquisti</button>
     </mat-sidenav>
     <mat-sidenav-content>
         <mat-toolbar color="primary" role="heading">
