@@ -5,13 +5,38 @@
     /*left: 0;*/
     /*right: 0;*/
 /*}*/
+mat-toolbar {
+    flex-wrap: wrap;
+}
+
+mat-toolbar > mat-divider {
+    padding-left: 15px;
+    padding-top: 30px;
+    border-color: white;
+}
+
+mat-toolbar > button[mat-button] {
+    font-size: 20px;
+}
+
+mat-sidenav-container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
 
 mat-sidenav {
     padding-top: 20px;
 }
 
-button[mat-button] {
+mat-sidenav > button[mat-button] {
     width: 100%;
+}
+
+span.filler {
+    flex: 1 1 auto;
 }
 
 mat-toolbar{

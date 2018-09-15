@@ -66,6 +66,10 @@ export class UserService {
     return null;
   }
 
+  public static logout() {
+    localStorage.clear();
+  }
+
   public get accessToken(): string {
     return this.accessToken_;
   }
@@ -110,4 +114,6 @@ export class UserService {
       }
     }
   }
+
+
 }
