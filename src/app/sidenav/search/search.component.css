@@ -1,15 +1,15 @@
 #map-container{
   position: relative;
   display: block;
-  overflow: hidden;
+  width: 100%;
 }
 .body-container{
   display: flex;
-  overflow: hidden;
-  margin-top: 120px;
+  margin-top: 185px;
 }
 
 #filters-large{
+  position: relative;
   overflow: visible;
   height: auto;
   padding: .5rem;
@@ -42,6 +42,7 @@
   z-index: 999;
   text-align: center;
   height: 120px;
+  top: 65px;
 }
 
 map{
@@ -83,11 +84,7 @@ mat-expansion-panel-header{
 }
 
 .map-loading-shade {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
+  width: 100%;
   background: rgba(0, 0, 0, 0.15);
   z-index: 1000;
   display: flex;
@@ -97,4 +94,8 @@ mat-expansion-panel-header{
 
 ::ng-deep .mat-pseudo-checkbox-checked{
   background-color: #3f51b5!important;
+}
+
+::ng-deep .mat-expansion-panel-body{
+  padding: 0 20px 16px!important;
 }

@@ -77,11 +77,6 @@ export class MapComponent implements OnInit {
     this.screen_height = (window.innerHeight - 145).toLocaleString() + 'px';
   }
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event) {
-    this.screen_height = (event.target.innerHeight - 145).toLocaleString() + 'px';
-  }
-
   private createPolygonFromBounds(latLngBounds) {
     const center = latLngBounds.getCenter();
     const latlngs = [];

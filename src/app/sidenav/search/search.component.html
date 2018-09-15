@@ -10,7 +10,8 @@
         <button [disabled]="counterPositionsSelected <= 0"
                 color="warn"
                 mat-raised-button id="confirmationButton"
-                [routerLink]="['/confirmation']">Acquista</button>
+                [routerLink]="['/confirmation']">Acquista
+        </button>
       </div>
     </mat-card>
   </div>
@@ -42,7 +43,8 @@
             <div *ngIf="userList.length != 0" style="margin: 10px;text-align: center">
               <button mat-raised-button class="allButton" (click)="selectAll()">Tutti</button>
               <button mat-raised-button class="noneButton" (click)="deselectAll()">Nessuno</button>
-              <mat-selection-list id="small-mat-selection-list" [(ngModel)]="userSelected" (selectionChange)="onSelectionChange()">
+              <mat-selection-list id="small-mat-selection-list" [(ngModel)]="userSelected"
+                                  (selectionChange)="onSelectionChange()">
                 <mat-list-option *ngFor="let user of userList" [value]="user" [checkboxPosition]="'before'">
                   {{user}}
                 </mat-list-option>
@@ -59,7 +61,7 @@
       </mat-accordion>
     </mat-card>
     <div id="filters-large" fxFlex="24%" fxShow.lt-md="false">
-      <mat-card style="padding: 5px 0 0 0;margin-top: 5%;">
+      <mat-card style="padding: 5px 0 0 0;margin-top: 1%;">
         <mat-card-title>Filtri</mat-card-title>
         <mat-accordion [multi]="true">
           <mat-expansion-panel [expanded]="true">
@@ -82,25 +84,19 @@
             </mat-expansion-panel-header>
             <div *ngIf="userList.length != 0" style="margin: 10px;text-align: center">
               <div fxLayout fxLayoutAlign="center">
-                <button fxFlex="25%" mat-raised-button  (click)="selectAll()">Tutti</button>
-                <button fxFlex="25%" mat-raised-button  (click)="deselectAll()">Nessuno</button>
+                <button fxFlex="25%" mat-raised-button (click)="selectAll()">Tutti</button>
+                <button fxFlex="25%" mat-raised-button (click)="deselectAll()">Nessuno</button>
               </div>
               <mat-selection-list [(ngModel)]="userSelected" (selectionChange)="onSelectionChange()">
                 <mat-list-option *ngFor="let user of userList" [value]="user" [checkboxPosition]="'before'">
                   {{user}}
                 </mat-list-option>
               </mat-selection-list>
-
-
             </div>
             <div *ngIf="userList.length == 0" style="margin: 10px;text-align: center">
               Nessun utente
             </div>
           </mat-expansion-panel>
-
-
-
-
 
         </mat-accordion>
       </mat-card>

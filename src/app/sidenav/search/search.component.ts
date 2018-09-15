@@ -40,9 +40,9 @@ export class SearchComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    let topHeight = 130;
+    let topHeight = 192;
     if (window.innerWidth < 959) {
-      topHeight = 200;
+      topHeight = 262;
     }
     this.map_height = (window.innerHeight - topHeight).toLocaleString() + 'px';
     this.chart = new Chart('canvas', {
@@ -85,9 +85,9 @@ export class SearchComponent implements OnInit {
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
-    let topHeight = 130;
+    let topHeight = 192;
     if (event.target.innerWidth < 959) {
-      topHeight = 200;
+      topHeight = 262;
     }
     this.map_height = (event.target.innerHeight - topHeight).toLocaleString() + 'px';
   }
