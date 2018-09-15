@@ -1,4 +1,6 @@
 import {Component} from '@angular/core';
+import {UserService} from "../services/user.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'logged',
@@ -7,6 +9,14 @@ import {Component} from '@angular/core';
 })
 export class SidenavComponent {
 
-  constructor() {
+  readonly username: string;
+
+  constructor(user: UserService, private router: Router) {
+    this.username = user.username;
+  }
+
+  logout() {
+    UserService.logout();
+    this.router.navigate(['login']);
   }
 }
