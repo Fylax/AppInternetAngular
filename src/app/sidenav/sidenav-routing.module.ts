@@ -19,7 +19,7 @@ const routes: Routes = [
         loadChildren: './purchases/purchases.module#PurchasesModule',
       },
       {
-        path: 'mypage',
+        path: 'archives',
         canLoad: [AuthenticationGuard],
         loadChildren: './user-archive/user-archive.module#UserArchiveModule',
       },

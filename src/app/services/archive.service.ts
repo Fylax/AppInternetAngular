@@ -13,6 +13,7 @@ export class ArchiveService {
     approximatedArchiveSelectedList: ApproximatedArchive[];
 
     constructor(private http: HttpClient, private baseService: UrlService) {
+      this.approximatedArchiveSelectedList = [];
   }
 
   /**
