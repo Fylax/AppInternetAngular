@@ -5,6 +5,7 @@ import {UserArchiveComponent} from "./user-archive.component";
 const routes: Routes = [
   {
     path: '',
+    pathMatch: 'full',
     component: UserArchiveComponent,
     outlet: 'content'
   }

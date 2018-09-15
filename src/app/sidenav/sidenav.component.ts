@@ -19,4 +19,8 @@ export class SidenavComponent {
     UserService.logout();
     this.router.navigateByUrl('/login');
   }
+
+  navigate(url: string) {
+    location.href = '/' + url;
+  }
 }
