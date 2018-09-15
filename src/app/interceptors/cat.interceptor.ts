@@ -14,7 +14,7 @@ export class InterCattor implements HttpInterceptor {
         catchError((err: Error) => {
           if (err instanceof HttpErrorResponse) {
             if (err.status >= 500) {
-              this.router.navigate(['error', err.status]);
+              this.router.navigateByUrl('error/' + err.status);
               return;
             }
           }

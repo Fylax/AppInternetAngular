@@ -6,7 +6,8 @@ import {AuthenticationGuard} from "../../app-routing/guards/authentication.guard
 const routes: Routes = [
   {
     path: '',
-    component: PurchasesComponent
+    component: PurchasesComponent,
+    outlet: 'content'
   }
 ];
 
