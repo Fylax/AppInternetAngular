@@ -21,7 +21,7 @@
 #filters-small{
   z-index: 900;
   text-align: center;
-  width: 100vw;
+  width: 100%;
   padding: 10px;
 }
 
