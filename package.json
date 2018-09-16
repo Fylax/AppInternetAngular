@@ -4,11 +4,11 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --prod",
+    "build": "ng build --prod --build-optimizer",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "serve:dist": "http-server dist -o"
+    "serve:dist": "http-server dist/angular -s -o"
   },
   "private": true,
   "dependencies": {
