@@ -1,14 +1,14 @@
-import {AfterViewInit, Component, OnInit} from "@angular/core";
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from "@angular/core";
 import {ActivatedRoute, ParamMap} from "@angular/router";
 import {first} from "rxjs/operators";
 
 @Component({
   selector: 'error',
-  styles: ['div {display: flex; flex-direction: column; justify-content: center; height: 100%;}' +
-  'img {position:absolute;left: 50%; margin-left: -350px}'],
-  template: '<div><img src="https://http.cat/{{error}}" /></div>'
+  styleUrls: ['./error.component.css'],
+  templateUrl: './error.component.html',
+  encapsulation: ViewEncapsulation.None
 })
-export class ErrorComponent implements OnInit, AfterViewInit {
+export class ErrorComponent implements OnInit, OnDestroy {
 
   error: number;
 
@@ -16,15 +16,15 @@ export class ErrorComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    document.body.classList.add('error');
     this.route.paramMap.pipe(first())
         .subscribe((params: ParamMap) => {
           this.error = parseInt(params.get('id'), 10);
         });
   }
 
-  ngAfterViewInit(): void {
-    document.body.style.height = '100%';
-    document.documentElement.style.height = '100%';
-    document.body.style.backgroundColor = 'black';
+
+  ngOnDestroy(): void {
+    document.body.classList.remove('error');
   }
 }

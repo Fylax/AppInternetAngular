@@ -1,0 +1,21 @@
+body.error {
+    height: 100%;
+    background-Color: black;
+}
+
+div {
+    width: 100%;
+}
+
+img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
+button[mat-raised-button] {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
