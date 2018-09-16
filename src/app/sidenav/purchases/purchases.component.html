@@ -47,13 +47,13 @@
       </div>
     </div>
 
-    <mat-paginator [style.display]="displayPaginator()" [length]="resultsLength" [pageSize]="10"></mat-paginator>
+    <mat-paginator [style.display]="displayPaginator()" [length]="resultsLength" [pageSize]="7"></mat-paginator>
   </div>
 </div>
 
 <div *ngIf="resultsLength === 0" fxLayout fxLayoutAlign="center center" id="no_data">
   <div fxFlex="50%">
-    <h1 style="margin-bottom: 5vh">Ancora nessun acquisto nella tua lista</h1>
+    <h2 style="margin-bottom: 5vh">Ancora nessun acquisto nella tua lista</h2>
     <button mat-raised-button routerLink="/search">Procedi</button>
   </div>
 </div>

@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {MatSnackBar} from '@angular/material';
+import {MatSnackBar, MatSnackBarConfig} from '@angular/material';
 import {Router} from '@angular/router';
 import {ArchiveService} from '../../services/archive.service';
 import {PurchaseService} from '../../services/purchase.service';
@@ -33,15 +33,21 @@ export class ConfirmationComponent {
     this.archiveService.approximatedArchiveSelectedList = [];
     this.archiveService.confirmPurchaseArchives(this.archiveList).subscribe(
         response => {
-          this.openSnackBar("Operazione di acquisto eseguita");
+          const config = new MatSnackBarConfig();
+          config.panelClass = ['blue-snackbar'];
+          config.duration = 5000;
+          this.openSnackBar("Operazione di acquisto eseguita", config);
           this.router.navigateByUrl('purchases');
         },
         error => {
+          const config = new MatSnackBarConfig();
+          config.panelClass = ['red-snackbar'];
+          config.duration = 5000;
           let message = 'Errore nell\'operazione di acquisto';
           if (error.status === 500) {
             message = 'Internal Server Error';
           }
-          this.openSnackBar(message);
+          this.openSnackBar(message, config);
           this.router.navigateByUrl('search');
         }
 
@@ -62,11 +68,10 @@ export class ConfirmationComponent {
   /**
    * Visualize a message in a snackbar
    * @param message
+   * @param config: snackbar configuration
    */
-  openSnackBar(message: string) {
-    this.snackBar.open(message, '', {
-      duration: 3000,
-    });
+  private openSnackBar(message: string, config: MatSnackBarConfig) {
+    this.snackBar.open(message, 'Chiudi', config);
   }
 
 }

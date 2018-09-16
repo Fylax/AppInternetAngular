@@ -99,3 +99,17 @@ mat-expansion-panel-header{
 ::ng-deep .mat-expansion-panel-body{
   padding: 0 20px 16px!important;
 }
+
+::ng-deep snack-bar-container.red-snackbar {
+  background: white;
+  border-top: 2px solid red;
+  text-align: center;
+}
+
+::ng-deep .red-snackbar .mat-simple-snackbar {
+  color: #4d4d4d;
+}
+
+::ng-deep .red-snackbar .mat-simple-snackbar-action{
+  color: red;
+}
