@@ -85,7 +85,7 @@ mat-expansion-panel-header{
 
 .map-loading-shade {
   width: 100%;
-  background: rgba(0, 0, 0, 0.15);
+  /*background: rgba(0, 0, 0, 0.15);*/
   z-index: 1000;
   display: flex;
   align-items: center;

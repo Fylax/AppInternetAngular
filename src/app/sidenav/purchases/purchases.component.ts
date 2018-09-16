@@ -38,6 +38,9 @@ export class PurchasesComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dataSource.loadPurchases(1, 10);
   }
 
+  /**
+   * if purchased archives are less the ten the paginator is hidden
+   */
   displayPaginator() {
     if (this.resultsLength > 10) {
       return 'block';
@@ -58,6 +61,9 @@ export class PurchasesComponent implements OnInit, AfterViewInit, OnDestroy {
         .subscribe();
   }
 
+  /**
+   * Load purhcased archive calling method in datasource class
+   */
   loadPurchasePage() {
     this.dataSource.loadPurchases(
         this.paginator.pageIndex + 1,

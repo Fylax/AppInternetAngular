@@ -3,7 +3,6 @@ import {Chart} from 'chart.js';
 import {UserSearchRequest} from '../../model/user-search-request';
 import {ArchiveService} from '../../services/archive.service';
 import {ApproximatedArchive} from '../../model/approximated-archive';
-import {ShareMapInfoService} from '../../services/share-map-info.service';
 import {FullScreenSpinnerService} from '../../full-screen-spinner/full-screen-spinner.service';
 
 @Component({
@@ -13,28 +12,70 @@ import {FullScreenSpinnerService} from '../../full-screen-spinner/full-screen-sp
 })
 export class SearchComponent implements OnInit {
 
+  /**
+   * timeline graph
+   */
   chart;
+  /**
+   * list of users
+   */
   userList = [];
+  /**
+   * list of selected users
+   */
   userSelected = [];
 
+  /**
+   * associate a color to a user
+   */
   private colorByUser = new Map();
+
+  /**
+   * data passed to populate the timeline
+   */
   private datasets;
+  /**
+   * check if dates are valid
+   */
   datesValid: boolean;
 
+  /**
+   * variable used to check if the system is loading data from the backend server
+   */
   loading: boolean;
+  /**
+   * the map height to be passed to map component as input
+   */
   map_height: string;
 
+  /**
+   * map used to associate user and timestap list
+   */
   private userMap = new Map();
 
+  /**
+   * counter archive selected
+   */
   counterPositionsSelected: number;
 
+  /**
+   * object that wrap a user request (polygon and start and end dates)
+   */
   userSearchReq: UserSearchRequest;
+
+  /**
+   * approximated archive list retrieved from the backend
+   */
   private approximatedArchiveList: ApproximatedArchive[];
+
+  /**
+   * approximated archives selected by the user
+   */
   approximatedArchiveSelectedList: ApproximatedArchive[];
 
-  constructor(private archiveService: ArchiveService, private shareInfoService: ShareMapInfoService,
+  constructor(private archiveService: ArchiveService,
               private spinner: FullScreenSpinnerService) {
-    this.userSearchReq = this.shareInfoService.userSearchRequest;
+    this.userSearchReq = this.archiveService.userSearchRequest;
     this.datesValid = true;
     this.counterPositionsSelected = 0;
   }
@@ -64,8 +105,8 @@ export class SearchComponent implements OnInit {
               displayFormats: {
                 hour: 'H:MM'
               },
-              min: this.shareInfoService.userSearchRequest.start,
-              max: this.shareInfoService.userSearchRequest.end
+              min: this.archiveService.userSearchRequest.start,
+              max: this.archiveService.userSearchRequest.end
             },
           }],
           yAxes: [{
@@ -83,6 +124,10 @@ export class SearchComponent implements OnInit {
     this.spinner.hideSpinner();
   }
 
+  /**
+   * this method intercepts the windows resize event and computes the map-height
+   * @param event
+   */
   @HostListener('window:resize', ['$event'])
   onResize(event) {
     let topHeight = 192;
@@ -92,13 +137,18 @@ export class SearchComponent implements OnInit {
     this.map_height = (event.target.innerHeight - topHeight).toLocaleString() + 'px';
   }
 
-
+  /**
+   * select all user in list
+   */
   selectAll() {
     this.userSelected = this.userList;
     this.setTimeline();
     this.setApproximatedArchives();
   }
 
+  /**
+   * select none
+   */
   deselectAll() {
     this.userSelected = [];
     this.setTimeline();
@@ -107,16 +157,28 @@ export class SearchComponent implements OnInit {
     this.archiveService.approximatedArchiveSelectedList = [];
   }
 
+  /**
+   * Each time a user is selected or deselected from the list recompute the list of archive selected
+   */
   onSelectionChange() {
     this.setTimeline();
     this.setApproximatedArchives();
   }
 
+  /**
+   * Called when a new polygon is emitted from the map component
+   * @param p
+   */
   onPolygonReady(p: L.Polygon) {
-    this.shareInfoService.userSearchRequest.area = p;
+    this.archiveService.userSearchRequest.area = p;
     this.getArchives();
   }
 
+  /**
+   * Process the list of approximated archives
+   * fill map user-timestamps and call method to set timeline
+   * @param archives
+   */
   setUsersMap(archives: ApproximatedArchive[]) {
     this.userMap = new Map();
     this.userList = [];
@@ -139,6 +201,9 @@ export class SearchComponent implements OnInit {
     this.setTimeline();
   }
 
+  /**
+   * method to fill timeline with timestamps
+   */
   private setTimeline() {
     this.datasets = new Map();
     for (const user of this.userSelected) {
@@ -155,11 +220,15 @@ export class SearchComponent implements OnInit {
       });
     }
     this.chart.data.datasets = Array.from(this.datasets.values());
-    this.chart.options.scales.xAxes[0].time.min = this.shareInfoService.userSearchRequest.start;
-    this.chart.options.scales.xAxes[0].time.max = this.shareInfoService.userSearchRequest.end;
+    this.chart.options.scales.xAxes[0].time.min = this.archiveService.userSearchRequest.start;
+    this.chart.options.scales.xAxes[0].time.max = this.archiveService.userSearchRequest.end;
     this.chart.update();
   }
 
+  /**
+   * get the color for the given user
+   * @param userId
+   */
   private getColorByUserID(userId) {
     if (this.colorByUser.has(userId)) {
       return this.colorByUser.get(userId);
@@ -173,10 +242,13 @@ export class SearchComponent implements OnInit {
     return color;
   }
 
+  /**
+   * retrieve approximated archives from backend
+   */
   getArchives() {
     if (this.datesValid) {
       this.loading = true;
-      this.archiveService.searchArchives(this.shareInfoService.userSearchRequest)
+      this.archiveService.searchArchives(this.archiveService.userSearchRequest)
           .subscribe(aaList => {
             this.approximatedArchiveList = aaList;
             this.setUsersMap(aaList);
@@ -185,6 +257,9 @@ export class SearchComponent implements OnInit {
     }
   }
 
+  /**
+   * set the approximated archives selected
+   */
   private setApproximatedArchives() {
     this.counterPositionsSelected = 0;
     this.approximatedArchiveSelectedList = this.approximatedArchiveList.filter(archive => {

@@ -24,10 +24,16 @@ export class ConfirmationComponent {
     this.archiveList = this.archiveService.approximatedArchiveSelectedList;
   }
 
+  /**
+   * Send the book confirmation to server
+   * If the operation terminate succesfully route to purchases view,
+   * otherwise back to search view
+   */
   sendConfirmation() {
     this.archiveService.approximatedArchiveSelectedList = [];
     this.archiveService.confirmPurchaseArchives(this.archiveList).subscribe(
         response => {
+          this.openSnackBar("Operazione di acquisto eseguita");
           this.router.navigateByUrl('purchases');
         },
         error => {
@@ -42,6 +48,9 @@ export class ConfirmationComponent {
     );
   }
 
+  /**
+   * Get the total amount to pay
+   */
   getAmount() {
     let total = 0;
     for (const ar of this.archiveList) {
@@ -50,9 +59,13 @@ export class ConfirmationComponent {
     return total.toFixed(2);
   }
 
+  /**
+   * Visualize a message in a snackbar
+   * @param message
+   */
   openSnackBar(message: string) {
     this.snackBar.open(message, '', {
-      duration: 2000,
+      duration: 3000,
     });
   }
 
