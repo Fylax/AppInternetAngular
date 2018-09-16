@@ -11,13 +11,12 @@ export class SidenavComponent {
 
   readonly username: string;
 
-  constructor(user: UserService, private router: Router) {
+  constructor(private user: UserService, private router: Router) {
     this.username = user.username;
   }
 
   logout() {
-    UserService.logout();
-    this.router.navigateByUrl('/login');
+    this.user.logout();
   }
 
 }

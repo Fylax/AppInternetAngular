@@ -9,12 +9,3 @@ html, body {
     font-family: Roboto,"Helvetica Neue",sans-serif;
     color: grey;
 }
-
-.count-tooltip {
-    background-color: rgba(115, 115, 115, 0.8);
-    border: 1px solid rgba(115, 115, 115, 1);
-    padding: 10px;
-    font-size: large;
-    border-radius: 10px;
-    color: #ffffff;
-}

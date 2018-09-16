@@ -66,8 +66,10 @@ export class UserService {
     return null;
   }
 
-  public static logout() {
+  public logout() {
     localStorage.clear();
+    this.username_ = undefined;
+    this.exp_ = 0;
   }
 
   public get accessToken(): string {
@@ -88,10 +90,6 @@ export class UserService {
 
   public get roles(): Role[] {
     return this.roles_;
-  }
-
-  public hasRole(role: Role) {
-    return this.roles_.includes(role);
   }
 
   public setTokens(accessToken: string, refreshToken: string) {
