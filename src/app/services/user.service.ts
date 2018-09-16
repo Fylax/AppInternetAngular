@@ -66,32 +66,55 @@ export class UserService {
     return null;
   }
 
+  /**
+   * Perform user logout.
+   */
   public logout() {
     localStorage.clear();
     this.username_ = undefined;
     this.exp_ = 0;
   }
 
+  /**
+   * @returns Access token.
+   */
   public get accessToken(): string {
     return this.accessToken_;
   }
 
+  /**
+   * @returns Whether the user is logged.
+   */
   public get isLogged(): boolean {
     return this.username_ !== undefined && this.exp_ > new Date().getTime();
   }
 
+  /**
+   * @returns Username
+   */
   public get username(): string {
     return this.username_;
   }
 
+  /**
+   * @returns Whether the refresh token is expired.
+   */
   public get isRefreshTokenExpired(): boolean {
     return this.refreshExp_ < (new Date().getTime());
   }
 
+  /**
+   * @returns List of roles available for current user.
+   */
   public get roles(): Role[] {
     return this.roles_;
   }
 
+  /**
+   * Loads in localStorage, for future reuse, both access and refresh token.
+   * @param accessToken Access token to be stored.
+   * @param refreshToken Refresh token to be stored.
+   */
   public setTokens(accessToken: string, refreshToken: string) {
     this.accessToken_ = accessToken;
     localStorage.setItem('access', accessToken);
