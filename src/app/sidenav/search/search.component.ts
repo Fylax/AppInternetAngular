@@ -4,6 +4,7 @@ import {UserSearchRequest} from '../../model/user-search-request';
 import {ArchiveService} from '../../services/archive.service';
 import {ApproximatedArchive} from '../../model/approximated-archive';
 import {FullScreenSpinnerService} from '../../full-screen-spinner/full-screen-spinner.service';
+import {MatSnackBar, MatSnackBarConfig} from '@angular/material';
 
 @Component({
   selector: 'app-search',
@@ -73,11 +74,15 @@ export class SearchComponent implements OnInit {
    */
   approximatedArchiveSelectedList: ApproximatedArchive[];
 
+  first: boolean;
+
   constructor(private archiveService: ArchiveService,
-              private spinner: FullScreenSpinnerService) {
+              private spinner: FullScreenSpinnerService,
+              private snackBar: MatSnackBar) {
     this.userSearchReq = this.archiveService.userSearchRequest;
     this.datesValid = true;
     this.counterPositionsSelected = 0;
+    this.first = true;
   }
 
   ngOnInit(): void {
@@ -197,6 +202,16 @@ export class SearchComponent implements OnInit {
         || this.userSelected.length > this.userList.length) {
       this.userSelected = this.userList;
     }
+    if (this.first && this.userList.length === 0) {
+      this.first = false;
+      const config = new MatSnackBarConfig();
+      config.panelClass = ['red-snackbar'];
+      config.duration = 10000;
+      this.snackBar.open(
+          'Nessun archivio presente! Cambia le date oppure muovi e allarga la mappa per effettuare una nuova ricerca',
+          'Chiudi',
+            config);
+    }
     this.setApproximatedArchives();
     this.setTimeline();
   }
@@ -237,7 +252,7 @@ export class SearchComponent implements OnInit {
     const r = Math.floor(Math.random() * 255);
     const g = Math.floor(Math.random() * 255);
     const b = Math.floor(Math.random() * 255);
-    color = 'rgba(' + r + ' ,' + g + ',' + b + ', 0.5)';
+    color = 'rgba(' + r + ' ,' + g + ',' + b + ', 0.8)';
     this.colorByUser.set(userId, color);
     return color;
   }

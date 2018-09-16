@@ -3,7 +3,7 @@ import {ArchiveDataSource} from './archive-data-source';
 import {tap} from 'rxjs/operators';
 import {ArchiveService} from '../../services/archive.service';
 import {Subscription} from 'rxjs';
-import {MatDialog, MatPaginator, MatSnackBar} from '@angular/material';
+import {MatDialog, MatPaginator, MatSnackBar, MatSnackBarConfig} from '@angular/material';
 import {saveAs} from 'file-saver';
 import {DeleteDialogComponent} from '../../dialogs/delete-dialog/delete-dialog.component';
 
@@ -46,14 +46,14 @@ export class UserArchiveComponent implements OnInit, AfterViewInit, OnDestroy {
         });
     this.resultsLength = -1;
     this.countArchiveToUpload = 0;
-    this.dataSource.loadArchive(1, 1);
+    this.dataSource.loadArchive(1, 7);
   }
 
   /**
    * if purchased archives are less the ten the paginator is hidden
    */
   displayPaginator() {
-    if (this.resultsLength > 10) {
+    if (this.resultsLength > 6) {
       return 'block';
     } else {
       return 'none';
@@ -99,12 +99,16 @@ export class UserArchiveComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
     dialogRef.componentInstance.responseStatus.subscribe(status => {
+      const config = new MatSnackBarConfig();
+      config.panelClass = ['red-snackbar'];
+      config.duration = 5000;
       let message = 'Impossibile eliminare l\'archivio, prova di nuovo';
       if (status === 200) {
+        config.panelClass = ['blue-snackbar'];
         message = 'Archivio eliminato con successo';
         this.loadArchivesPage();
       }
-      this.openSnackBar(message);
+      this.openSnackBar(message, config);
     });
   }
 
@@ -137,23 +141,27 @@ export class UserArchiveComponent implements OnInit, AfterViewInit, OnDestroy {
         response => {
           this.countArchiveToUpload = this.countArchiveToUpload - 1;
           if (this.countArchiveToUpload === 0) {
-            this.openSnackBar('Operazione di caricamento terminata con successo!');
+            const config = new MatSnackBarConfig();
+            config.panelClass = ['blue-snackbar'];
+            config.duration = 5000;
+            this.openSnackBar('Operazione di caricamento terminata con successo!', config);
           }
           this.loadArchivesPage();
         },
         error => {
           this.countArchiveToUpload = this.countArchiveToUpload - 1;
+          const config = new MatSnackBarConfig();
+          config.panelClass = ['red-snackbar'];
+          config.duration = 5000;
           let message = 'Errore nel caricamento dell\'archivio';
           if (error.status === 400) {
             message = 'L\'archivio è già presente o non rispetta la sintassi';
           }
-          this.openSnackBar(message);
+          this.openSnackBar(message, config);
         });
   }
 
-  openSnackBar(message: string) {
-    this.snackBar.open(message, '', {
-      duration: 3000,
-    });
+  private openSnackBar(message: string, config: MatSnackBarConfig) {
+    this.snackBar.open(message, 'Chiudi', config);
   }
 }

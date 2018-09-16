@@ -53,7 +53,7 @@
       </div>
     </div>
 
-    <mat-paginator [style.display]="displayPaginator()" [length]="resultsLength" [pageSize]="1"></mat-paginator>
+    <mat-paginator [style.display]="displayPaginator()" [length]="resultsLength" [pageSize]="7"></mat-paginator>
   </div>
   <div *ngIf="resultsLength > 0" fxFlex="20%" id="upload_container"
        fxFlexOrder.lt-md="1">
@@ -70,7 +70,7 @@
 
 <div *ngIf="resultsLength === 0" fxLayout fxLayoutAlign="center center" id="no_data">
   <div fxFlex="50%">
-    <h1 style="margin-bottom: 5vh">Nessun archivio nella tua lista. Clicca sotto per caricare un nuovo archivio</h1>
+    <h2 style="margin-bottom: 5vh">Nessun archivio nella tua lista. Clicca sotto per caricare un nuovo archivio</h2>
     <input type="file" #file style="display: none" (change)="onFileUpload()" onclick="this.value=null;"/>
     <button mat-raised-button color="primary"
             (click)="openUpload()" style="width: 75%">Carica

@@ -35,14 +35,14 @@ export class PurchasesComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscription = this.dataSource.resultLength
         .subscribe(totals => this.resultsLength = totals);
     this.resultsLength = -1;
-    this.dataSource.loadPurchases(1, 10);
+    this.dataSource.loadPurchases(1, 7);
   }
 
   /**
    * if purchased archives are less the ten the paginator is hidden
    */
   displayPaginator() {
-    if (this.resultsLength > 10) {
+    if (this.resultsLength > 6) {
       return 'block';
     } else {
       return 'none';

@@ -8,7 +8,7 @@ import {
   MatDividerModule,
   MatExpansionModule,
   MatListModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule, MatSnackBarModule
 } from '@angular/material';
 import {FormsModule} from "@angular/forms";
 import {LeafletModule} from "@asymmetrik/ngx-leaflet";
@@ -32,7 +32,8 @@ import {FlexLayoutModule} from '@angular/flex-layout';
     SearchRoutingModule,
     MatExpansionModule,
     MatProgressSpinnerModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MatSnackBarModule
   ],
   declarations: [SearchComponent]
 })
