@@ -82,8 +82,8 @@ export class PurchasesComponent implements OnInit, AfterViewInit, OnDestroy {
   downloadArchive(archiveId: string) {
     this.purchaseService.downloadPurchasedArchive(archiveId).subscribe(data => {
       data = JSON.stringify(data.positionList, undefined, 2);
-      const blob = new Blob([data], {type: 'application/json'});
-      saveAs(blob, archiveId);
+      const blob = new Blob([data], {});
+      saveAs(blob, archiveId + ".json");
     });
   }
 }
