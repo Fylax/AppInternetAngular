@@ -4,7 +4,7 @@
     Vuoi eliminare l'archivio <b>{{archiveId}}</b> dai tuoi archivi personali?
   </mat-dialog-content>
   <mat-dialog-actions class="actions">
+    <button mat-raised-button color="warn" [mat-dialog-close]="true" (click)="deleteArchive()">Elimina</button>
     <button mat-button mat-dialog-close>Annulla</button>
-    <button mat-raised-button color="primary" [mat-dialog-close]="true" (click)="deleteArchive()">Elimina</button>
   </mat-dialog-actions>
 </div>
