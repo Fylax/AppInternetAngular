@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "serve:dist": "lite-server -s dist/angular -p 8080 --no-reload -q -o"
+    "serve:dist": "angular-http-server -p 9000 --open --path dist/angular"
   },
   "private": true,
   "dependencies": {
@@ -56,6 +56,7 @@
     "@types/urijs": "^1.15.38",
     "@types/xregexp": "^3.0.29",
     "@types/zxcvbn": "^4.4.0",
+    "angular-http-server": "^1.5.0",
     "codelyzer": "~4.4.4",
     "lite-server": "^2.4.0",
     "protractor": "^5.4.1",
