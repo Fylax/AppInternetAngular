@@ -119,8 +119,8 @@ export class UserArchiveComponent implements OnInit, AfterViewInit, OnDestroy {
   downloadArchive(archiveId: string): void {
     this.archiveService.downloadArchive(archiveId).subscribe(data => {
       data = JSON.stringify(data.positionList, undefined, 2);
-      const blob = new Blob([data], {type: 'application/json'});
-      saveAs(blob, archiveId);
+      const blob = new Blob([data], {});
+      saveAs(blob, archiveId + ".json");
     });
   }
 
